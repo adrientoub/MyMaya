@@ -54,11 +54,11 @@ public class Main extends Application {
         // Build the Scene Graph
         Group root = new Group();
         root.getChildren().add(camera);
-        sc = new SelectController(root);
-        addSpheres(sc, root);
 
         // Use a SubScene
         SubScene subScene = new SubScene(root, 1024, 768);
+        sc = new SelectController(root, subScene);
+        addSpheres(sc, root);
         subScene.setFill(Color.ALICEBLUE);
         subScene.setCamera(camera);
 
@@ -68,7 +68,6 @@ public class Main extends Application {
         subScene.addEventFilter(ScrollEvent.SCROLL, new ScrollController(camera));
 
         Group group = new Group();
-//        group.setOnKeyPressed();
         group.getChildren().add(subScene);
         return group;
     }
