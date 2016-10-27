@@ -1,10 +1,13 @@
 import controller.MouseController;
+import controller.ScrollController;
+import controller.SelectController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -22,16 +25,20 @@ public class Main extends Application {
         Sphere sphere = new Sphere(3);
         sphere.setMaterial(new PhongMaterial(Color.RED));
         sphere.setDrawMode(DrawMode.FILL);
+        SelectController sc = new SelectController();
+        sphere.addEventFilter(MouseEvent.MOUSE_CLICKED, sc.newSelection(sphere));
 
         Sphere secondSphere = new Sphere(3);
         secondSphere.setMaterial(new PhongMaterial(Color.BLUE));
         secondSphere.setDrawMode(DrawMode.FILL);
         secondSphere.getTransforms().addAll(new Translate(5, 0));
+        secondSphere.addEventFilter(MouseEvent.MOUSE_CLICKED, sc.newSelection(secondSphere));
 
         Sphere thirdSphere = new Sphere(2);
         thirdSphere.setMaterial(new PhongMaterial(Color.GREEN));
         thirdSphere.setDrawMode(DrawMode.FILL);
         thirdSphere.getTransforms().addAll(new Translate(0, -1, 0));
+        thirdSphere.addEventFilter(MouseEvent.MOUSE_CLICKED, sc.newSelection(thirdSphere));
 
         // Create and position camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -51,8 +58,9 @@ public class Main extends Application {
         subScene.setCamera(camera);
 
         MouseController mc = new MouseController(camera, subScene);
-        root.addEventFilter(MouseEvent.MOUSE_DRAGGED, mc);
-        root.addEventFilter(MouseEvent.MOUSE_RELEASED, mc);
+        subScene.addEventFilter(MouseEvent.MOUSE_DRAGGED, mc);
+        subScene.addEventFilter(MouseEvent.MOUSE_RELEASED, mc);
+        subScene.addEventFilter(ScrollEvent.SCROLL, new ScrollController(camera));
 
         Group group = new Group();
         group.getChildren().add(subScene);
