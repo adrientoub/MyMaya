@@ -2,7 +2,6 @@ import controller.MouseController;
 import controller.ScrollController;
 import controller.SelectController;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -21,25 +20,30 @@ import javafx.stage.Stage;
  * Created by Adrien on 20/10/2016.
  */
 public class Main extends Application {
-    public Parent createContent() throws Exception {
+    private SelectController sc = null;
+
+    public void addSpheres(SelectController sc, Group root) {
         Sphere sphere = new Sphere(3);
         sphere.setMaterial(new PhongMaterial(Color.RED));
         sphere.setDrawMode(DrawMode.FILL);
-        SelectController sc = new SelectController();
         sphere.addEventFilter(MouseEvent.MOUSE_CLICKED, sc.newSelection(sphere));
 
         Sphere secondSphere = new Sphere(3);
         secondSphere.setMaterial(new PhongMaterial(Color.BLUE));
         secondSphere.setDrawMode(DrawMode.FILL);
-        secondSphere.getTransforms().addAll(new Translate(5, 0));
+        secondSphere.setTranslateX(5);
         secondSphere.addEventFilter(MouseEvent.MOUSE_CLICKED, sc.newSelection(secondSphere));
 
         Sphere thirdSphere = new Sphere(2);
         thirdSphere.setMaterial(new PhongMaterial(Color.GREEN));
         thirdSphere.setDrawMode(DrawMode.FILL);
-        thirdSphere.getTransforms().addAll(new Translate(0, -1, 0));
+        thirdSphere.setTranslateY(-1);
         thirdSphere.addEventFilter(MouseEvent.MOUSE_CLICKED, sc.newSelection(thirdSphere));
 
+        root.getChildren().addAll(sphere, secondSphere, thirdSphere);
+    }
+
+    public Parent createContent() throws Exception {
         // Create and position camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
         camera.getTransforms().addAll(
@@ -50,7 +54,8 @@ public class Main extends Application {
         // Build the Scene Graph
         Group root = new Group();
         root.getChildren().add(camera);
-        root.getChildren().addAll(sphere, secondSphere, thirdSphere);
+        sc = new SelectController(root);
+        addSpheres(sc, root);
 
         // Use a SubScene
         SubScene subScene = new SubScene(root, 1024, 768);
@@ -63,6 +68,7 @@ public class Main extends Application {
         subScene.addEventFilter(ScrollEvent.SCROLL, new ScrollController(camera));
 
         Group group = new Group();
+//        group.setOnKeyPressed();
         group.getChildren().add(subScene);
         return group;
     }
@@ -85,6 +91,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         addMenu(root);
         root.getChildren().add(createContent());
+        scene.setOnKeyPressed(sc.getTools());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
