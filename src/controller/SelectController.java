@@ -78,50 +78,55 @@ public class SelectController {
         private Cylinder right;
         private Cylinder far;
 
+        void removeRotors() {
+            if (up != null) {
+                root.getChildren().remove(up);
+            }
+            if (right != null) {
+                root.getChildren().remove(right);
+            }
+            if (far != null) {
+                root.getChildren().remove(far);
+            }
+        }
+
+        void addRotors() {
+            final double cylinderLen = 0.75;
+
+            Point3D vx = new Point3D(1, 0, 0);
+            Point3D vy = new Point3D(0, 1, 0);
+            Point3D vz = new Point3D(0, 0, 1);
+
+            up = new Cylinder(0.05, cylinderLen);
+            up.setDrawMode(DrawMode.FILL);
+            up.setMaterial(new PhongMaterial(Color.GREEN));
+            up.getTransforms().addAll(new Translate(selected.getTranslateX(), selected.getTranslateY() - cylinderLen / 2, selected.getTranslateZ()),
+                    new Rotate(90, vy));
+            up.addEventFilter(MouseEvent.MOUSE_DRAGGED, new AxisMovement(vy, 0));
+
+            right = new Cylinder(0.05, cylinderLen);
+            right.setDrawMode(DrawMode.FILL);
+            right.setMaterial(new PhongMaterial(Color.RED));
+            right.getTransforms().addAll(new Translate(selected.getTranslateX() + cylinderLen / 2, selected.getTranslateY(), selected.getTranslateZ()),
+                    new Rotate(90, vz));
+            right.addEventFilter(MouseEvent.MOUSE_DRAGGED, new AxisMovement(vx, 0));
+
+            far = new Cylinder(0.05, cylinderLen);
+            far.setDrawMode(DrawMode.FILL);
+            far.setMaterial(new PhongMaterial(Color.BLUE));
+            far.getTransforms().addAll(new Translate(selected.getTranslateX(), selected.getTranslateY(), selected.getTranslateZ() - cylinderLen / 2),
+                    new Rotate(90, vx));
+            far.addEventFilter(MouseEvent.MOUSE_DRAGGED, new AxisMovement(vz, 0));
+            root.getChildren().addAll(up, right, far);
+        }
+
         @Override
         public void handle(KeyEvent event) {
             if (event.getCode() == KeyCode.W) {
                 System.out.println("Pressed W");
-                if (selected == null) {
-                    return;
-                } else {
-                    if (up != null) {
-                        root.getChildren().remove(up);
-                    }
-                    if (right != null) {
-                        root.getChildren().remove(right);
-                    }
-                    if (far != null) {
-                        root.getChildren().remove(far);
-                    }
-                    final double cylinderLen = 0.75;
-
-                    Point3D axis = new Point3D(0, 1, 0);
-
-                    up = new Cylinder(0.05, cylinderLen);
-                    up.setDrawMode(DrawMode.FILL);
-                    up.setMaterial(new PhongMaterial(Color.GREEN));
-                    up.getTransforms().addAll(new Translate(selected.getTranslateX(), selected.getTranslateY() - cylinderLen / 2, selected.getTranslateZ()),
-                                              new Rotate(90, axis));
-                    up.addEventFilter(MouseEvent.MOUSE_DRAGGED, new AxisMovement(axis, 90));
-
-                    axis = new Point3D(0, 0, 1);
-                    right = new Cylinder(0.05, cylinderLen);
-                    right.setDrawMode(DrawMode.FILL);
-                    right.setMaterial(new PhongMaterial(Color.RED));
-                    right.getTransforms().addAll(new Translate(selected.getTranslateX() + cylinderLen / 2, selected.getTranslateY(), selected.getTranslateZ()),
-                                                 new Rotate(90, axis));
-                    right.addEventFilter(MouseEvent.MOUSE_DRAGGED, new AxisMovement(axis, 90));
-
-                    axis = new Point3D(1, 0, 0);
-                    far = new Cylinder(0.05, cylinderLen);
-                    far.setDrawMode(DrawMode.FILL);
-                    far.setMaterial(new PhongMaterial(Color.BLUE));
-                    far.getTransforms().addAll(new Translate(selected.getTranslateX(), selected.getTranslateY(), selected.getTranslateZ() - cylinderLen / 2),
-                                               new Rotate(90, axis));
-                    far.addEventFilter(MouseEvent.MOUSE_DRAGGED, new AxisMovement(axis, 90));
-
-                    root.getChildren().addAll(up, right, far);
+                if (selected != null) {
+                    removeRotors();
+                    addRotors();
                 }
             }
         }
