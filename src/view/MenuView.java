@@ -7,7 +7,6 @@ import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.paint.Color;
 import model.SceneModel;
 
 /**
