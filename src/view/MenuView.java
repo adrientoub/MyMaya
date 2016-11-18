@@ -20,14 +20,14 @@ public class MenuView extends MenuBar {
         sphere.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
-                SceneModel.addSphere(1, Color.BLUE);
+                SceneModel.addSphere(1, null);
             }
         });
         MenuItem box = new MenuItem("Box");
         box.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
-                SceneModel.addBox(Color.RED);
+                SceneModel.addBox(null);
             }
         });
 
