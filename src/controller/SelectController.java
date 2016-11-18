@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.DrawMode;
-import javafx.scene.shape.Sphere;
+import javafx.scene.shape.Shape3D;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
@@ -19,7 +19,7 @@ import javafx.scene.transform.Translate;
  * Created by Adrien on 27/10/2016.
  */
 public class SelectController {
-    private Sphere selected;
+    private Shape3D selected;
     private Group root;
     private Tools tools = new Tools();
     private SubScene subScene;
@@ -40,7 +40,7 @@ public class SelectController {
         return sc;
     }
 
-    public Selection newSelection(Sphere sphere) {
+    public Selection newSelection(Shape3D sphere) {
         return new Selection(sphere);
     }
 
@@ -145,18 +145,18 @@ public class SelectController {
     }
 
     public class Selection implements EventHandler<MouseEvent> {
-        Sphere sphere;
+        Shape3D shape3D;
 
-        private Selection(Sphere sphere) {
-            this.sphere = sphere;
+        private Selection(Shape3D shape3D) {
+            this.shape3D = shape3D;
         }
 
         @Override
         public void handle(MouseEvent event) {
             if (selected != null)
                 selected.setDrawMode(DrawMode.FILL);
-            selected = sphere;
-            sphere.setDrawMode(DrawMode.LINE);
+            selected = shape3D;
+            shape3D.setDrawMode(DrawMode.LINE);
         }
     }
 }

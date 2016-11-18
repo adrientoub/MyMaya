@@ -19,7 +19,7 @@ import view.MenuView;
  * Created by Adrien on 20/10/2016.
  */
 public class Main extends Application {
-    public void addSpheres(Group root) {
+    public void addSpheres() {
         SceneModel.addSphere(3, Color.RED);
 
         Sphere secondSphere = SceneModel.addSphere(3, Color.BLUE);
@@ -44,7 +44,7 @@ public class Main extends Application {
         // Use a SubScene
         SubScene subScene = new SubScene(scene, 1024, 768);
         SelectController.initializeSelectController(scene, subScene);
-        addSpheres(scene);
+        addSpheres();
         subScene.setFill(Color.ALICEBLUE);
         subScene.setCamera(camera);
 
