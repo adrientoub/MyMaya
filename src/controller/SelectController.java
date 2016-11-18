@@ -24,9 +24,20 @@ public class SelectController {
     private Tools tools = new Tools();
     private SubScene subScene;
 
-    public SelectController(Group root, SubScene subScene) {
+    private static SelectController sc;
+
+    private SelectController(Group root, SubScene subScene) {
         this.root = root;
         this.subScene = subScene;
+    }
+
+    public static SelectController initializeSelectController(Group root, SubScene subScene) {
+        sc = new SelectController(root, subScene);
+        return sc;
+    }
+
+    public static SelectController getSelectController() {
+        return sc;
     }
 
     public Selection newSelection(Sphere sphere) {

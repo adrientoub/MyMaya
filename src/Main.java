@@ -3,44 +3,30 @@ import controller.ScrollController;
 import controller.SelectController;
 import javafx.application.Application;
 import javafx.scene.*;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+import model.SceneModel;
+import view.MenuView;
 
 /**
  * Created by Adrien on 20/10/2016.
  */
 public class Main extends Application {
-    private SelectController sc = null;
+    public void addSpheres(Group root) {
+        SceneModel.addSphere(3, Color.RED);
 
-    public void addSpheres(SelectController sc, Group root) {
-        Sphere sphere = new Sphere(3);
-        sphere.setMaterial(new PhongMaterial(Color.RED));
-        sphere.setDrawMode(DrawMode.FILL);
-        sphere.addEventFilter(MouseEvent.MOUSE_CLICKED, sc.newSelection(sphere));
-
-        Sphere secondSphere = new Sphere(3);
-        secondSphere.setMaterial(new PhongMaterial(Color.BLUE));
-        secondSphere.setDrawMode(DrawMode.FILL);
+        Sphere secondSphere = SceneModel.addSphere(3, Color.BLUE);
         secondSphere.setTranslateX(5);
-        secondSphere.addEventFilter(MouseEvent.MOUSE_CLICKED, sc.newSelection(secondSphere));
 
-        Sphere thirdSphere = new Sphere(2);
-        thirdSphere.setMaterial(new PhongMaterial(Color.GREEN));
-        thirdSphere.setDrawMode(DrawMode.FILL);
+        Sphere thirdSphere = SceneModel.addSphere(2, Color.GREEN);
         thirdSphere.setTranslateY(-1);
-        thirdSphere.addEventFilter(MouseEvent.MOUSE_CLICKED, sc.newSelection(thirdSphere));
-
-        root.getChildren().addAll(sphere, secondSphere, thirdSphere);
     }
 
     public Parent createContent() throws Exception {
@@ -52,13 +38,13 @@ public class Main extends Application {
                 new Translate(0, 0, -15));
 
         // Build the Scene Graph
-        Group root = new Group();
-        root.getChildren().add(camera);
+        Group scene = SceneModel.getScene();
+        scene.getChildren().add(camera);
 
         // Use a SubScene
-        SubScene subScene = new SubScene(root, 1024, 768);
-        sc = new SelectController(root, subScene);
-        addSpheres(sc, root);
+        SubScene subScene = new SubScene(scene, 1024, 768);
+        SelectController.initializeSelectController(scene, subScene);
+        addSpheres(scene);
         subScene.setFill(Color.ALICEBLUE);
         subScene.setCamera(camera);
 
@@ -73,13 +59,8 @@ public class Main extends Application {
     }
 
     public void addMenu(VBox root) {
-        MenuBar menuBar = new MenuBar();
+        MenuBar menuBar = new MenuView(SceneModel.getScene());
 
-        Menu menuFile = new Menu("File");
-        Menu menuEdit = new Menu("Edit");
-        Menu menuView = new Menu("View");
-
-        menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
         root.getChildren().addAll(menuBar);
     }
 
@@ -90,7 +71,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         addMenu(root);
         root.getChildren().add(createContent());
-        scene.setOnKeyPressed(sc.getTools());
+        scene.setOnKeyPressed(SelectController.getSelectController().getTools());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
