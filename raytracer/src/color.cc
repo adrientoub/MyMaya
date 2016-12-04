@@ -11,3 +11,10 @@ Color Color::operator*(double f) const
                std::max(0., std::min(1., g * f)),
                std::max(0., std::min(1., b * f)));
 }
+
+std::ostream& operator<<(std::ostream& os, const Color& color)
+{
+  os << std::min(255, std::max(0, static_cast<int>(color.r * 255))) << ' '
+     << std::min(255, std::max(0, static_cast<int>(color.g * 255))) << ' '
+     << std::min(255, std::max(0, static_cast<int>(color.b * 255)));
+}

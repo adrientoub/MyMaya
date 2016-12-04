@@ -8,6 +8,9 @@ set(BASE_SOURCE_FILES
     src/parser.cc
     src/vector3.cc
     src/color.cc
+    src/shape.cc
+    src/sphere.cc
+    src/image.cc
   )
 
 include_directories(include)
