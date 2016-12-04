@@ -14,6 +14,7 @@ set(BASE_SOURCE_FILES
     src/attributes.cc
     src/camera.cc
     src/ray.cc
+    src/point_light.cc
   )
 
 include_directories(include)

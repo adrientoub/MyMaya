@@ -31,6 +31,7 @@ public:
   }
 
   friend std::istream& operator>>(std::istream& is, Input& value);
+  friend std::ostream& operator<<(std::ostream& is, const Input& value);
 
 private:
   size_t width;
@@ -51,3 +52,4 @@ private:
 };
 
 std::istream& operator>>(std::istream& is, Input& value);
+std::ostream& operator<<(std::ostream& is, const Input& value);

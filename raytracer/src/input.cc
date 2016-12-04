@@ -13,23 +13,23 @@ void Input::calculate()
   Vector3 u = camera.u.normalize();
   Vector3 v = camera.v.normalize();
 
-  Vector3 w = u * v;
-  double fov = (45 * M_PI / 180);
-  double l = (width / 2) / (tan(fov / 2));
-  Vector3 c = camera.pos + w * l;
-
   long half_width = width / 2;
   long half_height = height / 2;
 
-#pragma omp parallel for
-  for (long i = -half_width; i < half_width; ++i)
+  Vector3 w = u * v;
+  double fov = (45 * M_PI / 180);
+  double l = half_width / (tan(fov / 2));
+  Vector3 c = camera.pos + w * l;
+
+// #pragma omp parallel for
+  for (long i = -half_height; i < half_height; ++i)
   {
-    for (long j = -half_height; j < half_height; ++j)
+    for (long j = -half_width; j < half_width; ++j)
     {
-      Vector3 pos = u * i + v * j;
+      Vector3 pos = u * j + v * i;
       pos = pos + c;
       Ray ray(pos - camera.pos, camera.pos);
-      ray.cast(this, image.get(i + width / 2, j + height / 2), ttl);
+      ray.cast(this, image.get(i + half_height, j + half_width), ttl);
     }
   }
 }
@@ -52,10 +52,21 @@ std::istream& operator>>(std::istream& is, Input& input)
       std::shared_ptr<Shape> ptr(sphere);
       is >> *sphere;
     }
+    else if (field == "plight")
+    {
+      PointLight pl;
+      is >> pl;
+      input.point_lights.push_back(pl);
+    }
     else
       std::cerr << "Unknown field `" << field << '`' << std::endl;
   }
   return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const Input& value)
+{
+  return os << "w: " << value.width << " h: " << value.height;
 }
 
 void Input::save() const

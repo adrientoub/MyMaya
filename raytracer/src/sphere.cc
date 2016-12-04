@@ -41,20 +41,16 @@ Color& Sphere::apply_point_lights(const Input *file,
     double ld = ln * attr.diff * l.norm();
     Color c = pl.color * color;
 
-    // if (r == NULL)
-    //   r = init_color_ptr(0, 0, 0);
-    // *r = color_scale(c, ld, r);
+    r = r + c * ld;
   }
-  // if (r == NULL)
-  //   r = init_color_ptr(0, 0, 0);
   Ray new_ray(intersect - normal * (2 * normal.dot_product(intersect)), intersect);
   Color res;
   if (attr.refl > 0)
   {
-    res = new_ray.cast(file, res, ttl);
+    new_ray.cast(file, res, ttl);
     r = res * attr.refl * 0.1 + r;
   }
 
-  // r = this->apply_direction_lights(file, r, intersect);
+  // r = apply_direction_lights(file, r, intersect);
   return r;
 }

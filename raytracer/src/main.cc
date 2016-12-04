@@ -14,7 +14,13 @@ int main(int argc, char **argv)
   Input input(argv[2]);
 
   std::ifstream file(argv[1]);
+  if (!file)
+  {
+    std::cerr << "Impossible to read " << argv[1] << std::endl;
+    return 1;
+  }
   file >> input;
+  std::cout << input << std::endl;
   input.calculate();
   input.save();
 }
