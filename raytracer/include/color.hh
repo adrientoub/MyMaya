@@ -7,10 +7,10 @@ class Color
 {
 public:
   Color() = default;
-  Color(int red, int green, int blue);
-  Color(double red, double green, double blue);
-  Color operator*(double f) const;
-  Color operator*(const Color& c) const;
+  inline Color(int red, int green, int blue);
+  inline Color(double red, double green, double blue);
+  inline Color operator*(double f) const;
+  inline Color operator*(const Color& c) const;
   inline Color operator+(const Color& c) const;
   inline bool operator==(const Color& other) const;
   inline bool operator!=(const Color& other) const;
