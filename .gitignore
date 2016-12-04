@@ -22,3 +22,8 @@ build/
 # IntelliJ
 /out/
 *.class
+
+# C++
+*.o
+raytracer/_build
+raytracer/build
