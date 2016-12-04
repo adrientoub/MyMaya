@@ -6,6 +6,7 @@
 #include "image.hh"
 #include "shape.hh"
 #include "point_light.hh"
+#include "ambiant_light.hh"
 
 class Input
 {
@@ -29,6 +30,14 @@ public:
   {
     return point_lights;
   }
+  inline AmbiantLight get_ambiant_light()
+  {
+    return ambiant_light;
+  }
+  inline const AmbiantLight get_ambiant_light() const
+  {
+    return ambiant_light;
+  }
 
   friend std::istream& operator>>(std::istream& is, Input& value);
   friend std::ostream& operator<<(std::ostream& is, const Input& value);
@@ -48,7 +57,7 @@ private:
 
   std::vector<PointLight> point_lights;
   // struct dlight_list *dlights;
-  // struct alight *alight;
+  AmbiantLight ambiant_light;
 };
 
 std::istream& operator>>(std::istream& is, Input& value);

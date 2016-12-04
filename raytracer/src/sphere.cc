@@ -1,6 +1,8 @@
 #include "sphere.hh"
 #include "input.hh"
 
+#include <iostream>
+
 Sphere::Sphere(const Vector3& pos, const Attributes& attr, const Color& color,
                double radius)
        : Shape(pos, attr, color), radius(radius)
@@ -16,7 +18,6 @@ Vector3 Sphere::intersect(const Ray& ray)
 
   if (delta < 0)
     return Vector3();
-
   const double t0 = std::min((-b + std::sqrt(delta)) / (2 * a),
                              (-b - std::sqrt(delta)) / (2 * a));
 
@@ -26,6 +27,12 @@ Vector3 Sphere::intersect(const Ray& ray)
 std::istream& operator>>(std::istream& is, Sphere& sphere)
 {
   return is >> sphere.radius >> sphere.pos >> sphere.attr >> sphere.color;
+}
+
+Color& Sphere::apply_ambiant_light(const Input *file, Color& r)
+{
+  r = r + file->get_ambiant_light().color * (r + color * 0.075);
+  return r;
 }
 
 Color& Sphere::apply_point_lights(const Input *file,
@@ -52,5 +59,6 @@ Color& Sphere::apply_point_lights(const Input *file,
   }
 
   // r = apply_direction_lights(file, r, intersect);
+  r = apply_ambiant_light(file, r);
   return r;
 }

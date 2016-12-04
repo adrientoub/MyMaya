@@ -11,7 +11,7 @@ inline double Vector3::dot_product(const Vector3& v) const
 inline Vector3 Vector3::normalize() const
 {
   double norm = this->norm();
-  return Vector3(x_ / norm, y_ / norm, y_ / norm);
+  return Vector3(x_ / norm, y_ / norm, z_ / norm);
 }
 
 inline Vector3 Vector3::operator*(const Vector3& v) const

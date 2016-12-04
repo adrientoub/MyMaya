@@ -12,6 +12,7 @@ public:
   virtual Vector3 intersect(const Ray& ray) override;
   virtual Color& apply_point_lights(const Input *file, Color& r,
                                     const Vector3& intersect, int ttl) override;
+  virtual Color& apply_ambiant_light(const Input *file, Color& r) override;
 
   friend std::istream& operator>>(std::istream& is, Sphere& sphere);
 

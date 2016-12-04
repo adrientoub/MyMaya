@@ -49,8 +49,9 @@ std::istream& operator>>(std::istream& is, Input& input)
     else if (field == "sphere")
     {
       Sphere* sphere = new Sphere();
-      std::shared_ptr<Shape> ptr(sphere);
       is >> *sphere;
+      std::shared_ptr<Shape> ptr(sphere);
+      input.shapes.push_back(ptr);
     }
     else if (field == "plight")
     {
@@ -58,6 +59,8 @@ std::istream& operator>>(std::istream& is, Input& input)
       is >> pl;
       input.point_lights.push_back(pl);
     }
+    else if (field == "alight")
+      is >> input.ambiant_light;
     else
       std::cerr << "Unknown field `" << field << '`' << std::endl;
   }
