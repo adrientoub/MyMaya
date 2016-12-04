@@ -9,12 +9,15 @@ public:
   Vector3(double x, double y, double z);
   inline Vector3 normalize() const;
   inline double dot_product(const Vector3& v) const;
+  inline double norm() const;
+
   inline Vector3 operator*(const Vector3& v) const;
   inline Vector3 operator*(double scale) const;
   inline Vector3 operator+(const Vector3& v) const;
   inline Vector3 operator-(const Vector3& v) const;
   bool operator==(const Vector3& vect) const;
   friend std::ostream& operator<<(std::ostream& os, const Vector3& vect);
+  friend std::istream& operator>>(std::istream& is, Vector3& vector3);
 
 private:
   double x_;
@@ -23,5 +26,6 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const Vector3& vect);
+std::istream& operator>>(std::istream& is, Vector3& vector3);
 
 #include "vector3.hxx"

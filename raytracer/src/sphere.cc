@@ -1,4 +1,5 @@
 #include "sphere.hh"
+#include "input.hh"
 
 Sphere::Sphere(const Vector3& pos, const Attributes& attr, const Color& color,
                double radius)
@@ -20,4 +21,40 @@ Vector3 Sphere::intersect(const Ray& ray)
                              (-b - std::sqrt(delta)) / (2 * a));
 
   return ray.position + ray.direction * t0;
+}
+
+std::istream& operator>>(std::istream& is, Sphere& sphere)
+{
+  return is >> sphere.radius >> sphere.pos >> sphere.attr >> sphere.color;
+}
+
+Color& Sphere::apply_point_lights(const Input *file,
+                                  Color& r,
+                                  const Vector3& intersect,
+                                  int ttl)
+{
+  Vector3 normal = intersect - pos;
+  for (const PointLight& pl: file->get_point_lights())
+  {
+    Vector3 l = pl.pos - intersect;
+    double ln = l.normalize().dot_product(normal);
+    double ld = ln * attr.diff * l.norm();
+    Color c = pl.color * color;
+
+    // if (r == NULL)
+    //   r = init_color_ptr(0, 0, 0);
+    // *r = color_scale(c, ld, r);
+  }
+  // if (r == NULL)
+  //   r = init_color_ptr(0, 0, 0);
+  Ray new_ray(intersect - normal * (2 * normal.dot_product(intersect)), intersect);
+  Color res;
+  if (attr.refl > 0)
+  {
+    res = new_ray.cast(file, res, ttl);
+    r = res * attr.refl * 0.1 + r;
+  }
+
+  // r = this->apply_direction_lights(file, r, intersect);
+  return r;
 }

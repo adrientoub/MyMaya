@@ -10,8 +10,8 @@ inline double Vector3::dot_product(const Vector3& v) const
 
 inline Vector3 Vector3::normalize() const
 {
-  double norm = std::pow(x_, 2) + std::pow(y_, 2) + std::pow(z_, 2);
-  return Vector3(x_ / std::sqrt(norm), y_ / std::sqrt(norm), y_ / std::sqrt(norm));
+  double norm = this->norm();
+  return Vector3(x_ / norm, y_ / norm, y_ / norm);
 }
 
 inline Vector3 Vector3::operator*(const Vector3& v) const
@@ -36,4 +36,9 @@ inline Vector3 Vector3::operator+(const Vector3& v) const
 inline Vector3 Vector3::operator-(const Vector3& v) const
 {
   return Vector3(x_ - v.x_, y_ - v.y_, z_ - v.z_);
+}
+
+double Vector3::norm() const
+{
+  return std::sqrt(std::pow(x_, 2) + std::pow(y_, 2) + std::pow(z_, 2));
 }

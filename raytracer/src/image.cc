@@ -12,12 +12,13 @@ Image::Image(size_t width, size_t height)
     pixels[i] = std::vector<Color>(width);
 }
 
-void Image::save(const std::string& filename)
+void Image::save(const std::string& filename) const
 {
   std::ofstream file(filename);
   if (!file)
   {
-    std::cerr << "Impossible to open `" << filename << "` for writing." << std::endl;
+    std::cerr << "Impossible to open `" << filename << "` for writing."
+              << std::endl;
     return;
   }
 

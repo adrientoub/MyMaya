@@ -1,9 +1,19 @@
 #pragma once
 
-#include "vector3.hh"
+class Input;
+class Shape;
 
-struct Ray
+#include "vector3.hh"
+#include "color.hh"
+
+class Ray
 {
+public:
+  Ray(const Vector3& direction, const Vector3& position);
+  Color cast(const Input* file, Color& color, int ttl) const;
+  double cast_shapes(const Input* file, std::shared_ptr<Shape>* min_shape,
+                     Vector3& intersect) const;
+
   Vector3 direction;
   Vector3 position;
 };

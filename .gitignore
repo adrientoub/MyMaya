@@ -27,3 +27,5 @@ build/
 *.o
 raytracer/_build
 raytracer/build
+
+*.ppm

@@ -5,12 +5,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++14 -g -s
 
 set(BASE_SOURCE_FILES
     src/main.cc
-    src/parser.cc
     src/vector3.cc
     src/color.cc
     src/shape.cc
     src/sphere.cc
     src/image.cc
+    src/input.cc
+    src/attributes.cc
+    src/camera.cc
+    src/ray.cc
   )
 
 include_directories(include)
