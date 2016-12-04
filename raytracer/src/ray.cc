@@ -5,7 +5,7 @@ Ray::Ray(const Vector3& direction, const Vector3& position)
     : direction(direction), position(position)
 {}
 
-void Ray::cast(const Input* file, Color& color, int ttl) const
+void Ray::cast(const Input& file, Color& color, int ttl) const
 {
   if (ttl == 0)
     return;
@@ -19,12 +19,12 @@ void Ray::cast(const Input* file, Color& color, int ttl) const
     min_shape->apply_point_lights(file, color, intersect, ttl);
 }
 
-double Ray::cast_shapes(const Input* file,
+double Ray::cast_shapes(const Input& file,
                         std::shared_ptr<Shape>* min_shape,
                         Vector3& v) const
 {
   double min_dist = INFINITY;
-  for (const std::shared_ptr<Shape>& shape: file->get_shapes())
+  for (const std::shared_ptr<Shape>& shape: file.get_shapes())
   {
     Vector3 vect = shape->intersect(*this);
     if (vect == Vector3())

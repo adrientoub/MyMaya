@@ -29,9 +29,37 @@ void Input::calculate()
       Vector3 pos = u * j + v * i;
       pos = pos + c;
       Ray ray(pos - camera.pos, camera.pos);
-      ray.cast(this, image.get(i + half_height, j + half_width), ttl);
+      ray.cast(*this, image.get(i + half_height, j + half_width), ttl);
     }
   }
+}
+
+void Input::parse_screen(std::istream& is)
+{
+  is >> width >> height;
+  image = Image(width, height);
+}
+
+void Input::parse_sphere(std::istream& is)
+{
+  Sphere* sphere = new Sphere();
+  is >> *sphere;
+  std::shared_ptr<Shape> ptr(sphere);
+  shapes.push_back(ptr);
+}
+
+void Input::parse_directional_light(std::istream& is)
+{
+  DirectionalLight dl;
+  is >> dl;
+  directional_lights.push_back(dl);
+}
+
+void Input::parse_point_light(std::istream& is)
+{
+  PointLight pl;
+  is >> pl;
+  point_lights.push_back(pl);
 }
 
 std::istream& operator>>(std::istream& is, Input& input)
@@ -40,25 +68,15 @@ std::istream& operator>>(std::istream& is, Input& input)
   while (is >> field)
   {
     if (field == "screen")
-    {
-      is >> input.width >> input.height;
-      input.image = Image(input.width, input.height);
-    }
+      input.parse_screen(is);
     else if (field == "camera")
       is >> input.camera;
     else if (field == "sphere")
-    {
-      Sphere* sphere = new Sphere();
-      is >> *sphere;
-      std::shared_ptr<Shape> ptr(sphere);
-      input.shapes.push_back(ptr);
-    }
+      input.parse_sphere(is);
     else if (field == "plight")
-    {
-      PointLight pl;
-      is >> pl;
-      input.point_lights.push_back(pl);
-    }
+      input.parse_point_light(is);
+    else if (field == "dlight")
+      input.parse_directional_light(is);
     else if (field == "alight")
       is >> input.ambiant_light;
     else
@@ -69,7 +87,16 @@ std::istream& operator>>(std::istream& is, Input& input)
 
 std::ostream& operator<<(std::ostream& os, const Input& value)
 {
-  return os << "w: " << value.width << " h: " << value.height;
+  os << "w: " << value.width << " h: " << value.height << std::endl;
+  os << value.camera << std::endl;
+  for (const auto& shape: value.shapes)
+    os << *shape << std::endl;
+  for (const auto& point_light: value.point_lights)
+    os << point_light << std::endl;
+  for (const auto& directional_light: value.directional_lights)
+    os << directional_light << std::endl;
+  os << value.ambiant_light;
+  return os;
 }
 
 void Input::save() const

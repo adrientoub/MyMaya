@@ -29,36 +29,63 @@ std::istream& operator>>(std::istream& is, Sphere& sphere)
   return is >> sphere.radius >> sphere.pos >> sphere.attr >> sphere.color;
 }
 
-Color& Sphere::apply_ambiant_light(const Input *file, Color& r)
+std::ostream& operator<<(std::ostream& os, const Sphere& sphere)
 {
-  r = r + file->get_ambiant_light().color * (r + color * 0.075);
-  return r;
+  return os << "Sphere: R: " << sphere.radius << " Pos: " << sphere.pos
+            << " " << sphere.attr << " Color: " << sphere.color;
 }
 
-Color& Sphere::apply_point_lights(const Input *file,
-                                  Color& r,
+Color& Sphere::apply_directional_lights(const Input& file, Color& out_color,
+                                        const Vector3& intersect)
+{
+  Vector3 normal = pos - intersect;
+  for (const DirectionalLight& dl: file.get_directional_lights())
+  {
+    double ln = dl.dir.dot_product(normal.normalize());
+    double ld = attr.diff * ln;
+
+    Color c = dl.color * color;
+    out_color = out_color + c * ld;
+  }
+  out_color = apply_ambiant_light(file, out_color);
+  return out_color;
+}
+
+
+Color& Sphere::apply_ambiant_light(const Input& file, Color& out_color)
+{
+  return out_color = out_color + file.get_ambiant_light().color *
+                     (out_color + color * 0.075);
+}
+
+Color& Sphere::apply_point_lights(const Input& file,
+                                  Color& out_color,
                                   const Vector3& intersect,
                                   int ttl)
 {
   Vector3 normal = intersect - pos;
-  for (const PointLight& pl: file->get_point_lights())
+  for (const PointLight& pl: file.get_point_lights())
   {
     Vector3 l = pl.pos - intersect;
     double ln = l.normalize().dot_product(normal);
     double ld = ln * attr.diff * l.norm();
     Color c = pl.color * color;
 
-    r = r + c * ld;
+    out_color = out_color + c * ld;
   }
   Ray new_ray(intersect - normal * (2 * normal.dot_product(intersect)), intersect);
   Color res;
   if (attr.refl > 0)
   {
     new_ray.cast(file, res, ttl);
-    r = res * attr.refl * 0.1 + r;
+    out_color = res * attr.refl * 0.1 + out_color;
   }
 
-  // r = apply_direction_lights(file, r, intersect);
-  r = apply_ambiant_light(file, r);
-  return r;
+  out_color = apply_directional_lights(file, out_color, intersect);
+  return out_color;
+}
+
+std::ostream& Sphere::display(std::ostream& os) const
+{
+  return os << *this;
 }

@@ -29,3 +29,4 @@ raytracer/_build
 raytracer/build
 
 *.ppm
+*.jpg

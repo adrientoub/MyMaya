@@ -17,6 +17,7 @@ set(BASE_SOURCE_FILES
     src/light.cc
     src/point_light.cc
     src/ambiant_light.cc
+    src/directional_light.cc
   )
 
 include_directories(include)

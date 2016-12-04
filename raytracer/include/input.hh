@@ -7,6 +7,7 @@
 #include "shape.hh"
 #include "point_light.hh"
 #include "ambiant_light.hh"
+#include "directional_light.hh"
 
 class Input
 {
@@ -30,6 +31,14 @@ public:
   {
     return point_lights;
   }
+  inline std::vector<DirectionalLight> get_directional_lights()
+  {
+    return directional_lights;
+  }
+  inline const std::vector<DirectionalLight> get_directional_lights() const
+  {
+    return directional_lights;
+  }
   inline AmbiantLight get_ambiant_light()
   {
     return ambiant_light;
@@ -40,9 +49,14 @@ public:
   }
 
   friend std::istream& operator>>(std::istream& is, Input& value);
-  friend std::ostream& operator<<(std::ostream& is, const Input& value);
+  friend std::ostream& operator<<(std::ostream& os, const Input& value);
 
 private:
+  void parse_screen(std::istream& is);
+  void parse_sphere(std::istream& is);
+  void parse_directional_light(std::istream& is);
+  void parse_point_light(std::istream& is);
+
   size_t width;
   size_t height;
   size_t ttl = 3;
@@ -56,7 +70,7 @@ private:
   std::vector<std::shared_ptr<Shape>> shapes;
 
   std::vector<PointLight> point_lights;
-  // struct dlight_list *dlights;
+  std::vector<DirectionalLight> directional_lights;
   AmbiantLight ambiant_light;
 };
 
