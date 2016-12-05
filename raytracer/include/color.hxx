@@ -1,5 +1,6 @@
 #pragma once
 #include "color.hh"
+#include <algorithm>
 
 inline Color::Color(int red, int green, int blue)
       : r(red / 255.), g(green / 255.), b(blue / 255.)

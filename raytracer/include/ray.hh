@@ -3,6 +3,8 @@
 class Input;
 class Shape;
 
+#include <memory>
+
 #include "vector3.hh"
 #include "color.hh"
 

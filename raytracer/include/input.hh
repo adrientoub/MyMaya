@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "camera.hh"
 #include "image.hh"
@@ -8,6 +9,10 @@
 #include "point_light.hh"
 #include "ambiant_light.hh"
 #include "directional_light.hh"
+
+#ifndef M_PI
+# define M_PI 3.14159265359
+#endif
 
 class Input
 {

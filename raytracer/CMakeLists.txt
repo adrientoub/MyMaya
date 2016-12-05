@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 2.8)
 project(textmining-typometer)
 set(CMAKE_CXX_COMPILER "clang++")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++14 -g -O3 -stdlib=libc++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++14 -g -O3 -stdlib=libc++")
+
+if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+endif()
 
 set(BASE_SOURCE_FILES
     src/main.cc
