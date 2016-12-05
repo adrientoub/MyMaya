@@ -59,6 +59,7 @@ public:
 private:
   void parse_screen(std::istream& is);
   void parse_sphere(std::istream& is);
+  void parse_plane(std::istream& is);
   void parse_directional_light(std::istream& is);
   void parse_point_light(std::istream& is);
 

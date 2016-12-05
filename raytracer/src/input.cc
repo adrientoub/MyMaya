@@ -1,5 +1,6 @@
 #include "input.hh"
 #include "sphere.hh"
+#include "plane.hh"
 
 #include <iostream>
 #include <cmath>
@@ -48,6 +49,14 @@ void Input::parse_sphere(std::istream& is)
   shapes.push_back(ptr);
 }
 
+void Input::parse_plane(std::istream& is)
+{
+  Plane* plane = new Plane();
+  is >> *plane;
+  std::shared_ptr<Shape> ptr(plane);
+  shapes.push_back(ptr);
+}
+
 void Input::parse_directional_light(std::istream& is)
 {
   DirectionalLight dl;
@@ -73,6 +82,8 @@ std::istream& operator>>(std::istream& is, Input& input)
       is >> input.camera;
     else if (field == "sphere")
       input.parse_sphere(is);
+    else if (field == "plane")
+      input.parse_plane(is);
     else if (field == "plight")
       input.parse_point_light(is);
     else if (field == "dlight")

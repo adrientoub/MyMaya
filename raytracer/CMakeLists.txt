@@ -13,6 +13,7 @@ set(BASE_SOURCE_FILES
     src/color.cc
     src/shape.cc
     src/sphere.cc
+    src/plane.cc
     src/image.cc
     src/input.cc
     src/attributes.cc
