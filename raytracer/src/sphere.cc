@@ -51,13 +51,6 @@ Color& Sphere::apply_directional_lights(const Input& file, Color& out_color,
   return out_color;
 }
 
-
-Color& Sphere::apply_ambiant_light(const Input& file, Color& out_color)
-{
-  return out_color = out_color + file.get_ambiant_light().color *
-                     (out_color + color * 0.075);
-}
-
 Color& Sphere::apply_point_lights(const Input& file,
                                   Color& out_color,
                                   const Vector3& intersect,

@@ -52,11 +52,6 @@ Color& Plane::apply_directional_lights(const Input& file, Color& out_color,
   return out_color;
 }
 
-Color& Plane::apply_ambiant_light(const Input& file, Color& out_color)
-{
-  return out_color = out_color + file.get_ambiant_light().color * color;
-}
-
 Color& Plane::apply_point_lights(const Input& file,
                                  Color& out_color,
                                  const Vector3& intersect,

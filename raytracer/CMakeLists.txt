@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(textmining-typometer)
+project(raytracer)
 set(CMAKE_CXX_COMPILER "clang++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -std=c++14 -g -O3")
 

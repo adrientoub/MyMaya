@@ -14,7 +14,7 @@ public:
   virtual Vector3 intersect(const Ray& ray) = 0;
   virtual Color& apply_point_lights(const Input& file, Color& r,
                                     const Vector3& intersect, size_t ttl) = 0;
-  virtual Color& apply_ambiant_light(const Input& file, Color& r) = 0;
+  Color& apply_ambiant_light(const Input& file, Color& r);
   virtual Color& apply_directional_lights(const Input& file, Color& r,
                                           const Vector3& intersect) = 0;
   virtual std::ostream& display(std::ostream& os) const = 0;
