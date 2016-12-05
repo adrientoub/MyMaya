@@ -61,7 +61,7 @@ Color& Sphere::apply_ambiant_light(const Input& file, Color& out_color)
 Color& Sphere::apply_point_lights(const Input& file,
                                   Color& out_color,
                                   const Vector3& intersect,
-                                  int ttl)
+                                  size_t ttl)
 {
   Vector3 normal = intersect - pos;
   for (const PointLight& pl: file.get_point_lights())

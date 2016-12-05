@@ -11,7 +11,7 @@ public:
         double d);
   virtual Vector3 intersect(const Ray& ray) override;
   virtual Color& apply_point_lights(const Input& file, Color& r,
-                                    const Vector3& intersect, int ttl) override;
+                                    const Vector3& intersect, size_t ttl) override;
   virtual Color& apply_ambiant_light(const Input& file, Color& r) override;
   virtual Color& apply_directional_lights(const Input& file, Color& r,
                                           const Vector3& intersect) override;

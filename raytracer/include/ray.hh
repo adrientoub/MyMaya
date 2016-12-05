@@ -12,7 +12,7 @@ class Ray
 {
 public:
   Ray(const Vector3& direction, const Vector3& position);
-  void cast(const Input& file, Color& color, int ttl) const;
+  void cast(const Input& file, Color& color, size_t ttl) const;
   double cast_shapes(const Input& file, std::shared_ptr<Shape>* min_shape,
                      Vector3& intersect) const;
 

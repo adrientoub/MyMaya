@@ -22,7 +22,7 @@ void Input::calculate()
   double l = half_width / (tan(fov / 2));
   Vector3 c = camera.pos + w * l;
 
-// #pragma omp parallel for
+#pragma omp parallel for
   for (long i = -half_height; i < half_height; ++i)
   {
     for (long j = -half_width; j < half_width; ++j)

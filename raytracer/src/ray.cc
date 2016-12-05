@@ -5,7 +5,7 @@ Ray::Ray(const Vector3& direction, const Vector3& position)
     : direction(direction), position(position)
 {}
 
-void Ray::cast(const Input& file, Color& color, int ttl) const
+void Ray::cast(const Input& file, Color& color, size_t ttl) const
 {
   if (ttl == 0)
     return;

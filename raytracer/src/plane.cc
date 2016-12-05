@@ -41,8 +41,8 @@ Color& Plane::apply_directional_lights(const Input& file, Color& out_color,
   Vector3 normal = pos;
   for (const DirectionalLight& dl : file.get_directional_lights())
   {
-    float ln = dl.dir.dot_product(normal.normalize());
-    float ld = attr.diff * ln;
+    double ln = dl.dir.dot_product(normal.normalize());
+    double ld = attr.diff * ln;
 
     Color c = dl.color * color;
     out_color = out_color + c * ld;
@@ -60,14 +60,14 @@ Color& Plane::apply_ambiant_light(const Input& file, Color& out_color)
 Color& Plane::apply_point_lights(const Input& file,
                                  Color& out_color,
                                  const Vector3& intersect,
-                                 int ttl)
+                                 size_t ttl)
 {
   Vector3 normal = pos;
   for (const PointLight& pl : file.get_point_lights())
   {
     Vector3 l = pl.pos - intersect;
-    float ln = l.normalize().dot_product(normal);
-    float ld = ln * attr.diff * l.norm();
+    double ln = l.normalize().dot_product(normal);
+    double ld = ln * attr.diff * l.norm();
     Color c = pl.color * color;
     out_color = out_color + c * ld;
   }
