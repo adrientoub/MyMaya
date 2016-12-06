@@ -55,11 +55,9 @@ public class SelectController {
 
         public AxisMovement(Point3D axis, double angle) {
             double rad = (angle / 180) * Math.PI;
-            System.out.println(axis);
             this.axis = new Point3D(axis.getX() * Math.cos(rad) + axis.getY() * Math.sin(rad),
                                     -axis.getX() * Math.sin(rad) + axis.getY() * Math.cos(rad),
                                     axis.getZ());
-            System.out.println(this.axis);
         }
 
         @Override
@@ -91,6 +89,7 @@ public class SelectController {
         private Cylinder up;
         private Cylinder right;
         private Cylinder far;
+        private boolean enabled = false;
 
         private void removeRotors() {
             if (up != null) {
@@ -135,11 +134,15 @@ public class SelectController {
             root.getChildren().addAll(up, right, far);
         }
 
+        public boolean isEnabled() {
+            return enabled;
+        }
+
         @Override
         public void handle(KeyEvent event) {
-            if (event.getCode() == KeyCode.W) {
-                System.out.println("Pressed W");
+            if (event == null || event.getCode() == KeyCode.W) {
                 if (selected != null) {
+                    enabled = true;
                     removeRotors();
                     addRotors();
                 }
@@ -160,6 +163,8 @@ public class SelectController {
                 selected.setDrawMode(DrawMode.FILL);
             selected = shape3D;
             shape3D.setDrawMode(DrawMode.LINE);
+            if (getTools().isEnabled())
+                getTools().handle(null);
         }
     }
 }
