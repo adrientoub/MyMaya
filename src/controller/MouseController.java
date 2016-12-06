@@ -37,11 +37,11 @@ public class MouseController implements EventHandler<MouseEvent> {
         }
         if (event.isAltDown() && event.isPrimaryButtonDown()) {
             camera.getTransforms().addAll(
-                    new Rotate(angleScale * (x - event.getSceneX()) / subScene.getWidth(),  Rotate.X_AXIS),
-                    new Rotate(angleScale * (y - event.getSceneY()) / subScene.getHeight(), Rotate.Y_AXIS));
+                    new Rotate(-angleScale * (x - event.getSceneX()) / subScene.getWidth(),  Rotate.Y_AXIS),
+                    new Rotate(angleScale * (y - event.getSceneY()) / subScene.getHeight(), Rotate.X_AXIS));
         } else if (event.isAltDown() && event.isMiddleButtonDown()) {
-            camera.getTransforms().addAll(new Translate(translateScale * (x - event.getSceneX()) / subScene.getWidth(),
-                                                        translateScale * (y - event.getSceneY()) / subScene.getHeight()));
+            camera.setTranslateX(camera.getTranslateX() + translateScale * (x - event.getSceneX()) / subScene.getWidth());
+            camera.setTranslateY(camera.getTranslateY() + translateScale * (y - event.getSceneY()) / subScene.getHeight());
         }
         x = event.getSceneX();
         y = event.getSceneY();

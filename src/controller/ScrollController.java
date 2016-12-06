@@ -18,6 +18,6 @@ public class ScrollController implements EventHandler<ScrollEvent> {
 
     @Override
     public void handle(ScrollEvent event) {
-        camera.getTransforms().addAll(new Translate(0, 0, event.getDeltaY() * scrollScale));
+        camera.setTranslateZ(camera.getTranslateZ() + event.getDeltaY() * scrollScale);
     }
 }
