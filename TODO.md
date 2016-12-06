@@ -31,10 +31,10 @@
 - [ ] Compile on MacOS
 
 ### Step 1
-- [ ] Display shapes
+- [x] Display shapes
   - [x] Spheres
-  - [ ] Planes
-  - [ ] Triangles
+  - [x] Planes
+  - [x] Triangles
 
 ### Step 2
 - [x] Lights

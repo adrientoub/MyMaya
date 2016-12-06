@@ -75,9 +75,12 @@ public class SelectController {
             }
 
             if (event.isPrimaryButtonDown()) {
-                selected.setTranslateX(selected.getTranslateX() + axis.getX() * (event.getSceneX() - x) / 100);
-                selected.setTranslateY(selected.getTranslateY() + axis.getY() * (event.getSceneY() - y) / 100);
-                selected.setTranslateZ(selected.getTranslateZ() + axis.getZ() * (event.getSceneX() - x) / 100);
+                Shape3D[] shapes = new Shape3D[] { selected, getTools().far, getTools().right, getTools().up };
+                for (Shape3D shape: shapes) {
+                    shape.setTranslateX(shape.getTranslateX() + axis.getX() * (event.getSceneX() - x) / 100);
+                    shape.setTranslateY(shape.getTranslateY() + axis.getY() * (event.getSceneY() - y) / 100);
+                    shape.setTranslateZ(shape.getTranslateZ() + axis.getZ() * (event.getSceneX() - x) / 100);
+                }
             }
             x = event.getSceneX();
             y = event.getSceneY();
