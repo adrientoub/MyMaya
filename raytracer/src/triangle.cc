@@ -42,56 +42,12 @@ std::ostream& operator<<(std::ostream& os, const Triangle& triangle)
             << triangle.color;
 }
 
-Color& Triangle::apply_directional_lights(const Input& file, Color& out_color,
-                                       const Vector3&)
-{
-  Vector3 normal = normal_vect();
-  for (const DirectionalLight& dl : file.get_directional_lights())
-  {
-    double ln = dl.dir.dot_product(normal.normalize());
-    double ld = attr.diff * ln;
-
-    Color c = dl.color * color;
-    out_color = out_color + c * ld;
-  }
-  out_color = apply_ambiant_light(file, out_color);
-
-  return out_color;
-}
-
-Vector3 Triangle::normal_vect() const
+Vector3 Triangle::normal_vect(const Vector3&) const
 {
   const Vector3& a = pos;
   Vector3 ab = b - a;
   Vector3 ac = c - a;
   return ab * ac;
-}
-
-Color& Triangle::apply_point_lights(const Input& file,
-                                    Color& out_color,
-                                    const Vector3& intersect,
-                                    size_t ttl)
-{
-  Vector3 normal = normal_vect();
-  for (const PointLight& pl: file.get_point_lights())
-  {
-    Vector3 l = pl.pos - intersect;
-    double ln = l.normalize().dot_product(normal);
-    double ld = ln * attr.diff * l.norm();
-    Color c = pl.color * color;
-    out_color = out_color + c * ld;
-  }
-  Ray new_ray(intersect - normal * 2 * normal.dot_product(intersect),
-              intersect);
-  Color res;
-  if (attr.refl > 0)
-  {
-    new_ray.cast(file, res, ttl);
-    out_color = out_color + res * attr.refl * 0.1;
-  }
-
-  out_color = apply_directional_lights(file, out_color, intersect);
-  return out_color;
 }
 
 std::ostream& Triangle::display(std::ostream& os) const

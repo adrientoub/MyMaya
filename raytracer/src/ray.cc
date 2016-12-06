@@ -29,7 +29,7 @@ double Ray::cast_shapes(const Input& file,
     Vector3 vect = shape->intersect(*this);
     if (vect == Vector3())
       continue;
-    double norm = vect.norm();
+    double norm = (vect - position).norm();
     if (norm < 0)
       continue;
     min_dist = std::min(norm, min_dist);

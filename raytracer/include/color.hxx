@@ -34,5 +34,7 @@ inline Color Color::operator*(double f) const
 
 inline Color Color::operator*(const Color& c) const
 {
-  return Color(r * c.r, g * c.g, b * c.b);
+  return Color(std::max(0., std::min(1., r * c.r)),
+               std::max(0., std::min(1., g * c.g)),
+               std::max(0., std::min(1.,  b * c.b)));
 }

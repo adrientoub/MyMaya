@@ -10,10 +10,8 @@ public:
   Sphere(const Vector3& pos, const Attributes& attr, const Color& color,
          double radius);
   virtual Vector3 intersect(const Ray& ray) override;
-  virtual Color& apply_point_lights(const Input& file, Color& r,
-                                    const Vector3& intersect, size_t ttl) override;
-  virtual Color& apply_directional_lights(const Input& file, Color& r,
-                                          const Vector3& intersect) override;
+  virtual Vector3 normal_vect(const Vector3& intersect) const override;
+  virtual Vector3 normal_vect_point(const Vector3& intersect) const override;
   virtual std::ostream& display(std::ostream& os) const override;
 
   friend std::istream& operator>>(std::istream& is, Sphere& sphere);
