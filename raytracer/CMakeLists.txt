@@ -14,6 +14,7 @@ set(BASE_SOURCE_FILES
     src/shape.cc
     src/sphere.cc
     src/plane.cc
+    src/triangle.cc
     src/image.cc
     src/input.cc
     src/attributes.cc
