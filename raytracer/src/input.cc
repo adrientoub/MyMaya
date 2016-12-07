@@ -39,6 +39,11 @@ void Input::calculate()
 void Input::parse_screen(std::istream& is)
 {
   is >> width >> height;
+  if (anti_aliasing)
+  {
+    width *= 2;
+    height *= 2;
+  }
   image = Image(width, height);
 }
 

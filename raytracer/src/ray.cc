@@ -21,7 +21,7 @@ void Ray::cast(const Input& file, Color& color, size_t ttl) const
 
 double Ray::cast_shapes(const Input& file,
                         std::shared_ptr<Shape>* min_shape,
-                        Vector3& v) const
+                        Vector3& intersect) const
 {
   double min_dist = INFINITY;
   for (const std::shared_ptr<Shape>& shape: file.get_shapes())
@@ -30,13 +30,12 @@ double Ray::cast_shapes(const Input& file,
     if (vect == Vector3())
       continue;
     double norm = (vect - position).norm();
-    if (norm < 0)
-      continue;
-    min_dist = std::min(norm, min_dist);
-    if (min_dist == norm)
+
+    if (min_dist > norm)
     {
+      min_dist = norm;
       *min_shape = shape;
-      v = vect;
+      intersect = vect;
     }
   }
   return min_dist;
