@@ -77,7 +77,7 @@ void Shape::apply_point_lights(const Input& file,
   {
     Vector3 l = pl.pos - intersect;
     double ln = l.normalize().dot_product(normal);
-    double ld = ln * attr.diff * l.norm();
+    double ld = ln * attr.diff * (5 / l.norm());
     Color c = pl.color * color;
     out_color = out_color + c * ld;
   }
