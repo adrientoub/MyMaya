@@ -1,6 +1,8 @@
 #include "shape.hh"
 #include "input.hh"
 
+#include <utility>
+
 Shape::Shape(const Vector3& pos, const Attributes& attr, const Color& color)
       : pos(pos), attr(attr), color(color)
 {}
@@ -15,14 +17,49 @@ void Shape::apply_ambiant_light(const Input& file, Color& out_color)
   out_color = out_color + file.get_ambiant_light().color * color * 0.1;
 }
 
+double Shape::get_directional_shadows(const Input& file,
+                                      const Vector3& intersect,
+                                      const DirectionalLight& dl) const
+{
+  using shape_double = std::pair<std::shared_ptr<Shape>, double>;
+  std::vector<shape_double> collided;
+  for (const std::shared_ptr<Shape> shape: file.get_shapes())
+  {
+    // Do not collide with itself
+    if (shape.get() == this)
+      continue;
+    Vector3 vect = shape->intersect(Ray(-dl.dir, intersect));
+    if (vect == Vector3())
+      continue;
+    if (shape->attr.opac == 1.)
+      return 0.;
+    else
+      collided.emplace_back(shape, vect.norm());
+  }
+
+  // Handle partially transparent shapes
+  double shadow = 1.;
+  auto cmp = [](shape_double a, shape_double b) {
+    return a.second < b.second;
+  };
+  std::sort(collided.begin(), collided.end(), cmp);
+  for (const auto& pair: collided)
+  {
+    shadow *= (1 - pair.first->attr.opac);
+  }
+  return shadow;
+}
+
 void Shape::apply_directional_lights(const Input& file, Color& out_color,
                                      const Vector3& intersect)
 {
   Vector3 normal = normal_vect(intersect);
   for (const DirectionalLight& dl: file.get_directional_lights())
   {
+    double shadow = get_directional_shadows(file, intersect, dl);
+
     double ln = dl.dir.dot_product(normal.normalize());
-    double ld = attr.diff * ln;
+    double ld = attr.diff * ln * shadow;
 
     Color c = dl.color * color;
     out_color = out_color + c * ld;

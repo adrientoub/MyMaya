@@ -15,6 +15,7 @@ public:
   inline Vector3 operator*(double scale) const;
   inline Vector3 operator+(const Vector3& v) const;
   inline Vector3 operator-(const Vector3& v) const;
+  inline Vector3 operator-() const;
   bool operator==(const Vector3& vect) const;
   friend std::ostream& operator<<(std::ostream& os, const Vector3& vect);
   friend std::istream& operator>>(std::istream& is, Vector3& vector3);

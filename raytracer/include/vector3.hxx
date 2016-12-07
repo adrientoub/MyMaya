@@ -38,6 +38,11 @@ inline Vector3 Vector3::operator-(const Vector3& v) const
   return Vector3(x_ - v.x_, y_ - v.y_, z_ - v.z_);
 }
 
+inline Vector3 Vector3::operator-() const
+{
+  return Vector3(-x_, -y_, -z_);
+}
+
 double Vector3::norm() const
 {
   return std::sqrt(std::pow(x_, 2) + std::pow(y_, 2) + std::pow(z_, 2));

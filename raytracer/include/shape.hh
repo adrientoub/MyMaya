@@ -5,6 +5,8 @@
 #include "vector3.hh"
 #include "ray.hh"
 
+struct DirectionalLight;
+
 class Shape
 {
 public:
@@ -17,6 +19,9 @@ public:
   void apply_ambiant_light(const Input& file, Color& r);
   void apply_directional_lights(const Input& file, Color& r,
                                 const Vector3& intersect);
+  double get_directional_shadows(const Input& file,
+                                 const Vector3& intersect,
+                                 const DirectionalLight& dl) const;
   virtual Vector3 normal_vect(const Vector3& intersect) const = 0;
   virtual Vector3 normal_vect_point(const Vector3& intersect) const;
 

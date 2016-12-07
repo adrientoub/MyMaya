@@ -28,7 +28,7 @@
 - [x] Open format
 - [x] Compile on Linux
 - [x] Compile on Windows
-- [ ] Compile on MacOS
+- [x] Compile on MacOS
 
 ### Step 1
 - [x] Display shapes
