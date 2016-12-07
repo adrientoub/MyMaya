@@ -18,9 +18,9 @@ public:
   friend std::istream& operator>>(std::istream& is, Color& color);
 
 private:
-  double r;
-  double g;
-  double b;
+  double r = 0.;
+  double g = 0.;
+  double b = 0.;
 };
 
 std::ostream& operator<<(std::ostream& os, const Color& color);

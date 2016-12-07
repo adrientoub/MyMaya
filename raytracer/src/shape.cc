@@ -21,7 +21,6 @@ double Shape::get_directional_shadows(const Input& file,
                                       const Vector3& intersect,
                                       const DirectionalLight& dl) const
 {
-  using shape_double = std::pair<std::shared_ptr<Shape>, double>;
   std::vector<shape_double> collided;
   for (const std::shared_ptr<Shape> shape: file.get_shapes())
   {
@@ -39,14 +38,10 @@ double Shape::get_directional_shadows(const Input& file,
 
   // Handle partially transparent shapes
   double shadow = 1.;
-  auto cmp = [](shape_double a, shape_double b) {
-    return a.second < b.second;
-  };
-  std::sort(collided.begin(), collided.end(), cmp);
+  sort_shape_double(collided);
   for (const auto& pair: collided)
-  {
     shadow *= (1 - pair.first->attr.opac);
-  }
+
   return shadow;
 }
 

@@ -5,6 +5,8 @@
 #include "vector3.hh"
 #include "ray.hh"
 
+#include <vector>
+
 struct DirectionalLight;
 
 class Shape
@@ -24,9 +26,13 @@ public:
                                  const DirectionalLight& dl) const;
   virtual Vector3 normal_vect(const Vector3& intersect) const = 0;
   virtual Vector3 normal_vect_point(const Vector3& intersect) const;
+  inline const Attributes& get_attributes() const;
 
   virtual std::ostream& display(std::ostream& os) const = 0;
   friend std::ostream& operator<<(std::ostream& os, const Shape& shape);
+
+  using shape_double = std::pair<std::shared_ptr<Shape>, double>;
+  static inline void sort_shape_double(std::vector<shape_double>& v);
 
 protected:
   Vector3 pos;
@@ -35,3 +41,5 @@ protected:
 };
 
 std::ostream& operator<<(std::ostream& os, const Shape& shape);
+
+#include "shape.hxx"

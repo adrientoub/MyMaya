@@ -23,7 +23,7 @@ Vector3 Triangle::intersect(const Ray& ray)
   const Vector3& a = pos;
 
   double n_dot_direction = n.dot_product(ray.direction);
-  if (std::abs(n_dot_direction) < 0.0001)
+  if (std::abs(n_dot_direction) < epsilon)
     return Vector3();
   double d = n.dot_product(a);
   double t0 = (n.dot_product(ray.position) + d)
