@@ -10,13 +10,13 @@ std::ostream& operator<<(std::ostream& os, const Shape& shape)
   return shape.display(os);
 }
 
-Color& Shape::apply_ambiant_light(const Input& file, Color& out_color)
+void Shape::apply_ambiant_light(const Input& file, Color& out_color)
 {
-  return out_color = out_color + file.get_ambiant_light().color * color * 0.075;
+  out_color = out_color + file.get_ambiant_light().color * color * 0.1;
 }
 
-Color& Shape::apply_directional_lights(const Input& file, Color& out_color,
-                                       const Vector3& intersect)
+void Shape::apply_directional_lights(const Input& file, Color& out_color,
+                                     const Vector3& intersect)
 {
   Vector3 normal = normal_vect(intersect);
   for (const DirectionalLight& dl: file.get_directional_lights())
@@ -27,14 +27,13 @@ Color& Shape::apply_directional_lights(const Input& file, Color& out_color,
     Color c = dl.color * color;
     out_color = out_color + c * ld;
   }
-  out_color = apply_ambiant_light(file, out_color);
-  return out_color;
+  apply_ambiant_light(file, out_color);
 }
 
-Color& Shape::apply_point_lights(const Input& file,
-                                 Color& out_color,
-                                 const Vector3& intersect,
-                                 size_t ttl)
+void Shape::apply_point_lights(const Input& file,
+                               Color& out_color,
+                               const Vector3& intersect,
+                               size_t ttl)
 {
   Vector3 normal = normal_vect_point(intersect);
   for (const PointLight& pl: file.get_point_lights())
@@ -54,8 +53,7 @@ Color& Shape::apply_point_lights(const Input& file,
     out_color = out_color + res * attr.refl * 0.1;
   }
 
-  out_color = apply_directional_lights(file, out_color, intersect);
-  return out_color;
+  apply_directional_lights(file, out_color, intersect);
 }
 
 Vector3 Shape::normal_vect_point(const Vector3& intersect) const
