@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import model.ExportSceneModel;
 import model.SceneModel;
 
 /**
@@ -35,8 +36,24 @@ public class MenuView extends MenuBar {
         return menuMesh;
     }
 
-    public MenuView(Group root) {
+    private Menu createFileMenu() {
         Menu menuFile = new Menu("File");
+        MenuItem save = new MenuItem("Save");
+        save.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                ExportSceneModel.exportScene("out.in");
+            }
+        });
+
+        menuFile.getItems().addAll(save);
+
+        return menuFile;
+    }
+
+
+    public MenuView(Group root) {
+        Menu menuFile = createFileMenu();
         Menu menuEdit = new Menu("Edit");
         Menu menuView = new Menu("View");
         Menu menuMesh = createMeshMenu(root);

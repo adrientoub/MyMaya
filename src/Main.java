@@ -34,8 +34,10 @@ public class Main extends Application {
         PerspectiveCamera camera = new PerspectiveCamera(true);
         camera.getTransforms().addAll(
                 new Rotate(-20, Rotate.Y_AXIS),
-                new Rotate(-20, Rotate.X_AXIS),
-                new Translate(0, 0, -15));
+                new Rotate(-20, Rotate.X_AXIS));
+        camera.setTranslateX(0);
+        camera.setTranslateY(0);
+        camera.setTranslateZ(-15);
 
         // Build the Scene Graph
         Group scene = SceneModel.getScene();
@@ -47,6 +49,8 @@ public class Main extends Application {
         addSpheres();
         subScene.setFill(Color.ALICEBLUE);
         subScene.setCamera(camera);
+
+        SceneModel.setCamera(camera);
 
         MouseController mc = new MouseController(camera, subScene);
         subScene.addEventFilter(MouseEvent.MOUSE_DRAGGED, mc);
