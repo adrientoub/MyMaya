@@ -1,7 +1,5 @@
 package model;
 
-import javafx.scene.Camera;
-
 import java.io.*;
 
 /**
@@ -15,7 +13,7 @@ public class ExportSceneModel {
             bw.write("screen 800 600");
             bw.newLine();
             Camera c = SceneModel.getCamera();
-            bw.write("camera " + c.getTranslateX() + " " + c.getTranslateY() + " " + c.getTranslateZ() + " 1 0 0 0 -1 0");
+            bw.write(c.toString());
             bw.newLine();
             bw.write("dlight 0 1 1 255 255 255");
             bw.newLine();

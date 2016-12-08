@@ -1,7 +1,6 @@
 package model;
 
 import controller.SelectController;
-import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -21,7 +20,7 @@ public class SceneModel {
     private static Group scene = new Group();
     private final static Random random = new Random();
     private static List<Shape> shapes = new ArrayList<>();
-    private static Camera camera;
+    private static model.Camera camera;
 
     private static Color getRandomColor() {
         return new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1);
@@ -58,11 +57,11 @@ public class SceneModel {
         return shapes;
     }
 
-    public static Camera getCamera() {
+    public static model.Camera getCamera() {
         return camera;
     }
 
-    public static void setCamera(Camera camera) {
+    public static void setCamera(model.Camera camera) {
         SceneModel.camera = camera;
     }
 }

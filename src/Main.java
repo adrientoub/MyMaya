@@ -9,9 +9,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Sphere;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+import model.Camera;
 import model.SceneModel;
 import view.MenuView;
 
@@ -32,12 +31,13 @@ public class Main extends Application {
     public Parent createContent() throws Exception {
         // Create and position camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
-        camera.getTransforms().addAll(
-                new Rotate(-20, Rotate.Y_AXIS),
-                new Rotate(-20, Rotate.X_AXIS));
-        camera.setTranslateX(0);
-        camera.setTranslateY(0);
-        camera.setTranslateZ(-15);
+        model.Camera myCamera = new Camera(camera);
+        myCamera.rotateX(-20);
+        myCamera.rotateY(-20);
+
+        myCamera.translateX(0);
+        myCamera.translateY(0);
+        myCamera.translateZ(-15);
 
         // Build the Scene Graph
         Group scene = SceneModel.getScene();
@@ -50,12 +50,13 @@ public class Main extends Application {
         subScene.setFill(Color.ALICEBLUE);
         subScene.setCamera(camera);
 
-        SceneModel.setCamera(camera);
 
-        MouseController mc = new MouseController(camera, subScene);
+        SceneModel.setCamera(myCamera);
+
+        MouseController mc = new MouseController(myCamera, subScene);
         subScene.addEventFilter(MouseEvent.MOUSE_DRAGGED, mc);
         subScene.addEventFilter(MouseEvent.MOUSE_RELEASED, mc);
-        subScene.addEventFilter(ScrollEvent.SCROLL, new ScrollController(camera));
+        subScene.addEventFilter(ScrollEvent.SCROLL, new ScrollController(myCamera));
 
         Group group = new Group();
         group.getChildren().add(subScene);

@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCombination;
 import model.ExportSceneModel;
 import model.SceneModel;
 
@@ -45,6 +46,7 @@ public class MenuView extends MenuBar {
                 ExportSceneModel.exportScene("out.in");
             }
         });
+        save.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
 
         menuFile.getItems().addAll(save);
 
