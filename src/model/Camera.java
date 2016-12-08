@@ -40,6 +40,6 @@ public class Camera {
     @Override
     public String toString() {
         // TODO: Find u and v vectors
-        return "camera " + camera.getTranslateX() + " " + camera.getTranslateY() + " " + camera.getTranslateZ() + " 1 0 0 0 -1 0";
+        return "camera " + Shape.getPositionString(camera) + " 1 0 0 0 -1 0";
     }
 }
