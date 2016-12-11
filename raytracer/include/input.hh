@@ -66,7 +66,7 @@ private:
 
   size_t width;
   size_t height;
-  size_t ttl = 3;
+  size_t ttl = 5;
 
   Camera camera;
 

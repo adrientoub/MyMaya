@@ -43,7 +43,22 @@ inline Vector3 Vector3::operator-() const
   return Vector3(-x_, -y_, -z_);
 }
 
-double Vector3::norm() const
+inline double Vector3::norm() const
 {
   return std::sqrt(std::pow(x_, 2) + std::pow(y_, 2) + std::pow(z_, 2));
+}
+
+inline bool Vector3::operator==(const Vector3& other) const
+{
+  return x_ == other.x_ && y_ == other.y_ && z_ == other.z_;
+}
+
+inline bool Vector3::operator!=(const Vector3& other) const
+{
+  return x_ != other.x_ || y_ != other.y_ || z_ != other.z_;
+}
+
+inline Vector3::operator bool() const
+{
+  return x_ != 0. || y_ != 0. || z_ != 0.;
 }

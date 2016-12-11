@@ -18,8 +18,16 @@ Vector3 Sphere::intersect(const Ray& ray)
 
   if (delta < 0)
     return Vector3();
-  const double t0 = std::min((-b + std::sqrt(delta)) / (2 * a),
-                             (-b - std::sqrt(delta)) / (2 * a));
+  double t0 = (-b + std::sqrt(delta)) / (2 * a);
+  double t1 = (-b - std::sqrt(delta)) / (2 * a);
+
+  if (t0 > t1)
+    std::swap(t0, t1);
+  if (t0 < 0 && t1 < 0)
+    return Vector3();
+
+  if (t0 < 0)
+    t0 = t1;
 
   return ray.position + ray.direction * t0;
 }
