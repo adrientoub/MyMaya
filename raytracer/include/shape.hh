@@ -17,8 +17,8 @@ public:
   Shape(const Vector3& pos, const Attributes& attr, const Color& color);
   virtual Vector3 intersect(const Ray& ray) = 0;
   inline const Attributes& get_attributes() const;
-  void apply_point_lights(const Input& file, Color& r, const Vector3& intersect,
-                          const Vector3& direction, size_t ttl) const;
+  void apply_lights(const Input& file, Color& r, const Vector3& intersect,
+                    const Vector3& direction, size_t ttl) const;
   friend std::ostream& operator<<(std::ostream& os, const Shape& shape);
 
   using shape_double = std::pair<std::shared_ptr<Shape>, double>;
@@ -34,12 +34,19 @@ protected:
   Color color;
 
 private:
-  Vector3 refract(const Vector3& incidence, const Vector3& normal) const;
+  Vector3 refraction_vector(const Vector3& incidence,
+                            const Vector3& normal) const;
+  void refract(const Input& file, Color& refract_color,
+               const Vector3& intersect, const Vector3& normal,
+               const Vector3& direction, const size_t ttl) const;
   void reflect(const Input& file, Color& out_color, const Vector3& intersect,
                const Vector3& normal, size_t ttl) const;
-  void apply_ambiant_light(const Input& file, Color& r) const;
-  void apply_directional_lights(const Input& file, Color& r,
+  void apply_ambiant_light(const Input& file, Color& out_color) const;
+  void apply_directional_lights(const Input& file, Color& out_color,
                                 const Vector3& intersect) const;
+  void apply_point_lights(const Input& file, Color& out_color,
+                          const Vector3& intersect,
+                          const Vector3& normal) const;
   double get_directional_shadows(const Input& file,
                                  const Vector3& intersect,
                                  const DirectionalLight& dl) const;

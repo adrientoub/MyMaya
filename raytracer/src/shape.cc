@@ -59,10 +59,10 @@ void Shape::apply_directional_lights(const Input& file, Color& out_color,
     Color c = dl.color * color;
     out_color = out_color + c * ld;
   }
-  apply_ambiant_light(file, out_color);
 }
 
-Vector3 Shape::refract(const Vector3& incidence, const Vector3& normal) const
+Vector3 Shape::refraction_vector(const Vector3& incidence,
+                                 const Vector3& normal) const
 {
   double cosi = std::min(std::max(incidence.dot_product(normal), -1.), 1.);
   double etai = 1.;
@@ -84,21 +84,36 @@ Vector3 Shape::refract(const Vector3& incidence, const Vector3& normal) const
   return incidence * eta + normal_refr * (eta * cosi - std::sqrt(k));
 }
 
-void Shape::reflect(const Input& file, Color& out_color,
+void Shape::refract(const Input& file, Color& refraction_color,
+                    const Vector3& intersect, const Vector3& normal,
+                    const Vector3& direction, const size_t ttl) const
+{
+  bool outside = direction.dot_product(normal) < 0;
+  Vector3 refr = refraction_vector(direction.normalize(), normal.normalize());
+  if (refr)
+  {
+    Vector3 bias = normal * 0.01;
+    Ray refract_ray(refr.normalize(),
+                    outside ? intersect - bias: intersect + bias);
+    refract_ray.cast(file, refraction_color, ttl);
+    refraction_color = refraction_color * (1 - attr.opac);
+  }
+}
+
+void Shape::reflect(const Input& file, Color& reflection_color,
                     const Vector3& intersect, const Vector3& normal,
                     const size_t ttl) const
 {
   Ray new_ray(intersect - normal * (2 * normal.dot_product(intersect)),
               intersect);
-  new_ray.cast(file, out_color, ttl);
-  out_color = out_color * attr.refl * 0.1;
+  new_ray.cast(file, reflection_color, ttl);
+  reflection_color = reflection_color * attr.refl * 0.1;
 }
 
 void Shape::apply_point_lights(const Input& file, Color& out_color,
                                const Vector3& intersect,
-                               const Vector3& direction, size_t ttl) const
+                               const Vector3& normal) const
 {
-  Vector3 normal = normal_vect_point(intersect);
   for (const PointLight& pl: file.get_point_lights())
   {
     Vector3 l = pl.pos - intersect;
@@ -107,28 +122,28 @@ void Shape::apply_point_lights(const Input& file, Color& out_color,
     Color c = pl.color * color;
     out_color = out_color + c * ld;
   }
+}
+
+void Shape::apply_lights(const Input& file, Color& out_color,
+                         const Vector3& intersect,
+                         const Vector3& direction, size_t ttl) const
+{
+  Vector3 normal = normal_vect_point(intersect);
+  Color lights_color;
+  apply_point_lights(file, lights_color, intersect, normal);
+  apply_directional_lights(file, lights_color, intersect);
+  apply_ambiant_light(file, lights_color);
 
   Color reflection_color;
   if (attr.refl > 0)
     reflect(file, reflection_color, intersect, normal, ttl);
 
-  Color refract_color;
+  Color refraction_color;
   if (attr.opac < 1)
-  {
-    bool outside = direction.dot_product(normal) < 0;
-    Vector3 refr = refract(direction.normalize(), normal.normalize());
-    if (refr)
-    {
-      Vector3 bias = normal * 0.01;
-      Ray refract_ray(refr.normalize(),
-                      outside ? intersect - bias: intersect + bias);
-      refract_ray.cast(file, refract_color, ttl);
-      refract_color = refract_color * (1 - attr.opac);
-    }
-  }
+    refract(file, refraction_color, intersect, normal, direction, ttl);
 
-  apply_directional_lights(file, out_color, intersect);
-  out_color = out_color * attr.opac + refract_color + reflection_color;
+  out_color = out_color + lights_color * attr.opac
+                        + refraction_color + reflection_color;
 }
 
 Vector3 Shape::normal_vect_point(const Vector3& intersect) const

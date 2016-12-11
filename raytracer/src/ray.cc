@@ -17,7 +17,7 @@ void Ray::cast(const Input& file, Color& color, size_t ttl) const
   Vector3 intersect;
 
   if (cast_shapes(file, min_shape, intersect))
-    min_shape->apply_point_lights(file, color, intersect, direction, ttl);
+    min_shape->apply_lights(file, color, intersect, direction, ttl);
 }
 
 bool Ray::cast_shapes(const Input& file,
