@@ -3,13 +3,33 @@
 ## Modeling
 
 ### Step 0
-- [x] Display Shapes
-- [x] Move Shapes
-- [x] Add Shapes
+- [ ] Shapes
+  - [x] Display shapes
+  - [x] Move shapes
+  - [x] Add shapes
+  - [x] Scale shapes
+  - [x] Spheres
+  - [ ] Planes
+  - [ ] Triangles
+- [ ] Lights
+  - [ ] Display lights
+  - [ ] Move lights
+  - [ ] Add lights
+  - [ ] Point lights
+  - [ ] Directional lights
 
 ### Step 1
-- [ ] Save into a good scene format
+- [x] Save into a good scene format
+  - [ ] Save shapes
+    - [x] Save spheres
+    - [ ] Save triangles
+    - [ ] Save planes
+  - [x] Save camera position
+  - [ ] Save lights
 - [ ] Open from scene format
+- [ ] Add ability to change shape color
+- [ ] Add ability to change shape attributes
+- [ ] Add ability to change light color
 
 ### Step 2
 - [ ] Add scripting language
@@ -47,3 +67,12 @@
   - [x] Color
   - [ ] Procedural
   - [ ] Images
+- [ ] Effects
+  - [x] Reflection
+  - [x] Refraction
+  - [x] Shadow
+  - [ ] Specular light
+
+### Bonus
+- [ ] Accelerate using GPU
+- [ ] Accelerate using multiple cores
