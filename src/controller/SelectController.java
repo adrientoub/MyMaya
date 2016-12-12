@@ -9,9 +9,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.DrawMode;
-import javafx.scene.shape.Shape3D;
+import javafx.scene.shape.*;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
@@ -85,25 +83,79 @@ public class SelectController {
         }
     }
 
+    public class AxisScale implements EventHandler<MouseEvent> {
+        private double x = -1;
+        private double y = -1;
+        private Point3D axis;
+
+        public AxisScale(Point3D axis, double angle) {
+            double rad = (angle / 180) * Math.PI;
+            this.axis = new Point3D(axis.getX() * Math.cos(rad) + axis.getY() * Math.sin(rad),
+                    -axis.getX() * Math.sin(rad) + axis.getY() * Math.cos(rad),
+                    axis.getZ());
+        }
+
+        @Override
+        public void handle(MouseEvent event) {
+            if (event.getEventType().equals(MouseEvent.MOUSE_RELEASED)) {
+                x = -1;
+                y = -1;
+                return;
+            } else if ((x == -1 && y == -1)) {
+                x = event.getSceneX();
+                y = event.getSceneY();
+                return;
+            }
+
+            if (event.isPrimaryButtonDown()) {
+                Shape3D[] shapes = new Shape3D[] { selected, getTools().scaler };
+                for (Shape3D shape: shapes) {
+                    if (shape instanceof Sphere) {
+                        Sphere sphere = (Sphere) shape;
+                        sphere.setRadius(sphere.getRadius() + axis.getX() * (event.getSceneX() - x) / 100);
+                    } else {
+                        shape.setScaleX(shape.getScaleX() + axis.getX() * (event.getSceneX() - x) / 100);
+                        shape.setScaleY(shape.getScaleY() + axis.getX() * (event.getSceneX() - x) / 100);
+                        shape.setScaleZ(shape.getScaleZ() + axis.getX() * (event.getSceneX() - x) / 100);
+                    }
+                }
+            }
+            x = event.getSceneX();
+            y = event.getSceneY();
+        }
+    }
+
+    public enum ToolsState {
+        TRANSLATING, SCALING, NOTHING
+    }
+
     public class Tools implements EventHandler<KeyEvent> {
         private Cylinder up;
         private Cylinder right;
         private Cylinder far;
-        private boolean enabled = false;
+        private Box scaler;
+        private ToolsState state = ToolsState.NOTHING;
 
         private void removeRotors() {
             if (up != null) {
                 root.getChildren().remove(up);
+                up = null;
             }
             if (right != null) {
                 root.getChildren().remove(right);
+                right = null;
             }
             if (far != null) {
                 root.getChildren().remove(far);
+                far = null;
+            }
+            if (scaler != null) {
+                root.getChildren().remove(scaler);
+                scaler = null;
             }
         }
 
-        private void addRotors() {
+        private void addTranslators() {
             final double cylinderLen = 0.75;
             final double cylinderRadius = 0.05;
 
@@ -134,17 +186,45 @@ public class SelectController {
             root.getChildren().addAll(up, right, far);
         }
 
-        public boolean isEnabled() {
-            return enabled;
+        private void addScalers() {
+            final double boxLength = 0.5;
+
+            Point3D vx = new Point3D(1, 0, 0);
+
+            scaler = new Box(boxLength, boxLength, boxLength);
+            scaler.setDrawMode(DrawMode.FILL);
+            scaler.setMaterial(new PhongMaterial(Color.YELLOW));
+            scaler.setTranslateX(selected.getTranslateX());
+            scaler.setTranslateY(selected.getTranslateY() - boxLength / 2);
+            scaler.setTranslateZ(selected.getTranslateZ());
+            scaler.addEventFilter(MouseEvent.MOUSE_DRAGGED, new AxisScale(vx, 0));
+
+            root.getChildren().addAll(scaler);
+        }
+
+        public ToolsState getState() {
+            return state;
         }
 
         @Override
         public void handle(KeyEvent event) {
-            if (event == null || event.getCode() == KeyCode.W) {
-                if (selected != null) {
-                    enabled = true;
+            if (selected == null) {
+                return;
+            }
+            if (event != null && event.getCode() == KeyCode.W) {
+                event = null;
+                state = ToolsState.TRANSLATING;
+            } else if (event != null && event.getCode() == KeyCode.R) {
+                event = null;
+                state = ToolsState.SCALING;
+            }
+            if (event == null) {
+                if (state == ToolsState.TRANSLATING) {
                     removeRotors();
-                    addRotors();
+                    addTranslators();
+                } else if (state == ToolsState.SCALING) {
+                    removeRotors();
+                    addScalers();
                 }
             }
         }
@@ -163,7 +243,7 @@ public class SelectController {
                 selected.setDrawMode(DrawMode.FILL);
             selected = shape3D;
             shape3D.setDrawMode(DrawMode.LINE);
-            if (getTools().isEnabled())
+            if (getTools().getState() != ToolsState.NOTHING)
                 getTools().handle(null);
         }
     }

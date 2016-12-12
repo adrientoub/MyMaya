@@ -29,6 +29,7 @@ public class ExportSceneModel {
             }
             bw.close();
             fos.close();
+            System.out.printf("Saved in " + filename);
         } catch (FileNotFoundException e) {
             System.err.println("Impossible to export to " + filename);
             e.printStackTrace();
