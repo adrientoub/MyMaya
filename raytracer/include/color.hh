@@ -12,6 +12,7 @@ public:
   inline Color operator*(double f) const;
   inline Color operator*(const Color& c) const;
   inline Color operator+(const Color& c) const;
+  inline Color operator+=(const Color& other);
   inline bool operator==(const Color& other) const;
   inline bool operator!=(const Color& other) const;
   friend std::ostream& operator<<(std::ostream& os, const Color& color);

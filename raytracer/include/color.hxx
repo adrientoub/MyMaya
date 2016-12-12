@@ -15,6 +15,14 @@ inline Color Color::operator+(const Color& c) const
   return Color(r + c.r, g + c.g, b + c.b);
 }
 
+inline Color Color::operator+=(const Color& other)
+{
+  r += other.r;
+  g += other.g;
+  b += other.b;
+  return *this;
+}
+
 inline bool Color::operator==(const Color& other) const
 {
   return r == other.r && g == other.g && b == other.b;

@@ -14,7 +14,7 @@ std::ostream& operator<<(std::ostream& os, const Shape& shape)
 
 void Shape::apply_ambiant_light(const Input& file, Color& out_color) const
 {
-  out_color = out_color + file.get_ambiant_light().color * color * 0.1;
+  out_color += file.get_ambiant_light().color * color * 0.1;
 }
 
 double Shape::get_directional_shadows(const Input& file,
@@ -57,7 +57,7 @@ void Shape::apply_directional_lights(const Input& file, Color& out_color,
     double ld = attr.diff * ln * shadow;
 
     Color c = dl.color * color;
-    out_color = out_color + c * ld;
+    out_color += c * ld;
   }
 }
 
@@ -120,7 +120,7 @@ void Shape::apply_point_lights(const Input& file, Color& out_color,
     double ln = l.normalize().dot_product(normal);
     double ld = ln * attr.diff * (5 / l.norm());
     Color c = pl.color * color;
-    out_color = out_color + c * ld;
+    out_color += c * ld;
   }
 }
 
@@ -142,8 +142,7 @@ void Shape::apply_lights(const Input& file, Color& out_color,
   if (attr.opac < 1)
     refract(file, refraction_color, intersect, normal, direction, ttl);
 
-  out_color = out_color + lights_color * attr.opac
-                        + refraction_color + reflection_color;
+  out_color += lights_color * attr.opac + refraction_color + reflection_color;
 }
 
 Vector3 Shape::normal_vect_point(const Vector3& intersect) const
