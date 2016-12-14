@@ -11,12 +11,12 @@
   - [x] Spheres
   - [ ] Planes
   - [ ] Triangles
-- [ ] Lights
-  - [ ] Display lights
-  - [ ] Move lights
-  - [ ] Add lights
-  - [ ] Point lights
-  - [ ] Directional lights
+- [x] Lights
+  - [x] Display lights
+  - [x] Move lights
+  - [x] Add lights
+  - [x] Point lights
+  - [x] Directional lights
 
 ### Step 1
 - [x] Save into a good scene format
@@ -25,7 +25,7 @@
     - [ ] Save triangles
     - [ ] Save planes
   - [x] Save camera position
-  - [ ] Save lights
+  - [x] Save lights
 - [ ] Open from scene format
 - [ ] Add ability to change shape color
 - [ ] Add ability to change shape attributes

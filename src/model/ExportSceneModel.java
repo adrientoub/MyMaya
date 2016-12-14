@@ -15,21 +15,17 @@ public class ExportSceneModel {
             Camera c = SceneModel.getCamera();
             bw.write(c.toString());
             bw.newLine();
-            bw.write("dlight 0 1 1 255 255 255");
-            bw.newLine();
-            bw.write("dlight 0 1 -1 255 255 255");
-            bw.newLine();
-            bw.write("dlight 0 -1 1 255 255 255");
-            bw.newLine();
-            bw.write("alight 255 255 255");
-            bw.newLine();
+            for (Light light: SceneModel.getLights()) {
+                bw.write(light.toString());
+                bw.newLine();
+            }
             for (Shape shape: SceneModel.getShapes()) {
                 bw.write(shape.toString());
                 bw.newLine();
             }
             bw.close();
             fos.close();
-            System.out.printf("Saved in " + filename);
+            System.out.println("Saved in " + filename);
         } catch (FileNotFoundException e) {
             System.err.println("Impossible to export to " + filename);
             e.printStackTrace();

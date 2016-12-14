@@ -3,6 +3,7 @@ package view;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -18,21 +19,15 @@ public class MenuView extends MenuBar {
     private Menu createMeshMenu(Group root) {
         Menu menuMesh = new Menu("Mesh");
         MenuItem sphere = new MenuItem("Sphere");
-        sphere.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                SceneModel.addSphere(1, null);
-            }
-        });
+        sphere.addEventHandler(EventType.ROOT, event -> SceneModel.addSphere(1, null));
         MenuItem box = new MenuItem("Box");
-        box.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                SceneModel.addBox(null);
-            }
-        });
+        box.addEventHandler(EventType.ROOT, event -> SceneModel.addBox(null));
+        MenuItem pointLight = new MenuItem("Point Light");
+        pointLight.addEventHandler(EventType.ROOT, event -> SceneModel.addPointLight(null, new Point3D(0, 0, 0)));
+        MenuItem directionalLight = new MenuItem("Directional Light");
+        directionalLight.addEventHandler(EventType.ROOT, event -> SceneModel.addDirectionalLight(null, new Point3D(0, 0, 0)));
 
-        menuMesh.getItems().addAll(sphere, box);
+        menuMesh.getItems().addAll(sphere, box, pointLight, directionalLight);
 
         return menuMesh;
     }

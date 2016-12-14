@@ -12,12 +12,14 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import model.SceneModel;
 
 /**
  * Created by Adrien on 27/10/2016.
  */
 public class SelectController {
     private Shape3D selected;
+    private boolean selectedLight;
     private Group root;
     private Tools tools = new Tools();
     private SubScene subScene;
@@ -38,8 +40,8 @@ public class SelectController {
         return sc;
     }
 
-    public Selection newSelection(Shape3D sphere) {
-        return new Selection(sphere);
+    public Selection newSelection(Shape3D shape, boolean light) {
+        return new Selection(shape, light);
     }
 
     public Tools getTools() {
@@ -232,16 +234,20 @@ public class SelectController {
 
     public class Selection implements EventHandler<MouseEvent> {
         Shape3D shape3D;
+        boolean light;
 
-        private Selection(Shape3D shape3D) {
+        private Selection(Shape3D shape3D, boolean light) {
             this.shape3D = shape3D;
+            this.light = light;
         }
 
         @Override
         public void handle(MouseEvent event) {
-            if (selected != null)
+            if (selected != null && !selectedLight) {
                 selected.setDrawMode(DrawMode.FILL);
+            }
             selected = shape3D;
+            selectedLight = light;
             shape3D.setDrawMode(DrawMode.LINE);
             if (getTools().getState() != ToolsState.NOTHING)
                 getTools().handle(null);

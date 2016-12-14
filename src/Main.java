@@ -2,6 +2,7 @@ import controller.MouseController;
 import controller.ScrollController;
 import controller.SelectController;
 import javafx.application.Application;
+import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
@@ -18,7 +19,7 @@ import view.MenuView;
  * Created by Adrien on 20/10/2016.
  */
 public class Main extends Application {
-    public void addSpheres() {
+    private void addSpheres() {
         SceneModel.addSphere(3, Color.RED);
 
         Sphere secondSphere = SceneModel.addSphere(3, Color.BLUE);
@@ -26,6 +27,13 @@ public class Main extends Application {
 
         Sphere thirdSphere = SceneModel.addSphere(2, Color.GREEN);
         thirdSphere.setTranslateY(-1);
+    }
+
+    private void addLights() {
+        SceneModel.addAmbientLight(Color.WHITE);
+        SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, 1, 1));
+        SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, 1, -1));
+        SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, -1, 1));
     }
 
     public Parent createContent() throws Exception {
@@ -47,9 +55,9 @@ public class Main extends Application {
         SubScene subScene = new SubScene(scene, 1024, 768);
         SelectController.initializeSelectController(scene, subScene);
         addSpheres();
+        addLights();
         subScene.setFill(Color.ALICEBLUE);
         subScene.setCamera(camera);
-
 
         SceneModel.setCamera(myCamera);
 
