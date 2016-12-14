@@ -36,7 +36,7 @@ public class Main extends Application {
         SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, -1, 1));
     }
 
-    public Parent createContent() throws Exception {
+    public Parent createContent(Stage stage) throws Exception {
         // Create and position camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
         model.Camera myCamera = new Camera(camera);
@@ -53,6 +53,7 @@ public class Main extends Application {
 
         // Use a SubScene
         SubScene subScene = new SubScene(scene, 1024, 768);
+        subScene.setManaged(false);
         SelectController.initializeSelectController(scene, subScene);
         addSpheres();
         addLights();
@@ -68,6 +69,8 @@ public class Main extends Application {
 
         Group group = new Group();
         group.getChildren().add(subScene);
+        subScene.heightProperty().bind(stage.heightProperty());
+        subScene.widthProperty().bind(stage.widthProperty());
         return group;
     }
 
@@ -79,11 +82,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
+        primaryStage.setWidth(1024);
+        primaryStage.setHeight(768);
+        primaryStage.setTitle("MyMaya");
         VBox root = new VBox();
         Scene scene = new Scene(root);
         addMenu(root);
-        root.getChildren().add(createContent());
+        root.getChildren().add(createContent(primaryStage));
         scene.setOnKeyPressed(SelectController.getSelectController().getTools());
         primaryStage.setScene(scene);
         primaryStage.show();

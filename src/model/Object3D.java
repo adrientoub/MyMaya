@@ -1,6 +1,5 @@
 package model;
 
-import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
