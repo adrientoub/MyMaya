@@ -2,23 +2,22 @@ import controller.MouseController;
 import controller.ScrollController;
 import controller.SelectController;
 import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Sphere;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Camera;
 import model.SceneModel;
+import view.AttributesView;
 import view.MenuView;
 
 /**
@@ -60,11 +59,12 @@ public class Main extends Application {
         // Use a SubScene
         SubScene subScene = new SubScene(scene, 1024, 768);
         subScene.setManaged(false);
-        SelectController.initializeSelectController(scene, subScene);
+        SelectController.initializeSelectController(scene);
         addSpheres();
         addLights();
         subScene.setFill(Color.ALICEBLUE);
         subScene.setCamera(camera);
+        subScene.setOnMouseClicked(event -> subScene.requestFocus());
 
         SceneModel.setCamera(myCamera);
 
@@ -88,18 +88,6 @@ public class Main extends Application {
         root.getChildren().addAll(menuBar);
     }
 
-    public Pane createAttributePane() {
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setVgap(5);
-        grid.setHgap(5);
-
-        Text position = new Text("Position");
-        grid.add(position, 0, 0);
-
-        return grid;
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setResizable(true);
@@ -110,7 +98,7 @@ public class Main extends Application {
         VBox rootVBox = new VBox();
         addMenu(rootVBox);
 
-        Pane attributesEditingPane = createAttributePane();
+        SplitPane attributesEditingPane = AttributesView.getInstance().getPane();
         Pane stackPane3D = new StackPane();
         stackPane3D.prefHeightProperty().bind(primaryStage.heightProperty());
         Parent scene3D = createContent(stackPane3D);
@@ -121,6 +109,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(rootVBox);
         scene.setOnKeyPressed(SelectController.getSelectController().getTools());
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }

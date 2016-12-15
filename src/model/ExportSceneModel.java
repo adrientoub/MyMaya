@@ -8,8 +8,7 @@ import java.io.*;
 public class ExportSceneModel {
     public static void exportScene(String filename) {
         try {
-            FileOutputStream fos = new FileOutputStream(filename);
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
             bw.write("screen 800 600");
             bw.newLine();
             Camera c = SceneModel.getCamera();
@@ -24,7 +23,6 @@ public class ExportSceneModel {
                 bw.newLine();
             }
             bw.close();
-            fos.close();
             System.out.println("Saved in " + filename);
         } catch (FileNotFoundException e) {
             System.err.println("Impossible to export to " + filename);
