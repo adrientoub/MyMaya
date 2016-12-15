@@ -2,14 +2,20 @@ import controller.MouseController;
 import controller.ScrollController;
 import controller.SelectController;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Sphere;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Camera;
 import model.SceneModel;
@@ -36,7 +42,7 @@ public class Main extends Application {
         SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, -1, 1));
     }
 
-    public Parent createContent(Stage stage) throws Exception {
+    public Parent createContent(Pane pane) throws Exception {
         // Create and position camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
         model.Camera myCamera = new Camera(camera);
@@ -69,15 +75,29 @@ public class Main extends Application {
 
         Group group = new Group();
         group.getChildren().add(subScene);
-        subScene.heightProperty().bind(stage.heightProperty());
-        subScene.widthProperty().bind(stage.widthProperty());
+        group.requestFocus();
+
+        subScene.heightProperty().bind(pane.heightProperty());
+        subScene.widthProperty().bind(pane.widthProperty());
         return group;
     }
 
-    public void addMenu(VBox root) {
+    public void addMenu(Pane root) {
         MenuBar menuBar = new MenuView(SceneModel.getScene());
 
         root.getChildren().addAll(menuBar);
+    }
+
+    public Pane createAttributePane() {
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(5);
+        grid.setHgap(5);
+
+        Text position = new Text("Position");
+        grid.add(position, 0, 0);
+
+        return grid;
     }
 
     @Override
@@ -86,10 +106,20 @@ public class Main extends Application {
         primaryStage.setWidth(1024);
         primaryStage.setHeight(768);
         primaryStage.setTitle("MyMaya");
-        VBox root = new VBox();
-        Scene scene = new Scene(root);
-        addMenu(root);
-        root.getChildren().add(createContent(primaryStage));
+
+        VBox rootVBox = new VBox();
+        addMenu(rootVBox);
+
+        Pane attributesEditingPane = createAttributePane();
+        Pane stackPane3D = new StackPane();
+        stackPane3D.prefHeightProperty().bind(primaryStage.heightProperty());
+        Parent scene3D = createContent(stackPane3D);
+        stackPane3D.getChildren().add(scene3D);
+
+        SplitPane splitPane = new SplitPane(stackPane3D, attributesEditingPane);
+        rootVBox.getChildren().add(splitPane);
+
+        Scene scene = new Scene(rootVBox);
         scene.setOnKeyPressed(SelectController.getSelectController().getTools());
         primaryStage.setScene(scene);
         primaryStage.show();
