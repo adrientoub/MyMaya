@@ -111,6 +111,11 @@ Translate allows to move an object.
 translate obj_name x y z
 ```
 
+Rotate allows to rotate an object around an axis.
+```
+rotate obj_name x y z
+```
+
 Scale allows to resize an object.
 ```
 scale obj_name ratio

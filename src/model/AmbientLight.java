@@ -5,13 +5,15 @@ import javafx.scene.paint.Color;
 /**
  * Created by Adrien on 14/12/2016.
  */
-public class AmbientLight extends Light {
+public class AmbientLight {
+    private Color color;
+
     public AmbientLight(Color color) {
-        super(color);
+        this.color = color;
     }
 
     @Override
     public String toString() {
-        return "alight " + getColorString(color);
+        return "alight " + Object3D.getColorString(color);
     }
 }

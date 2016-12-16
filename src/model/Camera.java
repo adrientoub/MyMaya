@@ -1,17 +1,21 @@
 package model;
 
 import javafx.geometry.Point3D;
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 
 /**
  * Created by Adrien on 08/12/2016.
  */
-public class Camera {
+public class Camera extends Object3D {
     private javafx.scene.Camera camera;
     private Rotate rotateX;
     private Rotate rotateY;
 
     public Camera(javafx.scene.Camera camera) {
+        super("camera1", Color.WHITE);
         this.camera = camera;
         rotateX = new Rotate(0,  Rotate.X_AXIS);
         rotateY = new Rotate(0,  Rotate.Y_AXIS);
@@ -71,4 +75,20 @@ public class Camera {
 
         return "camera " + Shape.getPositionString(camera) + " " + u.getX() + " " + u.getY() + " " + u.getZ() + " " + v.getX() + " " + v.getY() + " " + v.getZ();
     }
+
+    @Override
+    public Node getInnerObject() {
+        return camera;
+    }
+
+    @Override
+    public double getScale() {
+        return 0;
+    }
+
+    @Override
+    public void setScale(double scale) {}
+
+    @Override
+    public void setDrawMode(DrawMode drawMode) {}
 }

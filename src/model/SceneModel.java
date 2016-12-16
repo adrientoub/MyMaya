@@ -21,8 +21,8 @@ import java.util.Random;
 public class SceneModel {
     private static Group scene = new Group();
     private final static Random random = new Random();
-    private static List<Shape> shapes = new ArrayList<>();
-    private static List<Light> lights = new ArrayList<>();
+    private static List<Object3D> object3DS = new ArrayList<>();
+    private static AmbientLight ambientLight;
     private static model.Camera camera;
 
     private static Color getRandomColor() {
@@ -33,7 +33,7 @@ public class SceneModel {
         if (color == null)
             color = getRandomColor();
 
-        lights.add(new AmbientLight(color));
+        ambientLight = new AmbientLight(color);
     }
 
     public static void addDirectionalLight(Color color, Point3D direction) {
@@ -45,8 +45,9 @@ public class SceneModel {
             color = getRandomColor();
 
         cylinder.setDrawMode(DrawMode.LINE);
-        cylinder.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(cylinder, true));
-        lights.add(new model.DirectionalLight(color, cylinder));
+        DirectionalLight dl = new model.DirectionalLight(color, cylinder);
+        cylinder.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(dl, true));
+        object3DS.add(dl);
         scene.getChildren().addAll(cylinder);
     }
 
@@ -59,8 +60,9 @@ public class SceneModel {
             color = getRandomColor();
 
         pointLight.setDrawMode(DrawMode.LINE);
-        pointLight.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(pointLight, true));
-        lights.add(new model.PointLight(color, pointLight));
+        model.PointLight pl = new model.PointLight(color, pointLight);
+        pointLight.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(pl, true));
+        object3DS.add(pl);
         scene.getChildren().addAll(pointLight);
     }
 
@@ -70,8 +72,9 @@ public class SceneModel {
             color = getRandomColor();
         sphere.setMaterial(new PhongMaterial(color));
         sphere.setDrawMode(DrawMode.FILL);
-        sphere.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(sphere, false));
-        shapes.add(new model.Sphere(sphere, color));
+        model.Sphere modelSphere = new model.Sphere(sphere, color);
+        sphere.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(modelSphere, false));
+        object3DS.add(modelSphere);
         scene.getChildren().addAll(sphere);
         return sphere;
     }
@@ -82,7 +85,7 @@ public class SceneModel {
             color = getRandomColor();
         box.setMaterial(new PhongMaterial(color));
         box.setDrawMode(DrawMode.FILL);
-        box.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(box, false));
+/*        box.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(box, false));*/
         scene.getChildren().addAll(box);
         return box;
     }
@@ -91,12 +94,12 @@ public class SceneModel {
         return scene;
     }
 
-    public static List<Shape> getShapes() {
-        return shapes;
+    public static List<Object3D> getObject3DS() {
+        return object3DS;
     }
 
-    public static List<Light> getLights() {
-        return lights;
+    public static AmbientLight getAmbientLight() {
+        return ambientLight;
     }
 
     public static model.Camera getCamera() {

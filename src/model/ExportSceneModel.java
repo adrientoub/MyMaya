@@ -14,12 +14,12 @@ public class ExportSceneModel {
             Camera c = SceneModel.getCamera();
             bw.write(c.toString());
             bw.newLine();
-            for (Light light: SceneModel.getLights()) {
-                bw.write(light.toString());
-                bw.newLine();
-            }
-            for (Shape shape: SceneModel.getShapes()) {
-                bw.write(shape.toString());
+
+            bw.write(SceneModel.getAmbientLight().toString());
+            bw.newLine();
+
+            for (Object3D object3D: SceneModel.getObject3DS()) {
+                bw.write(object3D.toString());
                 bw.newLine();
             }
             bw.close();
