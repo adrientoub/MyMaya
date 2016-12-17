@@ -8,12 +8,16 @@ import view.AttributesView;
  * Created by Adrien on 15/12/2016.
  */
 public class HistoryModel {
+    private static void addLine(String line) {
+        AttributesView.getInstance().addLine(line);
+    }
+
     public static void addTranslation(double x, double y, double z, String name) {
-        AttributesView.getInstance().addLine("translate \"" + name + "\" " + x + " " + y + " " + z);
+        addLine("translate \"" + name + "\" " + x + " " + y + " " + z);
     }
 
     public static void addScale(double scale, String name) {
-        AttributesView.getInstance().addLine("scale \"" + name + "\" " + scale);
+        addLine("scale \"" + name + "\" " + scale);
     }
 
     private static String nodeToString(Node node) {
@@ -25,21 +29,25 @@ public class HistoryModel {
     }
 
     public static void addNewSphere(Sphere sphere) {
-        AttributesView.getInstance().addLine("sphere \"" + sphere.getName() + "\" "
-                    + nodeToString(sphere.getInnerObject()) + " " + colorToString(sphere.getColor()));
+        addLine("sphere \"" + sphere.getName() + "\" " + nodeToString(sphere.getInnerObject()) + " "
+                + colorToString(sphere.getColor()));
     }
 
     public static void addNewDirectionalLight(DirectionalLight dl) {
-        AttributesView.getInstance().addLine("directional_light \"" + dl.getName() + "\" "
-                + nodeToString(dl.getInnerObject()) + " " + colorToString(dl.getColor()));
+        addLine("directional_light \"" + dl.getName() + "\" " + nodeToString(dl.getInnerObject()) + " "
+                + colorToString(dl.getColor()));
     }
 
     public static void addNewPointLight(PointLight pl) {
-        AttributesView.getInstance().addLine("point_light \"" + pl.getName() + "\" "
-                + nodeToString(pl.getInnerObject()) + " " + colorToString(pl.getColor()));
+        addLine("point_light \"" + pl.getName() + "\" " + nodeToString(pl.getInnerObject()) + " "
+                + colorToString(pl.getColor()));
     }
 
     public static void addRemove(Object3D object3D) {
-        AttributesView.getInstance().addLine("remove \"" + object3D.getName() + "\"");
+        addLine("remove \"" + object3D.getName() + "\"");
+    }
+
+    public static void addSave(String filename) {
+        addLine("save \"" + filename + "\"");
     }
 }

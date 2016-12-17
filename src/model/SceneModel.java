@@ -50,9 +50,10 @@ public class SceneModel {
         if (color == null)
             color = getRandomColor();
 
+        cylinder.setMaterial(new PhongMaterial(color));
         cylinder.setDrawMode(DrawMode.LINE);
         DirectionalLight dl = new model.DirectionalLight(color, cylinder);
-        cylinder.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(dl, true));
+        cylinder.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(dl));
         object3DS.add(dl);
         scene.getChildren().addAll(cylinder);
         return dl;
@@ -66,9 +67,10 @@ public class SceneModel {
         if (color == null)
             color = getRandomColor();
 
+        pointLight.setMaterial(new PhongMaterial(color));
         pointLight.setDrawMode(DrawMode.LINE);
         PointLight pl = new PointLight(color, pointLight);
-        pointLight.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(pl, true));
+        pointLight.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(pl));
         object3DS.add(pl);
         scene.getChildren().addAll(pointLight);
         return pl;
@@ -81,7 +83,7 @@ public class SceneModel {
         sphere.setMaterial(new PhongMaterial(color));
         sphere.setDrawMode(DrawMode.FILL);
         model.Sphere modelSphere = new model.Sphere(sphere, color);
-        sphere.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(modelSphere, false));
+        sphere.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(modelSphere));
         object3DS.add(modelSphere);
         scene.getChildren().addAll(sphere);
         return modelSphere;

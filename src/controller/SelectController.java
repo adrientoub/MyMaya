@@ -18,6 +18,7 @@ import javafx.scene.transform.Translate;
 import model.HistoryModel;
 import model.Object3D;
 import model.SceneModel;
+import view.AttributesView;
 
 /**
  * Created by Adrien on 27/10/2016.
@@ -42,7 +43,7 @@ public class SelectController {
         return sc;
     }
 
-    public Selection newSelection(Object3D shape, boolean light) {
+    public Selection newSelection(Object3D shape) {
         return new Selection(shape);
     }
 
@@ -290,6 +291,7 @@ public class SelectController {
                 selected.setDrawMode(DrawMode.FILL);
             }
             selected = shape3D;
+            AttributesView.getInstance().updateForObject(shape3D);
             shape3D.setDrawMode(DrawMode.LINE);
             if (getTools().getState() != ToolsState.NOTHING)
                 getTools().handle(null);

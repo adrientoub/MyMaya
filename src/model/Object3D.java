@@ -40,4 +40,32 @@ public abstract class Object3D {
     public String getName() {
         return name;
     }
+
+    public void setTranslateX(Double translateX) {
+        double x = getInnerObject().getTranslateX();
+        if (translateX - x != 0) {
+            getInnerObject().setTranslateX(translateX);
+            HistoryModel.addTranslation(translateX - x, 0, 0, name);
+        }
+    }
+
+    public void setTranslateY(Double translateY) {
+        double y = getInnerObject().getTranslateY();
+        if (translateY - y != 0) {
+            getInnerObject().setTranslateY(translateY);
+            HistoryModel.addTranslation(0, translateY - y, 0, name);
+        }
+    }
+
+    public void setTranslateZ(Double translateZ) {
+        double z = getInnerObject().getTranslateZ();
+        if (translateZ - z != 0) {
+            getInnerObject().setTranslateZ(translateZ);
+            HistoryModel.addTranslation(0, 0, translateZ - z, name);
+        }
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

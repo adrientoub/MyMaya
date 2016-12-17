@@ -2,6 +2,8 @@ package model;
 
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Material;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.DrawMode;
 
 /**
@@ -42,5 +44,12 @@ public class Sphere extends Shape {
     @Override
     public void setDrawMode(DrawMode drawMode) {
         internalSphere.setDrawMode(drawMode);
+    }
+
+    @Override
+    public void setColor(Color color) {
+        super.setColor(color);
+        PhongMaterial m = (PhongMaterial) internalSphere.getMaterial();
+        m.setDiffuseColor(color);
     }
 }

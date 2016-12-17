@@ -23,7 +23,7 @@ public class ExportSceneModel {
                 bw.newLine();
             }
             bw.close();
-            System.out.println("Saved in " + filename);
+            HistoryModel.addSave(filename);
         } catch (FileNotFoundException e) {
             System.err.println("Impossible to export to " + filename);
             e.printStackTrace();
