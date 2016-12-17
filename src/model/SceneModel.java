@@ -29,6 +29,12 @@ public class SceneModel {
         return new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1);
     }
 
+    public static void remove(Object3D object3D) {
+        object3DS.remove(object3D);
+        scene.getChildren().remove(object3D.getInnerObject());
+        HistoryModel.addRemove(object3D);
+    }
+
     public static void addAmbientLight(Color color) {
         if (color == null)
             color = getRandomColor();

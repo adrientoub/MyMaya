@@ -1,5 +1,6 @@
 package view;
 
+import controller.SelectController;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -8,6 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import model.*;
 
@@ -58,10 +61,25 @@ public class MenuView extends MenuBar {
         return menuFile;
     }
 
+    private Menu createEditMenu() {
+        Menu menuFile = new Menu("Edit");
+        MenuItem save = new MenuItem("Remove");
+        save.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                SelectController.getSelectController().removeSelected();
+            }
+        });
+        save.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
+
+        menuFile.getItems().addAll(save);
+
+        return menuFile;
+    }
 
     public MenuView(Group root) {
         Menu menuFile = createFileMenu();
-        Menu menuEdit = new Menu("Edit");
+        Menu menuEdit = createEditMenu();
         Menu menuView = new Menu("View");
         Menu menuMesh = createMeshMenu(root);
 

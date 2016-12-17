@@ -38,4 +38,8 @@ public class HistoryModel {
         AttributesView.getInstance().addLine("point_light \"" + pl.getName() + "\" "
                 + nodeToString(pl.getInnerObject()) + " " + colorToString(pl.getColor()));
     }
+
+    public static void addRemove(Object3D object3D) {
+        AttributesView.getInstance().addLine("remove \"" + object3D.getName() + "\"");
+    }
 }

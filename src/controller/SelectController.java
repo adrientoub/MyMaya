@@ -17,13 +17,13 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import model.HistoryModel;
 import model.Object3D;
+import model.SceneModel;
 
 /**
  * Created by Adrien on 27/10/2016.
  */
 public class SelectController {
     private Object3D selected;
-    private boolean selectedLight;
     private Group root;
     private Tools tools = new Tools();
 
@@ -43,11 +43,16 @@ public class SelectController {
     }
 
     public Selection newSelection(Object3D shape, boolean light) {
-        return new Selection(shape, light);
+        return new Selection(shape);
     }
 
     public Tools getTools() {
         return tools;
+    }
+
+    public void removeSelected() {
+        SceneModel.remove(selected);
+        selected = null;
     }
 
     public class AxisMovement implements EventHandler<MouseEvent> {
@@ -274,20 +279,17 @@ public class SelectController {
 
     public class Selection implements EventHandler<MouseEvent> {
         Object3D shape3D;
-        boolean light;
 
-        private Selection(Object3D shape3D, boolean light) {
+        private Selection(Object3D shape3D) {
             this.shape3D = shape3D;
-            this.light = light;
         }
 
         @Override
         public void handle(MouseEvent event) {
-            if (selected != null && !selectedLight) {
+            if (selected != null) {
                 selected.setDrawMode(DrawMode.FILL);
             }
             selected = shape3D;
-            selectedLight = light;
             shape3D.setDrawMode(DrawMode.LINE);
             if (getTools().getState() != ToolsState.NOTHING)
                 getTools().handle(null);
