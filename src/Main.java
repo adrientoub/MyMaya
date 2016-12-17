@@ -2,7 +2,6 @@ import controller.MouseController;
 import controller.ScrollController;
 import controller.SelectController;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.control.MenuBar;
@@ -13,10 +12,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Sphere;
 import javafx.stage.Stage;
 import model.Camera;
 import model.SceneModel;
+import model.Sphere;
 import view.AttributesView;
 import view.MenuView;
 
@@ -28,10 +27,10 @@ public class Main extends Application {
         SceneModel.addSphere(3, Color.RED);
 
         Sphere secondSphere = SceneModel.addSphere(3, Color.BLUE);
-        secondSphere.setTranslateX(5);
+        secondSphere.getInnerObject().setTranslateX(5);
 
         Sphere thirdSphere = SceneModel.addSphere(2, Color.GREEN);
-        thirdSphere.setTranslateY(-1);
+        thirdSphere.getInnerObject().setTranslateY(-1);
     }
 
     private void addLights() {

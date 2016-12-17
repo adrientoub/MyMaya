@@ -42,6 +42,10 @@ public class Camera extends Object3D {
         camera.setTranslateZ(camera.getTranslateZ() + movement);
     }
 
+    private Point3D rotate(Point3D point, Rotate rotate) {
+        return rotate(point, rotate.getAxis(), rotate.getAngle());
+    }
+
     private Point3D rotate(Point3D point, Point3D axis, double angle) {
         double costheta = Math.cos(Math.toRadians(angle));
         double sintheta = Math.sin(Math.toRadians(angle));
@@ -66,12 +70,12 @@ public class Camera extends Object3D {
     @Override
     public String toString() {
         Point3D u = new Point3D(1, 0, 0);
-        u = rotate(u, rotateX.getAxis(), rotateX.getAngle());
-        u = rotate(u, rotateY.getAxis(), rotateY.getAngle());
+        u = rotate(u, rotateX);
+        u = rotate(u, rotateY);
 
         Point3D v = new Point3D(0, 1, 0);
-        v = rotate(v, rotateX.getAxis(), rotateX.getAngle());
-        v = rotate(v, rotateY.getAxis(), rotateY.getAngle());
+        v = rotate(v, rotateX);
+        v = rotate(v, rotateY);
 
         return "camera " + Shape.getPositionString(camera) + " " + u.getX() + " " + u.getY() + " " + u.getZ() + " " + v.getX() + " " + v.getY() + " " + v.getZ();
     }

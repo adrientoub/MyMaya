@@ -4,18 +4,19 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.SubScene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Box;
+import javafx.scene.shape.Cylinder;
+import javafx.scene.shape.DrawMode;
+import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import model.HistoryModel;
 import model.Object3D;
-import model.SceneModel;
 
 /**
  * Created by Adrien on 27/10/2016.
@@ -57,11 +58,8 @@ public class SelectController {
         private double positionY;
         private double positionZ;
 
-        public AxisMovement(Point3D axis, double angle) {
-            double rad = (angle / 180) * Math.PI;
-            this.axis = new Point3D(axis.getX() * Math.cos(rad) + axis.getY() * Math.sin(rad),
-                                    -axis.getX() * Math.sin(rad) + axis.getY() * Math.cos(rad),
-                                    axis.getZ());
+        public AxisMovement(Point3D axis) {
+            this.axis = axis;
         }
 
         @Override
@@ -119,11 +117,8 @@ public class SelectController {
             }
         }
 
-        public AxisScale(Point3D axis, double angle) {
-            double rad = (angle / 180) * Math.PI;
-            this.axis = new Point3D(axis.getX() * Math.cos(rad) + axis.getY() * Math.sin(rad),
-                    -axis.getX() * Math.sin(rad) + axis.getY() * Math.cos(rad),
-                    axis.getZ());
+        public AxisScale(Point3D axis) {
+            this.axis = axis;
         }
 
         @Override
@@ -204,7 +199,7 @@ public class SelectController {
             up.setMaterial(new PhongMaterial(Color.GREEN));
             up.getTransforms().addAll(new Translate(obj.getTranslateX(), obj.getTranslateY() - cylinderLen / 2, obj.getTranslateZ()),
                     new Rotate(90, vy));
-            AxisMovement axisMovement = new AxisMovement(vy, 0);
+            AxisMovement axisMovement = new AxisMovement(vy);
             up.addEventFilter(MouseEvent.MOUSE_DRAGGED, axisMovement);
             up.addEventFilter(MouseEvent.MOUSE_RELEASED, axisMovement);
 
@@ -213,7 +208,7 @@ public class SelectController {
             right.setMaterial(new PhongMaterial(Color.RED));
             right.getTransforms().addAll(new Translate(obj.getTranslateX() + cylinderLen / 2, obj.getTranslateY(), obj.getTranslateZ()),
                     new Rotate(90, vz));
-            axisMovement = new AxisMovement(vx, 0);
+            axisMovement = new AxisMovement(vx);
             right.addEventFilter(MouseEvent.MOUSE_DRAGGED, axisMovement);
             right.addEventFilter(MouseEvent.MOUSE_RELEASED, axisMovement);
 
@@ -222,7 +217,7 @@ public class SelectController {
             far.setMaterial(new PhongMaterial(Color.BLUE));
             far.getTransforms().addAll(new Translate(obj.getTranslateX(), obj.getTranslateY(), obj.getTranslateZ() - cylinderLen / 2),
                     new Rotate(90, vx));
-            axisMovement = new AxisMovement(vz, 0);
+            axisMovement = new AxisMovement(vz);
             far.addEventFilter(MouseEvent.MOUSE_DRAGGED, axisMovement);
             far.addEventFilter(MouseEvent.MOUSE_RELEASED, axisMovement);
 
@@ -240,9 +235,9 @@ public class SelectController {
             scaler.setDrawMode(DrawMode.FILL);
             scaler.setMaterial(new PhongMaterial(Color.YELLOW));
             scaler.setTranslateX(obj.getTranslateX());
-            scaler.setTranslateY(obj.getTranslateY() - boxLength / 2);
+            scaler.setTranslateY(obj.getTranslateY());
             scaler.setTranslateZ(obj.getTranslateZ());
-            AxisScale axisScale = new AxisScale(vx, 0);
+            AxisScale axisScale = new AxisScale(vx);
             scaler.addEventFilter(MouseEvent.MOUSE_DRAGGED, axisScale);
             scaler.addEventFilter(MouseEvent.MOUSE_RELEASED, axisScale);
 

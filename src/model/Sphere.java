@@ -19,9 +19,9 @@ public class Sphere extends Shape {
 
     @Override
     public String toString() {
-        return new StringBuilder().append("sphere \"").append(name).append("\" ").append(internalSphere.getRadius()).append(" ")
-                .append(Shape.getPositionString(internalSphere)).append(" ").append(attributes.toString()).append(" ")
-                .append(getColorString(color)).toString();
+        return new StringBuilder().append("sphere \"").append(name).append("\" ").append(internalSphere.getRadius())
+                .append(" ").append(Shape.getPositionString(internalSphere)).append(" ").append(attributes.toString())
+                .append(" ").append(getColorString(color)).toString();
     }
 
     @Override

@@ -149,5 +149,5 @@ save_next
 To add a new object to the scene use the following Primitives:
 If an object with the same name already exists, prints a warning.
 ```
-[sphere|point_light|directional_light] obj_name r g b
+[sphere|point_light|directional_light] obj_name x y z r g b
 ```

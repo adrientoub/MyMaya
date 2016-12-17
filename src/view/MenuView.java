@@ -9,8 +9,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
-import model.ExportSceneModel;
-import model.SceneModel;
+import model.*;
 
 /**
  * Created by Adrien on 18/11/2016.
@@ -18,16 +17,27 @@ import model.SceneModel;
 public class MenuView extends MenuBar {
     private Menu createMeshMenu(Group root) {
         Menu menuMesh = new Menu("Mesh");
-        MenuItem sphere = new MenuItem("Sphere");
-        sphere.addEventHandler(EventType.ROOT, event -> SceneModel.addSphere(1, null));
-        MenuItem box = new MenuItem("Box");
-        box.addEventHandler(EventType.ROOT, event -> SceneModel.addBox(null));
+        MenuItem sphereItem = new MenuItem("Sphere");
+        sphereItem.addEventHandler(EventType.ROOT, event -> {
+            Sphere sphere = SceneModel.addSphere(1, null);
+            HistoryModel.addNewSphere(sphere);
+        });
+        MenuItem boxItem = new MenuItem("Box");
+        boxItem.addEventHandler(EventType.ROOT, event -> {
+            SceneModel.addBox(null);
+        });
         MenuItem pointLight = new MenuItem("Point Light");
-        pointLight.addEventHandler(EventType.ROOT, event -> SceneModel.addPointLight(null, new Point3D(0, 0, 0)));
+        pointLight.addEventHandler(EventType.ROOT, event -> {
+            PointLight pl = SceneModel.addPointLight(null, new Point3D(0, 0, 0));
+            HistoryModel.addNewPointLight(pl);
+        });
         MenuItem directionalLight = new MenuItem("Directional Light");
-        directionalLight.addEventHandler(EventType.ROOT, event -> SceneModel.addDirectionalLight(null, new Point3D(0, 0, 0)));
+        directionalLight.addEventHandler(EventType.ROOT, event -> {
+            DirectionalLight dl = SceneModel.addDirectionalLight(null, new Point3D(0, 0, 0));
+            HistoryModel.addNewDirectionalLight(dl);
+        });
 
-        menuMesh.getItems().addAll(sphere, box, pointLight, directionalLight);
+        menuMesh.getItems().addAll(sphereItem, boxItem, pointLight, directionalLight);
 
         return menuMesh;
     }

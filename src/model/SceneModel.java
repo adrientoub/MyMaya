@@ -36,7 +36,7 @@ public class SceneModel {
         ambientLight = new AmbientLight(color);
     }
 
-    public static void addDirectionalLight(Color color, Point3D direction) {
+    public static DirectionalLight addDirectionalLight(Color color, Point3D direction) {
         Cylinder cylinder = new Cylinder(0.25, 0.5);
         cylinder.setTranslateX(direction.getX());
         cylinder.setTranslateY(direction.getY());
@@ -49,9 +49,10 @@ public class SceneModel {
         cylinder.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(dl, true));
         object3DS.add(dl);
         scene.getChildren().addAll(cylinder);
+        return dl;
     }
 
-    public static void addPointLight(Color color, Point3D position) {
+    public static PointLight addPointLight(Color color, Point3D position) {
         Sphere pointLight = new Sphere(0.5);
         pointLight.setTranslateX(position.getX());
         pointLight.setTranslateY(position.getY());
@@ -60,13 +61,14 @@ public class SceneModel {
             color = getRandomColor();
 
         pointLight.setDrawMode(DrawMode.LINE);
-        model.PointLight pl = new model.PointLight(color, pointLight);
+        PointLight pl = new PointLight(color, pointLight);
         pointLight.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(pl, true));
         object3DS.add(pl);
         scene.getChildren().addAll(pointLight);
+        return pl;
     }
 
-    public static Sphere addSphere(double radius, Color color) {
+    public static model.Sphere addSphere(double radius, Color color) {
         Sphere sphere = new Sphere(radius);
         if (color == null)
             color = getRandomColor();
@@ -76,7 +78,7 @@ public class SceneModel {
         sphere.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(modelSphere, false));
         object3DS.add(modelSphere);
         scene.getChildren().addAll(sphere);
-        return sphere;
+        return modelSphere;
     }
 
     public static Box addBox(Color color) {

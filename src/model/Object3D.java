@@ -29,6 +29,14 @@ public abstract class Object3D {
     public abstract void setScale(double scale);
     public abstract void setDrawMode(DrawMode drawMode);
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
