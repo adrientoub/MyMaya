@@ -29,6 +29,7 @@ protected:
   virtual Vector3 normal_vect(const Vector3& intersect) const = 0;
   virtual Vector3 normal_vect_point(const Vector3& intersect) const;
 
+  std::string name;
   Vector3 pos;
   Attributes attr;
   Color color;
@@ -44,12 +45,12 @@ private:
   void apply_ambiant_light(const Input& file, Color& out_color) const;
   void apply_directional_lights(const Input& file, Color& out_color,
                                 const Vector3& intersect) const;
-  void apply_point_lights(const Input& file, Color& out_color,
-                          const Vector3& intersect,
-                          const Vector3& normal) const;
   double get_directional_shadows(const Input& file,
                                  const Vector3& intersect,
                                  const DirectionalLight& dl) const;
+  void apply_point_lights(const Input& file, Color& out_color,
+                          const Vector3& intersect,
+                          const Vector3& normal) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const Shape& shape);

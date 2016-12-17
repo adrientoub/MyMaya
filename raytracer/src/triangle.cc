@@ -2,6 +2,7 @@
 #include "input.hh"
 
 #include <iostream>
+#include <iomanip>
 
 Triangle::Triangle(const Vector3& a, const Vector3& b, const Vector3& c,
                    const Attributes& attr, const Color& color)
@@ -61,15 +62,15 @@ Vector3 Triangle::intersect(const Ray& ray)
 
 std::istream& operator>>(std::istream& is, Triangle& triangle)
 {
-  return is >> triangle.pos >> triangle.b >> triangle.c >> triangle.attr
-            >> triangle.color;
+  return is >> std::quoted(triangle.name) >> triangle.pos >> triangle.b
+            >> triangle.c >> triangle.attr >> triangle.color;
 }
 
 std::ostream& operator<<(std::ostream& os, const Triangle& triangle)
 {
-  return os << "Triangle: Pos: " << triangle.pos << " " << triangle.b << " "
-            << triangle.c << " " << triangle.attr << " Color: "
-            << triangle.color;
+  return os << "Triangle: " << triangle.name << " Pos: " << triangle.pos << " "
+            << triangle.b << " " << triangle.c << " " << triangle.attr
+            << " Color: " << triangle.color;
 }
 
 std::ostream& Triangle::display(std::ostream& os) const

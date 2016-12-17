@@ -2,6 +2,7 @@
 #include "input.hh"
 
 #include <iostream>
+#include <iomanip>
 
 Plane::Plane(const Vector3& pos, const Attributes& attr, const Color& color,
              double d)
@@ -26,13 +27,14 @@ Vector3 Plane::intersect(const Ray& ray)
 
 std::istream& operator>>(std::istream& is, Plane& plane)
 {
-  return is >> plane.pos >> plane.d >> plane.attr >> plane.color;
+  return is >> std::quoted(plane.name) >> plane.pos >> plane.d >> plane.attr
+            >> plane.color;
 }
 
 std::ostream& operator<<(std::ostream& os, const Plane& plane)
 {
-  return os << "Plane: Pos: " << plane.pos << " " <<  plane.d
-            << " " << plane.attr << " Color: " << plane.color;
+  return os << "Plane: " << plane.name << " Pos: " << plane.pos << " "
+            << plane.d << " " << plane.attr << " Color: " << plane.color;
 }
 
 Vector3 Plane::normal_vect(const Vector3&) const

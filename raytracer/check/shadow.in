@@ -1,8 +1,8 @@
 screen 800 600
 camera 0 0 0 1 0 0 0 1 0
-sphere 2 -3 0 20 1 0 0 100 0 1 0 255 255
-sphere 3 3 0 20 1 0 0 100 0 1 255 0 255
-plane 0 1 0 -4 1 0 0 100 0 1 150 0 0
+sphere "sphere0" 2 -3 0 20 1 0 0 100 0 1 0 255 255
+sphere "sphere1" 3 3 0 20 1 0 0 100 0 1 255 0 255
+plane "plane0" 0 1 0 -4 1 0 0 100 0 1 150 0 0
 alight 255 255 255
-dlight 1 1 0 255 255 255
-dlight -1 1 0 255 255 255
+dlight "dlight0" 1 1 0 255 255 255
+dlight "dlight1" -1 1 0 255 255 255

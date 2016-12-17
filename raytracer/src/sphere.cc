@@ -2,6 +2,7 @@
 #include "input.hh"
 
 #include <iostream>
+#include <iomanip>
 
 Sphere::Sphere(const Vector3& pos, const Attributes& attr, const Color& color,
                double radius)
@@ -34,13 +35,14 @@ Vector3 Sphere::intersect(const Ray& ray)
 
 std::istream& operator>>(std::istream& is, Sphere& sphere)
 {
-  return is >> sphere.radius >> sphere.pos >> sphere.attr >> sphere.color;
+  return is >> std::quoted(sphere.name) >> sphere.radius >> sphere.pos
+            >> sphere.attr >> sphere.color;
 }
 
 std::ostream& operator<<(std::ostream& os, const Sphere& sphere)
 {
-  return os << "Sphere: R: " << sphere.radius << " Pos: " << sphere.pos
-            << " " << sphere.attr << " Color: " << sphere.color;
+  return os << "Sphere: " << sphere.name << " R: " << sphere.radius << " Pos: "
+            << sphere.pos << " " << sphere.attr << " Color: " << sphere.color;
 }
 
 Vector3 Sphere::normal_vect_point(const Vector3& intersect) const

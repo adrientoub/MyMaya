@@ -1,11 +1,13 @@
 #include "point_light.hh"
+#include <iomanip>
 
 std::istream& operator>>(std::istream& is, PointLight& value)
 {
-  return is >> value.pos >> value.color;
+  return is >> std::quoted(value.name) >> value.pos >> value.color;
 }
 
 std::ostream& operator<<(std::ostream& os, const PointLight& value)
 {
-  return os << "PointLight: Pos=" << value.pos << " Color: " << value.color;
+  return os << "PointLight: " << value.name << " Pos=" << value.pos
+            << " Color: " << value.color;
 }
