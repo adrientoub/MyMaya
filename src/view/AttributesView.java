@@ -39,6 +39,7 @@ public class AttributesView {
 
     public void addLine(String string) {
         textArea.setText(textArea.getText() + string + "\n");
+        textArea.setScrollTop(Double.MAX_VALUE);
     }
 
     public static AttributesView getInstance() {

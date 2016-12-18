@@ -34,7 +34,10 @@ public abstract class Object3D {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (!this.name.equals(name)) {
+            HistoryModel.addRename(this.name, name);
+            this.name = name;
+        }
     }
 
     public String getName() {

@@ -50,4 +50,8 @@ public class HistoryModel {
     public static void addSave(String filename) {
         addLine("save \"" + filename + "\"");
     }
+
+    public static void addRename(String name, String new_name) {
+        addLine("rename \"" + name + "\" \"" + new_name + "\"");
+    }
 }
