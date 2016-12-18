@@ -3,6 +3,7 @@ package view;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -24,6 +25,18 @@ public class AttributesView {
 
     private static AttributesView instance = new AttributesView();
 
+    private TextField addTextField(String str, double value, int i) {
+        return addTextField(str, Double.toString(value), i);
+    }
+
+    private TextField addTextField(String str, String value, int i) {
+        Text text = new Text(str);
+        grid.add(text, 0, i);
+        TextField textField = new TextField(value);
+        grid.add(textField, 1, i);
+        return textField;
+    }
+
     public void addLine(String string) {
         textArea.setText(textArea.getText() + string + "\n");
     }
@@ -38,13 +51,13 @@ public class AttributesView {
 
     private AttributesView() {
         Pane attributes = addAttributes();
-        Pane textField = addTextField();
-        splitPane = new SplitPane(attributes, textField);
+        Pane textField = addTextArea();
+        splitPane = new SplitPane(new ScrollPane(attributes), textField);
 
         splitPane.setOrientation(Orientation.VERTICAL);
     }
 
-    private Pane addTextField() {
+    private Pane addTextArea() {
         textArea = new TextArea();
         textArea.setFocusTraversable(false);
         textArea.setEditable(false);
@@ -88,17 +101,25 @@ public class AttributesView {
     }
 
     public void updateForObject(Object3D shape3D) {
-        int i = addPositionPanel(shape3D, 0);
+        int i = addNamePanel(shape3D, 0);
+        i = addPositionPanel(shape3D, i);
         i = addColorPanel(shape3D, i);
         i = addAttributesPanel(shape3D, i);
     }
 
-    private TextField addTextField(String str, double value, int i) {
-        Text text = new Text(str);
-        grid.add(text, 0, i);
-        TextField textField = new TextField(Double.toString(value));
-        grid.add(textField, 1, i);
-        return textField;
+    private int addNamePanel(Object3D shape3D, int i) {
+        Text position = new Text("Base");
+        grid.add(position, 0, i++);
+
+        TextField nameTextField = addTextField("Name", shape3D.getName(), i++);
+        nameTextField.setOnKeyReleased(event -> {
+            TextField tf = (TextField) event.getSource();
+            if (tf.getText().length() > 0) {
+                shape3D.setName(tf.getText());
+            }
+        });
+
+        return i;
     }
 
     private int addAttributesPanel(Object3D shape3D, Integer i) {
