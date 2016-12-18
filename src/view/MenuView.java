@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -62,19 +63,22 @@ public class MenuView extends MenuBar {
     }
 
     private Menu createEditMenu() {
-        Menu menuFile = new Menu("Edit");
+        Menu menuEdit = new Menu("Edit");
         MenuItem save = new MenuItem("Remove");
-        save.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                SelectController.getSelectController().removeSelected();
-            }
-        });
+        save.addEventHandler(EventType.ROOT, event -> SelectController.getSelectController().removeSelected());
         save.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
 
-        menuFile.getItems().addAll(save);
+        MenuItem translate = new MenuItem("Translate");
+        translate.addEventHandler(EventType.ROOT, event -> SelectController.getSelectController().getTools().setTranslate());
+        translate.setAccelerator(new KeyCodeCombination(KeyCode.W));
 
-        return menuFile;
+        MenuItem scale = new MenuItem("Scale");
+        scale.addEventHandler(EventType.ROOT, event -> SelectController.getSelectController().getTools().setScale());
+        scale.setAccelerator(new KeyCodeCombination(KeyCode.R));
+
+        menuEdit.getItems().addAll(save, new SeparatorMenuItem(), translate, scale);
+
+        return menuEdit;
     }
 
     public MenuView(Group root) {

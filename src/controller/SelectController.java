@@ -4,8 +4,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -164,7 +162,7 @@ public class SelectController {
         TRANSLATING, SCALING, NOTHING
     }
 
-    public class Tools implements EventHandler<KeyEvent> {
+    public class Tools {
         private Cylinder up;
         private Cylinder right;
         private Cylinder far;
@@ -254,26 +252,27 @@ public class SelectController {
             return state;
         }
 
-        @Override
-        public void handle(KeyEvent event) {
+        public void setTranslate() {
+            state = ToolsState.TRANSLATING;
+            refreshTools();
+        }
+
+        public void setScale() {
+            state = ToolsState.SCALING;
+            refreshTools();
+        }
+
+        private void refreshTools() {
             if (selected == null) {
                 return;
             }
-            if (event != null && event.getCode() == KeyCode.W) {
-                event = null;
-                state = ToolsState.TRANSLATING;
-            } else if (event != null && event.getCode() == KeyCode.R) {
-                event = null;
-                state = ToolsState.SCALING;
-            }
-            if (event == null) {
-                if (state == ToolsState.TRANSLATING) {
-                    removeRotors();
-                    addTranslators();
-                } else if (state == ToolsState.SCALING) {
-                    removeRotors();
-                    addScalers();
-                }
+
+            if (state == ToolsState.TRANSLATING) {
+                removeRotors();
+                addTranslators();
+            } else if (state == ToolsState.SCALING) {
+                removeRotors();
+                addScalers();
             }
         }
     }
@@ -293,8 +292,9 @@ public class SelectController {
             selected = shape3D;
             AttributesView.getInstance().updateForObject(shape3D);
             shape3D.setDrawMode(DrawMode.LINE);
-            if (getTools().getState() != ToolsState.NOTHING)
-                getTools().handle(null);
+            if (getTools().getState() != ToolsState.NOTHING) {
+                getTools().refreshTools();
+            }
         }
     }
 }

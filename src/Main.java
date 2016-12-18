@@ -107,7 +107,6 @@ public class Main extends Application {
         rootVBox.getChildren().add(splitPane);
 
         Scene scene = new Scene(rootVBox);
-        scene.setOnKeyPressed(SelectController.getSelectController().getTools());
 
         primaryStage.setScene(scene);
         primaryStage.show();
