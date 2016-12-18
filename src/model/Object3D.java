@@ -68,4 +68,8 @@ public abstract class Object3D {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public Attributes getAttributes() {
+        return null;
+    }
 }

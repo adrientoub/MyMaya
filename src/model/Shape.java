@@ -11,4 +11,9 @@ public abstract class Shape extends Object3D {
     public Shape(String name, Color color) {
         super(name, color);
     }
+
+    @Override
+    public Attributes getAttributes() {
+        return attributes;
+    }
 }
