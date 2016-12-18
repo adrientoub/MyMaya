@@ -112,7 +112,7 @@ public class AttributesView {
                 Color shapeColor = shape3D.getColor();
                 Color new_color = Color.color(Double.valueOf(tf.getText()), shapeColor.getGreen(), shapeColor.getBlue());
                 shape3D.setColor(new_color);
-            } catch (NumberFormatException ignored) {}
+            } catch (IllegalArgumentException ignored) {}
         });
         grid.add(redTextField, 1, i++);
 
@@ -125,7 +125,7 @@ public class AttributesView {
                 Color shapeColor = shape3D.getColor();
                 Color new_color = Color.color(shapeColor.getRed(), Double.valueOf(tf.getText()), shapeColor.getBlue());
                 shape3D.setColor(new_color);
-            } catch (NumberFormatException ignored) {}
+            } catch (IllegalArgumentException ignored) {}
         });
         grid.add(greenTextField, 1, i++);
 
@@ -138,7 +138,7 @@ public class AttributesView {
                 Color shapeColor = shape3D.getColor();
                 Color new_color = Color.color(shapeColor.getRed(), shapeColor.getGreen(), Double.valueOf(tf.getText()));
                 shape3D.setColor(new_color);
-            } catch (NumberFormatException ignored) {}
+            } catch (IllegalArgumentException ignored) {}
         });
         grid.add(blueTextField, 1, i++);
 
