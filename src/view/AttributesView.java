@@ -1,5 +1,6 @@
 package view;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
@@ -7,6 +8,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -14,6 +17,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.Attributes;
 import model.Object3D;
+import script.Execution;
+import script.Parser;
+import script.ast.AstNode;
 
 /**
  * Created by Adrien on 15/12/2016.
@@ -21,6 +27,7 @@ import model.Object3D;
 public class AttributesView {
     private SplitPane splitPane;
     private TextArea textArea;
+    private TextField commandTextField;
     private GridPane grid;
 
     private static AttributesView instance = new AttributesView();
@@ -63,9 +70,21 @@ public class AttributesView {
         textArea.setFocusTraversable(false);
         textArea.setEditable(false);
 
-        TextField textField = new TextField();
+        commandTextField = new TextField();
+        commandTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    Parser p = new Parser();
+                    AstNode a = p.parse("Test\nfunction my_fun a\ntest\nend");
+                    Execution e = new Execution();
+                    a.accept(e);
+                    p.parse(commandTextField.getText());
+                }
+            }
+        });
 
-        return new VBox(textArea, textField);
+        return new VBox(textArea, commandTextField);
     }
 
     public int addPositionPanel(Object3D shape3D, int i) {

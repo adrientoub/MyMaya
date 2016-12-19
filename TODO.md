@@ -27,13 +27,13 @@
   - [x] Save camera position
   - [x] Save lights
 - [ ] Open from scene format
-- [ ] Add ability to change shape color
-- [ ] Add ability to change shape attributes
-- [ ] Add ability to change light color
+- [x] Add ability to change shape color
+- [x] Add ability to change shape attributes
+- [x] Add ability to change light color
 
 ### Step 2
 - [ ] Add scripting language
-- [ ] Add history
+- [x] Add history
 - [ ] Launch raytracer
 
 ### Step 3
