@@ -5,4 +5,8 @@ package script.types;
  */
 public class BooleanType extends Type {
     protected static Type instance = new BooleanType();
+
+    public static Type getInstance() {
+        return instance;
+    }
 }

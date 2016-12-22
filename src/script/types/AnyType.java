@@ -1,14 +1,17 @@
 package script.types;
 
 /**
- * Created by Adrien on 19/12/2016.
+ * Created by Adrien on 22/12/2016.
  */
-public class StringType extends Type {
-    protected static Type instance = new StringType();
+public class AnyType extends Type {
+    private static AnyType instance = new AnyType();
+
+    protected AnyType() {
+    }
 
     @Override
     public boolean compatibleWith(Type other) {
-        return other instanceof StringType;
+        return true;
     }
 
     public static Type getInstance() {

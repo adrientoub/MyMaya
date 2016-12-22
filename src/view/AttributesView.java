@@ -76,10 +76,12 @@ public class AttributesView {
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.ENTER) {
                     Parser p = new Parser();
-                    AstNode a = p.parse("Test\nfunction my_fun a\ntest\nend");
-                    Execution e = new Execution();
-                    a.accept(e);
-                    p.parse(commandTextField.getText());
+                    AstNode a = p.parse("function my_fun a\nremove \"sphere0\"\nend\nmy_fun \"hello\"");
+                    a.accept(Execution.getInstance());
+                    AstNode parsed = p.parse(commandTextField.getText());
+                    if (parsed != null) {
+                        parsed.accept(Execution.getInstance());
+                    }
                 }
             }
         });

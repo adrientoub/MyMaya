@@ -5,4 +5,13 @@ package script.types;
  */
 public class IntegerType extends Type {
     protected static Type instance = new IntegerType();
+
+    @Override
+    public boolean compatibleWith(Type other) {
+        return other instanceof IntegerType || other instanceof DoubleType;
+    }
+
+    public static Type getInstance() {
+        return instance;
+    }
 }

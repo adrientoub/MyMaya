@@ -22,10 +22,9 @@ public abstract class Visitor {
     }
 
     public void visit(CallExp callExp) {
-        return;
     }
 
     public void visit(FunctionDef functionDef) {
-        return;
+        functionDef.getExps().accept(this);
     }
 }

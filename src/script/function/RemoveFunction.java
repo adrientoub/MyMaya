@@ -1,7 +1,10 @@
 package script.function;
 
+import script.ast.ArgumentListDef;
 import script.lexer.Token;
+import script.types.StringType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +12,8 @@ import java.util.List;
  */
 public class RemoveFunction extends Function {
     public RemoveFunction() {
-        super(1);
+        super(new ArgumentListDef("name"));
+        getArguments().getArgumentListType().getTypes().set(0, StringType.getInstance());
     }
 
     @Override

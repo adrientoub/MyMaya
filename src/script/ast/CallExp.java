@@ -2,8 +2,10 @@ package script.ast;
 
 import script.Visitor;
 import script.lexer.Token;
+import script.types.ArgumentListType;
 import script.types.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +22,7 @@ public class CallExp extends AstNode {
 
     @Override
     public Type getType() {
+        // TODO: handle return types
         return null;
     }
 
@@ -42,5 +45,13 @@ public class CallExp extends AstNode {
 
     public List<Token> getArguments() {
         return arguments;
+    }
+
+    public Type getArgumentType() {
+        List<Type> types = new ArrayList<>();
+        for (int i = 0; i < arguments.size(); i++) {
+            types.add(arguments.get(0).getType());
+        }
+        return new ArgumentListType(types);
     }
 }

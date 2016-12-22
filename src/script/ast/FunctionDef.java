@@ -12,25 +12,25 @@ import java.util.List;
  */
 public class FunctionDef extends AstNode {
     private String functionName;
-    private List<Token> arguments;
-    private List<AstNode> exps;
+    private ArgumentListDef arguments;
+    private SeqExp exps;
 
-    public FunctionDef(String functionName, List<Token> arguments, List<AstNode> exps) {
+    public FunctionDef(String functionName, List<String> arguments, List<AstNode> exps) {
         this.functionName = functionName;
-        this.arguments = arguments;
-        this.exps = exps;
+        this.arguments = new ArgumentListDef(arguments);
+        this.exps = new SeqExp(exps);
     }
 
     public String getFunctionName() {
         return functionName;
     }
 
-    public List<Token> getArguments() {
-        return arguments;
+    public SeqExp getExps() {
+        return exps;
     }
 
-    public List<AstNode> getExps() {
-        return exps;
+    public ArgumentListDef getArguments() {
+        return arguments;
     }
 
     @Override

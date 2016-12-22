@@ -7,6 +7,7 @@ import script.ast.SeqExp;
 import script.function.CustomFunction;
 import script.function.Function;
 import script.function.RemoveFunction;
+import script.lexer.Token;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,15 @@ import java.util.Map;
  */
 public class Execution extends Visitor {
     private static Map<String, Function> functionMap;
-    private static Map<String, Object> variablesMap;
+    private static Map<String, Token> variablesMap = new HashMap<>();
+    private static Execution instance = new Execution();
+
+    public static Execution getInstance() {
+        return instance;
+    }
+
+    private Execution() {
+    }
 
     public static Map<String, Function> getFunctionMap() {
         if (functionMap == null) {
@@ -26,13 +35,21 @@ public class Execution extends Visitor {
         return functionMap;
     }
 
+    public static Map<String, Token> getVariablesMap() {
+        return variablesMap;
+    }
+
+    public static void setVariablesMap(Map<String, Token> variablesMap) {
+        Execution.variablesMap = variablesMap;
+    }
+
     @Override
     public void visit(CallExp callExp) {
         Function function = getFunctionMap().get(callExp.getFunctionName());
         if (function == null) {
             System.err.println("No function named " + callExp.getFunctionName() + " found");
-        } else if (function.getArity() != callExp.getArguments().size()) {
-            System.err.println("Wrong parameter count, expecting " + function.getArity() + " got " + callExp.getArguments().size());
+        } else if (!function.getArguments().getType().compatibleWith(callExp.getArgumentType())) {
+            System.err.println("Wrong parameter type, expecting " + function.getArguments().getArgumentListType() + " got " + callExp.getArgumentType());
         } else {
             function.apply(callExp.getArguments());
         }
@@ -40,8 +57,7 @@ public class Execution extends Visitor {
 
     @Override
     public void visit(FunctionDef functionDef) {
-        // TODO: save the variables name so that when the function is called the right variables are set
         getFunctionMap().put(functionDef.getFunctionName(),
-                new CustomFunction(functionDef.getArguments().size(), new SeqExp(functionDef.getExps())));
+                new CustomFunction(functionDef.getArguments(), functionDef.getExps()));
     }
 }

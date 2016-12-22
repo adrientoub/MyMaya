@@ -25,6 +25,21 @@ public class Parser {
         return null;
     }
 
+    private List<String> getArgumentList() {
+        List<String> arguments = new ArrayList<>();
+        for (; cursor < tokens.size() && !(tokens.get(cursor) instanceof NewlineToken); cursor++) {
+            Token t = tokens.get(cursor);
+            if (!(t instanceof StringToken)) {
+                System.err.println("Parse error in argument list, on token " + t);
+                return null;
+            } else {
+                arguments.add(((StringToken) t).getString());
+            }
+        }
+        cursor++;
+        return arguments;
+    }
+
     private List<Token> getArguments() {
         List<Token> arguments = new ArrayList<>();
         for (; cursor < tokens.size() && !(tokens.get(cursor) instanceof NewlineToken); cursor++) {
@@ -81,7 +96,10 @@ public class Parser {
         if (functionNameToken == null) {
             return null;
         }
-        List<Token> arguments = getArguments();
+        List<String> arguments = getArgumentList();
+        if (arguments == null) {
+            return null;
+        }
         List<AstNode> exps = new ArrayList<>();
 
         while (!((tokens.get(cursor) instanceof StringToken) && ((StringToken)tokens.get(cursor)).getString().equals("end"))) {
