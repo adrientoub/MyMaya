@@ -80,6 +80,7 @@ public class AttributesView {
                     if (parsed != null) {
                         parsed.accept(Execution.getInstance());
                     }
+                    commandTextField.setText("");
                 }
             }
         });
