@@ -14,4 +14,9 @@ public class IntegerType extends Type {
     public static Type getInstance() {
         return instance;
     }
+
+    @Override
+    public String toString() {
+        return "IntegerType{}";
+    }
 }

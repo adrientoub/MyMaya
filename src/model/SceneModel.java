@@ -29,6 +29,21 @@ public class SceneModel {
         return new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1);
     }
 
+    public static void remove(String objectName) {
+        Object3D object3D = null;
+        for (Object3D obj: object3DS) {
+            if (obj.getName().equals(objectName)) {
+                object3D = obj;
+                break;
+            }
+        }
+        if (object3D == null) {
+            System.err.println("No object with name " + objectName + " found in scene.");
+            return;
+        }
+        remove(object3D);
+    }
+
     public static void remove(Object3D object3D) {
         object3DS.remove(object3D);
         scene.getChildren().remove(object3D.getInnerObject());

@@ -17,4 +17,9 @@ public class AnyType extends Type {
     public static Type getInstance() {
         return instance;
     }
+
+    @Override
+    public String toString() {
+        return "AnyType{}";
+    }
 }

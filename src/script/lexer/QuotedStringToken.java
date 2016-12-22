@@ -9,8 +9,12 @@ import script.types.Type;
 public class QuotedStringToken extends Token {
     private String string;
 
+    public String getString() {
+        return string;
+    }
+
     public QuotedStringToken(String quotedString) {
-        this.string = quotedString;
+        this.string = quotedString.substring(1, quotedString.length() - 1);
     }
 
     @Override

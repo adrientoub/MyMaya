@@ -1,10 +1,11 @@
 package script.function;
 
+import model.SceneModel;
 import script.ast.ArgumentListDef;
+import script.lexer.QuotedStringToken;
 import script.lexer.Token;
 import script.types.StringType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,5 +21,7 @@ public class RemoveFunction extends Function {
     public void apply(List<Token> arguments) {
         Token t = arguments.get(0);
         System.out.println("Removing " + t);
+        QuotedStringToken quotedStringToken = (QuotedStringToken) t;
+        SceneModel.remove(quotedStringToken.getString());
     }
 }

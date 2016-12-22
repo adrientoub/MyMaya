@@ -10,4 +10,9 @@ public class NewlineToken extends Token {
     public Type getType() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "NewlineToken{}";
+    }
 }

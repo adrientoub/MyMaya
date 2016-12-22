@@ -51,4 +51,10 @@ public class ArgumentListDef extends AstNode {
     public ArgumentListType getArgumentListType() {
         return argumentListType;
     }
+
+    @Override
+    public String toString() {
+        return "ArgumentListDef{" + "argumentListType=" + argumentListType +
+                ", variableNames=" + variableNames + '}';
+    }
 }

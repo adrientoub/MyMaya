@@ -32,9 +32,7 @@ public class SeqExp extends AstNode {
 
     @Override
     public String toString() {
-        return "SeqExp{" +
-                "exps=" + exps +
-                '}';
+        return "SeqExp{" + exps + '}';
     }
 
     public List<AstNode> getExps() {

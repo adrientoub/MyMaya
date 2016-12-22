@@ -33,10 +33,7 @@ public class CallExp extends AstNode {
 
     @Override
     public String toString() {
-        return "CallExp{" +
-                "functionName='" + functionName + '\'' +
-                ", arguments=" + arguments +
-                '}';
+        return "CallExp{" + functionName + " arguments=" + arguments + '}';
     }
 
     public String getFunctionName() {

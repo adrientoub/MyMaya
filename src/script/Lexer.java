@@ -20,8 +20,7 @@ public class Lexer {
     public List<Token> getTokens() {
         List<Token> tokens = new ArrayList<>();
         Pattern quotedString = Pattern.compile("\"(.+)\"");
-        for (String line: str.split("\n"))
-        {
+        for (String line: str.split("\n")) {
             Scanner scanner = new Scanner(line);
             while (scanner.hasNext()) {
                 if (scanner.hasNextInt()) {
@@ -34,7 +33,16 @@ public class Lexer {
                     String str = scanner.next(quotedString);
                     tokens.add(new QuotedStringToken(str));
                 } else {
-                    tokens.add(new StringToken(scanner.next()));
+                    String str = scanner.next();
+                    if (str.equals(":=")) {
+                        tokens.add(new OperatorToken(OperatorToken.Operator.ASSIGN));
+                    } else if (str.equals("+")) {
+                        tokens.add(new OperatorToken(OperatorToken.Operator.PLUS));
+                    } else if (str.equals("-")) {
+                        tokens.add(new OperatorToken(OperatorToken.Operator.MINUS));
+                    } else {
+                        tokens.add(new StringToken(str));
+                    }
                 }
             }
             tokens.add(new NewlineToken());

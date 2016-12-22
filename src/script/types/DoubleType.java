@@ -14,4 +14,9 @@ public class DoubleType extends Type {
     public static Type getInstance() {
         return instance;
     }
+
+    @Override
+    public String toString() {
+        return "DoubleType{}";
+    }
 }

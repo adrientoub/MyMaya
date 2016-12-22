@@ -1,15 +1,16 @@
 package script;
 
-import model.Object3D;
 import script.ast.CallExp;
 import script.ast.FunctionDef;
-import script.ast.SeqExp;
+import script.ast.VarDef;
 import script.function.CustomFunction;
 import script.function.Function;
 import script.function.RemoveFunction;
+import script.lexer.StringToken;
 import script.lexer.Token;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,13 +47,43 @@ public class Execution extends Visitor {
     @Override
     public void visit(CallExp callExp) {
         Function function = getFunctionMap().get(callExp.getFunctionName());
+        List<Token> arguments = callExp.getArguments();
+        for (int i = 0; i < arguments.size(); i++) {
+            if (arguments.get(i) instanceof StringToken) {
+                Token tok = getVariable((StringToken) arguments.get(i));
+                if (tok == null) {
+                    return;
+                }
+                arguments.set(i, tok);
+            }
+        }
         if (function == null) {
             System.err.println("No function named " + callExp.getFunctionName() + " found");
         } else if (!function.getArguments().getType().compatibleWith(callExp.getArgumentType())) {
             System.err.println("Wrong parameter type, expecting " + function.getArguments().getArgumentListType() + " got " + callExp.getArgumentType());
         } else {
-            function.apply(callExp.getArguments());
+            function.apply(arguments);
         }
+    }
+
+    private Token getVariable(StringToken token) {
+        Token t = variablesMap.get(token.getString());
+        if (t == null) {
+            System.err.println("No variable named " + token.getString());
+        }
+        return t;
+    }
+
+    @Override
+    public void visit(VarDef varDef) {
+        Token value = varDef.getValue();
+        if (value instanceof StringToken) {
+            value = getVariable(((StringToken) value));
+            if (value == null) {
+                return;
+            }
+        }
+        variablesMap.put(varDef.getName(), value);
     }
 
     @Override
