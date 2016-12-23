@@ -29,6 +29,14 @@ public class SceneModel {
         return new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1);
     }
 
+    public static void scaleBy(String name, double scale) {
+        Object3D object3D = findObject(name);
+        if (object3D != null) {
+            object3D.setScale(object3D.getScale() * scale);
+            HistoryModel.addScale(scale, name);
+        }
+    }
+
     public static void moveBy(String name, double x, double y, double z) {
         Object3D object3D = findObject(name);
         if (object3D != null) {
@@ -155,5 +163,4 @@ public class SceneModel {
     public static void setCamera(model.Camera camera) {
         SceneModel.camera = camera;
     }
-
 }

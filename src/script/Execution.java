@@ -32,6 +32,7 @@ public class Execution extends Visitor {
             functionMap.put("remove", new RemoveFunction());
             functionMap.put("rename", new RenameFunction());
             functionMap.put("translate", new TranslateFunction());
+            functionMap.put("scale", new ScaleFunction());
         }
         return functionMap;
     }
