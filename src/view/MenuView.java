@@ -13,7 +13,14 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.stage.FileChooser;
 import model.*;
+import script.Execution;
+import script.Parser;
+import script.ast.AstNode;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Adrien on 18/11/2016.
@@ -48,6 +55,27 @@ public class MenuView extends MenuBar {
 
     private Menu createFileMenu() {
         Menu menuFile = new Menu("File");
+
+        MenuItem open = new MenuItem("Open script");
+        open.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                FileChooser fileChooser = new FileChooser();
+                File file = fileChooser.showOpenDialog(null);
+                if (file != null) {
+                    Parser parser = new Parser();
+                    try {
+                        AstNode astNode = parser.parse(file);
+                        if (astNode != null) {
+                            astNode.accept(Execution.getInstance());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
         MenuItem save = new MenuItem("Save");
         save.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
             @Override
@@ -57,7 +85,7 @@ public class MenuView extends MenuBar {
         });
         save.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
 
-        menuFile.getItems().addAll(save);
+        menuFile.getItems().addAll(save, open);
 
         return menuFile;
     }

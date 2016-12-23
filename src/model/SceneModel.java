@@ -29,7 +29,14 @@ public class SceneModel {
         return new Color(random.nextDouble(), random.nextDouble(), random.nextDouble(), 1);
     }
 
-    public static void remove(String objectName) {
+    public static void rename(String from, String to) {
+        Object3D object3D = findObject(from);
+        if (object3D != null) {
+            object3D.setName(to);
+        }
+    }
+
+    private static Object3D findObject(String objectName) {
         Object3D object3D = null;
         for (Object3D obj: object3DS) {
             if (obj.getName().equals(objectName)) {
@@ -39,9 +46,16 @@ public class SceneModel {
         }
         if (object3D == null) {
             System.err.println("No object with name " + objectName + " found in scene.");
-            return;
+            return null;
         }
-        remove(object3D);
+        return object3D;
+    }
+
+    public static void remove(String objectName) {
+        Object3D object3D = findObject(objectName);
+        if (object3D != null) {
+            remove(object3D);
+        }
     }
 
     public static void remove(Object3D object3D) {

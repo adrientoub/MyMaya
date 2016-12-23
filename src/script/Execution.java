@@ -6,6 +6,7 @@ import script.ast.VarDef;
 import script.function.CustomFunction;
 import script.function.Function;
 import script.function.RemoveFunction;
+import script.function.RenameFunction;
 import script.lexer.StringToken;
 import script.lexer.Token;
 
@@ -32,6 +33,7 @@ public class Execution extends Visitor {
         if (functionMap == null) {
             functionMap = new HashMap<>();
             functionMap.put("remove", new RemoveFunction());
+            functionMap.put("rename", new RenameFunction());
         }
         return functionMap;
     }
