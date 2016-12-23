@@ -47,7 +47,7 @@ public class CallExp extends AstNode {
     public Type getArgumentType() {
         List<Type> types = new ArrayList<>();
         for (int i = 0; i < arguments.size(); i++) {
-            types.add(arguments.get(0).getType());
+            types.add(arguments.get(i).getType());
         }
         return new ArgumentListType(types);
     }

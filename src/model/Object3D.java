@@ -44,6 +44,13 @@ public abstract class Object3D {
         return name;
     }
 
+    public void moveBy(double translateX, double translateY, double translateZ) {
+        getInnerObject().setTranslateX(getInnerObject().getTranslateX() + translateX);
+        getInnerObject().setTranslateY(getInnerObject().getTranslateY() + translateY);
+        getInnerObject().setTranslateZ(getInnerObject().getTranslateZ() + translateZ);
+        HistoryModel.addTranslation(translateX, translateY, translateZ, name);
+    }
+
     public void setTranslateX(Double translateX) {
         double x = getInnerObject().getTranslateX();
         if (translateX - x != 0) {

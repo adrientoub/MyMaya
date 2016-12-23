@@ -4,6 +4,7 @@ import script.lexer.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -22,6 +23,7 @@ public class Lexer {
         Pattern quotedString = Pattern.compile("\"(.+)\"");
         for (String line: str.split("\n")) {
             Scanner scanner = new Scanner(line);
+            scanner.useLocale(Locale.US);
             while (scanner.hasNext()) {
                 if (scanner.hasNextInt()) {
                     int i = scanner.nextInt();

@@ -6,7 +6,7 @@ import script.types.Type;
 /**
  * Created by Adrien on 19/12/2016.
  */
-public class IntegerToken extends Token {
+public class IntegerToken extends NumberToken {
     private int i;
 
     public IntegerToken(int i) {
@@ -21,5 +21,10 @@ public class IntegerToken extends Token {
     @Override
     public String toString() {
         return "IntegerToken{" + i + '}';
+    }
+
+    @Override
+    public double getValue() {
+        return i;
     }
 }

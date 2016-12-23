@@ -3,10 +3,7 @@ package script;
 import script.ast.CallExp;
 import script.ast.FunctionDef;
 import script.ast.VarDef;
-import script.function.CustomFunction;
-import script.function.Function;
-import script.function.RemoveFunction;
-import script.function.RenameFunction;
+import script.function.*;
 import script.lexer.StringToken;
 import script.lexer.Token;
 
@@ -34,6 +31,7 @@ public class Execution extends Visitor {
             functionMap = new HashMap<>();
             functionMap.put("remove", new RemoveFunction());
             functionMap.put("rename", new RenameFunction());
+            functionMap.put("translate", new TranslateFunction());
         }
         return functionMap;
     }

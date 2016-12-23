@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class RenameFunction extends Function {
     public RenameFunction() {
-        super(new ArgumentListDef("name1", "name2"));
+        super(new ArgumentListDef("from", "to"));
         getArguments().getArgumentListType().getTypes().set(0, StringType.getInstance());
         getArguments().getArgumentListType().getTypes().set(1, StringType.getInstance());
     }
