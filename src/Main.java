@@ -24,20 +24,16 @@ import view.MenuView;
  */
 public class Main extends Application {
     private void addSpheres() {
-        SceneModel.addSphere(3, Color.RED);
-
-        Sphere secondSphere = SceneModel.addSphere(3, Color.BLUE);
-        secondSphere.getInnerObject().setTranslateX(5);
-
-        Sphere thirdSphere = SceneModel.addSphere(2, Color.GREEN);
-        thirdSphere.getInnerObject().setTranslateY(-1);
+        SceneModel.addSphere(3, Color.RED, null, null);
+        SceneModel.addSphere(3, Color.BLUE, new Point3D(5, 0, 0), null);
+        SceneModel.addSphere(2, Color.GREEN, new Point3D(0, -1, 0), null);
     }
 
     private void addLights() {
         SceneModel.addAmbientLight(Color.WHITE);
-        SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, 1, 1));
-        SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, 1, -1));
-        SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, -1, 1));
+        SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, 1, 1), null);
+        SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, 1, -1), null);
+        SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, -1, 1), null);
     }
 
     public Parent createContent(Pane pane) throws Exception {

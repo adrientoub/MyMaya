@@ -1,6 +1,5 @@
 package script.function;
 
-import model.SceneModel;
 import script.Execution;
 import script.Parser;
 import script.ast.ArgumentListDef;

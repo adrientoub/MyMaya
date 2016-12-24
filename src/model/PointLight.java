@@ -12,6 +12,14 @@ public class PointLight extends Light {
     private Shape3D position;
     private static int pointLightCount = 0;
 
+    public PointLight(Color color, Shape3D position, String name) {
+        this(color, position);
+        if (name != null) {
+            this.name = name;
+            pointLightCount--;
+        }
+    }
+
     public PointLight(Color color, Shape3D position) {
         super("point_light" + pointLightCount, color);
         pointLightCount++;

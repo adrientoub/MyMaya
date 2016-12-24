@@ -30,8 +30,7 @@ public class MenuView extends MenuBar {
         Menu menuMesh = new Menu("Mesh");
         MenuItem sphereItem = new MenuItem("Sphere");
         sphereItem.addEventHandler(EventType.ROOT, event -> {
-            Sphere sphere = SceneModel.addSphere(1, null);
-            HistoryModel.addNewSphere(sphere);
+            SceneModel.addSphere(1, null, null, null);
         });
         MenuItem boxItem = new MenuItem("Box");
         boxItem.addEventHandler(EventType.ROOT, event -> {
@@ -39,13 +38,11 @@ public class MenuView extends MenuBar {
         });
         MenuItem pointLight = new MenuItem("Point Light");
         pointLight.addEventHandler(EventType.ROOT, event -> {
-            PointLight pl = SceneModel.addPointLight(null, new Point3D(0, 0, 0));
-            HistoryModel.addNewPointLight(pl);
+            SceneModel.addPointLight(null, new Point3D(0, 0, 0), null);
         });
         MenuItem directionalLight = new MenuItem("Directional Light");
         directionalLight.addEventHandler(EventType.ROOT, event -> {
-            DirectionalLight dl = SceneModel.addDirectionalLight(null, new Point3D(0, 0, 0));
-            HistoryModel.addNewDirectionalLight(dl);
+            SceneModel.addDirectionalLight(null, new Point3D(0, 0, 0), null);
         });
 
         menuMesh.getItems().addAll(sphereItem, boxItem, pointLight, directionalLight);

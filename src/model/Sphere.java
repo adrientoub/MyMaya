@@ -13,6 +13,14 @@ public class Sphere extends Shape {
     private javafx.scene.shape.Sphere internalSphere;
     private static int sphereCount = 0;
 
+    public Sphere(javafx.scene.shape.Sphere internalSphere, Color color, String name) {
+        this(internalSphere, color);
+        if (name != null) {
+            sphereCount--;
+            this.name = name;
+        }
+    }
+
     public Sphere(javafx.scene.shape.Sphere internalSphere, Color color) {
         super("sphere" + sphereCount, color);
         sphereCount++;

@@ -26,7 +26,7 @@ Identifiers can contain any UTF-8 character. They should not contain any Keyword
 
 ## Numbers
 
-There are integers and doubles, doubles always end with a point. Numbers can be positive or negative.
+There are integers and doubles, doubles always contain a point. Numbers can be positive or negative.
 Doing operations mixing both integers and doubles will end up with a double.
 
     integer ::= digit { digit }

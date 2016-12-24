@@ -86,7 +86,7 @@ public class SceneModel {
         ambientLight = new AmbientLight(color);
     }
 
-    public static DirectionalLight addDirectionalLight(Color color, Point3D direction) {
+    public static DirectionalLight addDirectionalLight(Color color, Point3D direction, String name) {
         Cylinder cylinder = new Cylinder(0.25, 0.5);
         cylinder.setTranslateX(direction.getX());
         cylinder.setTranslateY(direction.getY());
@@ -96,14 +96,15 @@ public class SceneModel {
 
         cylinder.setMaterial(new PhongMaterial(color));
         cylinder.setDrawMode(DrawMode.LINE);
-        DirectionalLight dl = new model.DirectionalLight(color, cylinder);
+        DirectionalLight dl = new model.DirectionalLight(color, cylinder, name);
         cylinder.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(dl));
         object3DS.add(dl);
         scene.getChildren().addAll(cylinder);
+        HistoryModel.addNewDirectionalLight(dl);
         return dl;
     }
 
-    public static PointLight addPointLight(Color color, Point3D position) {
+    public static PointLight addPointLight(Color color, Point3D position, String name) {
         Sphere pointLight = new Sphere(0.5);
         pointLight.setTranslateX(position.getX());
         pointLight.setTranslateY(position.getY());
@@ -113,23 +114,31 @@ public class SceneModel {
 
         pointLight.setMaterial(new PhongMaterial(color));
         pointLight.setDrawMode(DrawMode.LINE);
-        PointLight pl = new PointLight(color, pointLight);
+        PointLight pl = new PointLight(color, pointLight, name);
         pointLight.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(pl));
         object3DS.add(pl);
         scene.getChildren().addAll(pointLight);
+        HistoryModel.addNewPointLight(pl);
         return pl;
     }
 
-    public static model.Sphere addSphere(double radius, Color color) {
+    public static model.Sphere addSphere(double radius, Color color, Point3D pos, String name) {
         Sphere sphere = new Sphere(radius);
         if (color == null)
             color = getRandomColor();
         sphere.setMaterial(new PhongMaterial(color));
         sphere.setDrawMode(DrawMode.FILL);
-        model.Sphere modelSphere = new model.Sphere(sphere, color);
+        model.Sphere modelSphere = new model.Sphere(sphere, color, name);
         sphere.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(modelSphere));
         object3DS.add(modelSphere);
         scene.getChildren().addAll(sphere);
+        if (pos != null) {
+            sphere.setTranslateX(pos.getX());
+            sphere.setTranslateY(pos.getY());
+            sphere.setTranslateZ(pos.getZ());
+        }
+
+        HistoryModel.addNewSphere(modelSphere);
         return modelSphere;
     }
 

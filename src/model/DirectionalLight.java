@@ -12,6 +12,14 @@ public class DirectionalLight extends Light {
     private Shape3D direction;
     private static int directionalLightCount = 0;
 
+    public DirectionalLight(Color color, Shape3D direction, String name) {
+        this(color, direction);
+        if (name != null) {
+            this.name = name;
+            directionalLightCount--;
+        }
+    }
+
     public DirectionalLight(Color color, Shape3D direction) {
         super("directional_light" + directionalLightCount, color);
         directionalLightCount++;
