@@ -4,18 +4,20 @@
 A simple 3D computer graphics software.
 
 This project is divided in two parts:
-* The GUI written in Java containing:
+* The GUI application written in Java consists of:
   * A WYSIWIG 3D editor to model your scenes
-  * An interface to create and edit `.mymel` scripts: MyMaya's own script language to generate scenes
-* The raytracer application written in C++
-  * Taking `.mymel` scripts as input and generating images
-  * It aims to be fast at generating those scenes
+    * Each scene can be saved to a `.scene` file for further image generation.
+  * It's own script language to create sequences of scenes: `mymel`.
+    * You can also save/load `mymel` script files.
+* The raytracer application written in C++:
+  * Taking `.scene` scripts as input and generating the corresponding images.
+
 
 ## Installation
 
 ### Dependencies
 
-* clang/gcc with c++14 compatibility
+* clang/gcc with C++14 compatibility
 * Java 8.0
 
 ### Building the raytracer
