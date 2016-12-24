@@ -35,8 +35,6 @@ public class ArgumentListType extends Type {
 
     @Override
     public String toString() {
-        return "ArgumentListType{" +
-                "types=" + types +
-                '}';
+        return "ArgumentListType{" + "types=" + types + '}';
     }
 }

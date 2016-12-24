@@ -9,7 +9,8 @@ import script.types.Type;
 public class DoubleToken extends NumberToken {
     private double d;
 
-    public DoubleToken(double d) {
+    public DoubleToken(double d, int lineNumber) {
+        super(lineNumber);
         this.d = d;
     }
 

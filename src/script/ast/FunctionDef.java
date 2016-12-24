@@ -15,10 +15,10 @@ public class FunctionDef extends AstNode {
     private ArgumentListDef arguments;
     private SeqExp exps;
 
-    public FunctionDef(String functionName, List<String> arguments, List<AstNode> exps) {
+    public FunctionDef(String functionName, List<String> arguments, SeqExp exps) {
         this.functionName = functionName;
         this.arguments = new ArgumentListDef(arguments);
-        this.exps = new SeqExp(exps);
+        this.exps = exps;
     }
 
     public String getFunctionName() {

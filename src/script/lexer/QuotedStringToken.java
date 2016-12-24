@@ -13,7 +13,8 @@ public class QuotedStringToken extends Token {
         return string;
     }
 
-    public QuotedStringToken(String quotedString) {
+    public QuotedStringToken(String quotedString, int lineNumber) {
+        super(lineNumber);
         this.string = quotedString.substring(1, quotedString.length() - 1);
     }
 
@@ -24,6 +25,6 @@ public class QuotedStringToken extends Token {
 
     @Override
     public String toString() {
-        return "QuotedStringToken{" + string + '}';
+        return "QuotedStringToken{line=" + lineNumber + " " + string + '}';
     }
 }

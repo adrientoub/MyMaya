@@ -6,7 +6,8 @@ import script.lexer.OperatorToken;
 import script.lexer.StringToken;
 import script.lexer.Token;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,6 +21,21 @@ import java.util.List;
 public class Parser {
     private int cursor;
     private List<Token> tokens;
+
+    private enum Keyword {
+        DO, THEN, TIMES;
+
+        public static Keyword getKeyword(String str) {
+            if (str.equals("do")) {
+                return DO;
+            } else if (str.equals("then")) {
+                return THEN;
+            } else if (str.equals("times")) {
+                return TIMES;
+            }
+            return null;
+        }
+    }
 
     private Object parseError(Token tok) {
         System.err.println("Parse error near token " + tok);
@@ -65,6 +81,16 @@ public class Parser {
             return (OperatorToken) parseError(operatorToken.getOperator(), op);
         }
         return operatorToken;
+    }
+
+    private StringToken getKeywordToken(Keyword keyword) {
+        StringToken stringToken = getStringToken();
+        if (stringToken == null) {
+            return null;
+        } else if (Keyword.getKeyword(stringToken.getString()) != keyword) {
+            return (StringToken) parseError(stringToken);
+        }
+        return stringToken;
     }
 
     private NewlineToken getNewlineToken() {
@@ -126,16 +152,54 @@ public class Parser {
             } else if (realToken.equals("function")) {
                 return parseFunctionDec();
             } else if (realToken.equals("if")) {
-                return new IfExp();
+                return parseIfExp();
             } else if (realToken.equals("while")) {
                 return new WhileExp();
             } else {
                 return parseCallExp(realToken);
             }
         } else {
-            System.err.println("Parse error near token `" + token + "`");
+            return (AstNode) parseError(token);
+        }
+    }
+
+    private IfExp parseIfExp() {
+        BooleanExp booleanExp = parseBooleanExp();
+        Token t = getKeywordToken(Keyword.THEN);
+        if (t == null) {
             return null;
         }
+        cursor++;
+
+        SeqExp ifClause = parseCompoundList("else", "end");
+        if (ifClause == null) {
+            return null;
+        }
+        StringToken stringToken = getStringToken();
+        if (stringToken == null) {
+            return null;
+        }
+        cursor++;
+
+        SeqExp elseClause = null;
+        if (stringToken.getString().equals("else")) {
+            elseClause = parseCompoundList("end");
+            if (elseClause == null) {
+                return null;
+            }
+        }
+
+        return new IfExp(booleanExp, ifClause, elseClause);
+    }
+
+    private BooleanExp parseBooleanExp() {
+        StringToken str = getStringToken();
+        // TODO: properly handle boolean exps
+        String token = str.getString();
+        if (token.equals("true") || token.equals("false")) {
+            return new BooleanExp(token.equals("true"));
+        }
+        return null;
     }
 
     private AstNode parseVarDef() {
@@ -175,6 +239,25 @@ public class Parser {
         return seq;
     }
 
+    private SeqExp parseCompoundList(String... delimiters) {
+        List<AstNode> exps = new ArrayList<>();
+
+        while (cursor < tokens.size()) {
+            Token tok = getToken();
+            if (tok instanceof StringToken) {
+                for (String delimiter: delimiters) {
+                    if (((StringToken) tok).getString().equals(delimiter)) {
+                        cursor--;
+                        return new SeqExp(exps);
+                    }
+                }
+            }
+            exps.add(parseExp(tok));
+        }
+
+        return null;
+    }
+
     private AstNode parseFunctionDec() {
         StringToken functionNameToken = getStringToken();
         if (functionNameToken == null) {
@@ -184,27 +267,15 @@ public class Parser {
         if (arguments == null) {
             return null;
         }
-        List<AstNode> exps = new ArrayList<>();
 
-        Token tok = null;
-
-        while (cursor < tokens.size()) {
-            tok = getToken();
-            if (tok instanceof StringToken && ((StringToken) tok).getString().equals("end"))
-                break;
-
-            exps.add(parseExp(tok));
-        }
-
-        if (cursor >= tokens.size()) {
+        SeqExp seqExp = parseCompoundList("end");
+        if (seqExp == null) {
             return null;
+        } else {
+            cursor += 2;
         }
 
-        if (((StringToken) tok).getString().equals("end")) {
-            cursor++;
-        }
-
-        return new FunctionDef(functionNameToken.getString(), arguments, exps);
+        return new FunctionDef(functionNameToken.getString(), arguments, seqExp);
     }
 
     private AstNode parseCallExp(String functionName) {

@@ -48,7 +48,7 @@ There is no scoping in the language. Any declared variable can be accessed from 
 
 To declare a function use the following syntax
 ```
-function my_function parameter1 parameter2 ... parametern do
+function my_function parameter1 parameter2 ... parametern
   # code
 end
 ```

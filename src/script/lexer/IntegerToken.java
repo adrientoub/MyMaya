@@ -9,7 +9,8 @@ import script.types.Type;
 public class IntegerToken extends NumberToken {
     private int i;
 
-    public IntegerToken(int i) {
+    public IntegerToken(int i, int lineNumber) {
+        super(lineNumber);
         this.i = i;
     }
 

@@ -32,7 +32,7 @@
 - [x] Add ability to change light color
 
 ### Step 2
-- [ ] Add scripting language
+- [x] Add scripting language
 - [x] Add history
 - [ ] Launch raytracer
 

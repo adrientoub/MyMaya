@@ -23,14 +23,13 @@ public class CustomFunction extends Function {
     @Override
     public void apply(List<Token> arguments) {
         List<String> variables = getArguments().getVariableNames();
-        Map<String, Token> oldVariablesMap = new HashMap<>(Execution.getVariablesMap());
-        Map<String, Token> vars = Execution.getVariablesMap();
+        Execution.newScope();
 
         for (int i = 0; i < variables.size(); i++) {
-            vars.put(variables.get(i), arguments.get(i));
+            Execution.getVariablesMap().put(variables.get(i), arguments.get(i));
         }
         exps.accept(Execution.getInstance());
 
-        Execution.setVariablesMap(oldVariablesMap);
+        Execution.endScope();
     }
 }

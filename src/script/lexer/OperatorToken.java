@@ -29,7 +29,8 @@ public class OperatorToken extends Token {
 
     private Operator operator;
 
-    public OperatorToken(Operator operator) {
+    public OperatorToken(Operator operator, int lineNumber) {
+        super(lineNumber);
         this.operator = operator;
     }
 

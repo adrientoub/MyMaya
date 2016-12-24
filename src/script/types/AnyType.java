@@ -6,7 +6,7 @@ package script.types;
 public class AnyType extends Type {
     private static AnyType instance = new AnyType();
 
-    protected AnyType() {
+    private AnyType() {
     }
 
     @Override

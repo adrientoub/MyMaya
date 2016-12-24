@@ -8,6 +8,12 @@ import script.types.Type;
  * Created by Adrien on 19/12/2016.
  */
 public class BooleanExp extends AstNode {
+    boolean value;
+
+    public BooleanExp(boolean value) {
+        this.value = value;
+    }
+
     @Override
     public Type getType() {
         return BooleanType.getInstance();
@@ -16,5 +22,10 @@ public class BooleanExp extends AstNode {
     @Override
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+
+    public boolean getValue() {
+        return value;
     }
 }
