@@ -136,6 +136,11 @@ Color change allows to edit an object color.
 color_change obj_name r g b
 ```
 
+Exec allows to launch a script with the name path
+```
+exec path
+```
+
 Save allows to save into the file with the name path
 ```
 save path

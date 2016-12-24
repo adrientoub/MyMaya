@@ -29,6 +29,7 @@ public class Execution extends Visitor {
             functions.put("rename", new RenameFunction());
             functions.put("translate", new TranslateFunction());
             functions.put("scale", new ScaleFunction());
+            functions.put("exec", new LaunchScriptFunction());
             functionScopes.addLast(functions);
         }
         return functionScopes.getLast();
