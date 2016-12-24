@@ -5,8 +5,20 @@ import java.io.*;
 /**
  * Created by Adrien on 08/12/2016.
  */
+
 public class ExportSceneModel {
+    private static String lastFilename = null;
+    private static int count = 0;
+
     public static void exportScene(String filename) {
+        if (filename != null) {
+            lastFilename = filename;
+            count = 0;
+        } else {
+            filename = lastFilename + count;
+            count++;
+        }
+
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
             bw.write("screen 800 600");

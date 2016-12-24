@@ -30,6 +30,8 @@ public class Execution extends Visitor {
             functions.put("translate", new TranslateFunction());
             functions.put("scale", new ScaleFunction());
             functions.put("exec", new LaunchScriptFunction());
+            functions.put("save", new SaveFunction());
+            functions.put("save_next", new SaveNextFunction());
             functions.put("sphere", new ObjectFunction(ObjectFunction.ObjectType.SPHERE));
             functions.put("point_light", new ObjectFunction(ObjectFunction.ObjectType.POINT_LIGHT));
             functions.put("directional_light", new ObjectFunction(ObjectFunction.ObjectType.DIRECTIONAL_LIGHT));

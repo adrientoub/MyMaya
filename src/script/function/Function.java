@@ -11,6 +11,10 @@ import java.util.List;
 public abstract class Function {
     private ArgumentListDef arguments;
 
+    public Function() {
+        this.arguments = new ArgumentListDef();
+    }
+
     public Function(ArgumentListDef arguments) {
         this.arguments = arguments;
     }

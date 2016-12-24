@@ -35,5 +35,4 @@ public class LaunchScriptFunction extends Function {
             e.printStackTrace();
         }
     }
-
 }
