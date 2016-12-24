@@ -1,6 +1,5 @@
 package script;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import script.ast.*;
 
 /**
@@ -19,12 +18,17 @@ public abstract class Visitor {
         }
     }
 
+    public void visit(LoopExp loopExp) {
+    }
+
+    public void visit(NumericExp numericExp) {
+    }
+
     public void visit(VarDef varDef) {
     }
 
     public void visit(CallExp callExp) {
     }
-
 
     public void visit(IfExp ifExp) {
     }

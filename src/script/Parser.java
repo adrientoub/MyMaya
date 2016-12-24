@@ -1,10 +1,7 @@
 package script;
 
 import script.ast.*;
-import script.lexer.NewlineToken;
-import script.lexer.OperatorToken;
-import script.lexer.StringToken;
-import script.lexer.Token;
+import script.lexer.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -153,8 +150,10 @@ public class Parser {
                 return parseFunctionDec();
             } else if (realToken.equals("if")) {
                 return parseIfExp();
+            } else if (realToken.equals("loop")) {
+                return parseLoopExp();
             } else if (realToken.equals("while")) {
-                return new WhileExp();
+                return parseWhileExp();
             } else {
                 return parseCallExp(realToken);
             }
@@ -162,6 +161,56 @@ public class Parser {
             return (AstNode) parseError(token);
         }
     }
+
+    private LoopExp parseLoopExp() {
+        NumericExp numericExp = parseNumericExp();
+        if (numericExp == null) {
+            return null;
+        }
+        Token t = getKeywordToken(Keyword.TIMES);
+        if (t == null) {
+            return null;
+        }
+        cursor++;
+
+        SeqExp body = parseCompoundList("end");
+        if (body == null) {
+            return null;
+        }
+        cursor += 2;
+
+        return new LoopExp(numericExp, body);
+    }
+
+    private NumericExp parseNumericExp() {
+        // TODO: handle complex numeric exp
+        Token t = getToken();
+        if (t instanceof NumberToken) {
+            return new NumericExp(((NumberToken) t).getValue());
+        }
+        return null;
+    }
+
+    private WhileExp parseWhileExp() {
+        BooleanExp booleanExp = parseBooleanExp();
+        if (booleanExp == null) {
+            return null;
+        }
+        Token t = getKeywordToken(Keyword.DO);
+        if (t == null) {
+            return null;
+        }
+        cursor++;
+
+        SeqExp body = parseCompoundList("end");
+        if (body == null) {
+            return null;
+        }
+        cursor += 2;
+
+        return new WhileExp(booleanExp, body);
+    }
+
 
     private IfExp parseIfExp() {
         BooleanExp booleanExp = parseBooleanExp();
@@ -187,6 +236,7 @@ public class Parser {
             if (elseClause == null) {
                 return null;
             }
+            cursor += 2;
         }
 
         return new IfExp(booleanExp, ifClause, elseClause);

@@ -66,12 +66,28 @@ public class Execution extends Visitor {
     }
 
     @Override
+    public void visit(LoopExp loopExp) {
+        loopExp.getNumericExp().accept(this);
+        int times = loopExp.getNumericExp().getValue();
+        for (int i = 0; i < times; i++) {
+            loopExp.getBody().accept(this);
+        }
+    }
+
+    @Override
+    public void visit(NumericExp numericExp) {
+        // TODO: do something for complex numeric exp
+    }
+
+    @Override
     public void visit(IfExp ifExp) {
         ifExp.getBooleanExp().accept(this);
         if (ifExp.getBooleanExp().getValue()) {
             ifExp.getIfClause().accept(this);
         } else {
-            ifExp.getElseClause().accept(this);
+            if (ifExp.getElseClause() != null) {
+                ifExp.getElseClause().accept(this);
+            }
         }
     }
 
