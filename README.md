@@ -49,7 +49,7 @@ java Main
 
 ### Run the Raytracer application
 
-When you created a `.mymel` script with the GUI application, just run `./raytracer/_build/raytracer input.mymel out.ppm`. This will generate a ppm file. To convert it to jpg: `convert out.ppm out.jpg`.
+When you created a `.scene` file with the GUI application, just run `./raytracer/_build/raytracer your_input.scene out.ppm`. This will generate a [ppm](https://fr.wikipedia.org/wiki/Portable_pixmap) file. To convert it to jpg, type: `convert out.ppm out.jpg`.
 
 ## GUI Commands
 
