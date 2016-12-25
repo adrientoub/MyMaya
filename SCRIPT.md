@@ -6,7 +6,7 @@
 
 ## Symbols
 
-    '.', '+', '-', '*', '/', '==', '!=', '<', '<=', '>', '>=' and ':='
+    '.', '+', '-', '\*', '/', '==', '!=', '<', '<=', '>', '>=' and ':='
 
 ## White characters
 
@@ -29,16 +29,91 @@ Identifiers can contain any UTF-8 character. They should not contain any Keyword
 There are integers and doubles, doubles always contain a point. Numbers can be positive or negative.
 Doing operations mixing both integers and doubles will end up with a double.
 
-    integer ::= digit { digit }
-    double ::= digit { digit } . { digit }
-
-    op ::= + | - | * | / | == | != | > | < | >= | <=
-
 ## Strings
 
 A string constant is a possibly empty series of characters enclosed between double quotes.
 
+## Grammar symbols
+
+```
+newline       = /* the Unicode code point U+000A */ .
+unicode_char  = /* an arbitrary Unicode code point except newline */ .
+
+DIGIT       ::= [0-9]
+SIGN        ::= '+' | '-' | ''
+INTEGER     ::= SIGN DIGIT { DIGIT }
+DOUBLE      ::= SIGN DIGIT { DIGIT } . { DIGIT }
+BOOLEAN     ::= 'true' | 'false'
+QUOTED_WORD ::= '"' { unicode_char } '"'
+WORD        ::= unicode_char { unicode_char }
+```
+
 # Grammar
+
+## LL Grammar
+
+```
+input: command '\n'
+      | command EOF
+      | '\n'
+      | EOF
+
+command: function_call
+      | rule_for
+      | rule_while
+      | rule_loop
+      | rule_if
+      | funcdec
+      | vardec
+
+function_call: WORD (parameters)+
+
+vardec: 'var' WORD ':=' parameter
+
+parameter: WORD
+         | QUOTED_WORD
+         | INTEGER
+         | DOUBLE
+         | BOOLEAN
+
+value: INTEGER
+     | DOUBLE
+     | '-' value
+     | value '+' value
+     | value '-' value
+     | value '*' value
+     | value '%' value
+     | value '/' value
+     | '(' value ')'
+
+boolean: BOOLEAN
+       | boolean '||' boolean
+       | boolean '&&' boolean
+       | boolean '==' boolean
+       | boolean '!=' boolean
+       | '!' boolean
+       | '(' boolean ')'
+       | value '==' value
+       | value '!=' value
+       | value '>=' value
+       | value '>' value
+       | value '<' value
+       | value '<=' value
+
+funcdec: 'function' (WORD)+ ('\n')+ command_list 'end'
+
+rule_while: 'while' boolean do_group
+
+rule_loop: 'loop' value 'times' ('\n')+ command_list 'end'
+
+rule_if: 'if' boolean 'then' ('\n')+ command_list [else_clause] 'end'
+
+else_clause: 'else' ('\n')+ command_list
+
+do_group: 'do' ('\n')+ command_list 'end'
+
+command_list: ((command ('\n')+)*
+```
 
 ## Scope
 
