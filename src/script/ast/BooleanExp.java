@@ -8,7 +8,7 @@ import script.types.Type;
  * Created by Adrien on 19/12/2016.
  */
 public class BooleanExp extends AstNode {
-    boolean value;
+    protected boolean value;
 
     public BooleanExp(boolean value) {
         this.value = value;
@@ -24,8 +24,16 @@ public class BooleanExp extends AstNode {
         v.visit(this);
     }
 
-
     public boolean getValue() {
         return value;
+    }
+
+    public void setValue(boolean value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "BooleanExp{" + value + '}';
     }
 }

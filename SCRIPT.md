@@ -58,13 +58,12 @@ input: command '\n'
       | '\n'
       | EOF
 
-command: function_call
-      | rule_for
-      | rule_while
+command: rule_while
       | rule_loop
       | rule_if
       | funcdec
       | vardec
+      | function_call
 
 function_call: WORD (parameters)+
 

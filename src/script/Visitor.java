@@ -33,6 +33,22 @@ public abstract class Visitor {
     public void visit(IfExp ifExp) {
     }
 
+    public void visit(WhileExp whileExp) {
+        whileExp.getBooleanExp().accept(this);
+        whileExp.getBody().accept(this);
+    }
+
+    public void visit(BooleanOpExp booleanOpExp) {
+        booleanOpExp.getLhs().accept(this);
+        booleanOpExp.getRhs().accept(this);
+    }
+
+    public void visit(BooleanNameExp booleanNameExp) {
+    }
+
+    public void visit(BooleanNotExp booleanNotExp) {
+    }
+
     public void visit(BooleanExp booleanExp) {
     }
 

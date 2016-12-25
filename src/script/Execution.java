@@ -2,6 +2,7 @@ package script;
 
 import script.ast.*;
 import script.function.*;
+import script.lexer.BooleanToken;
 import script.lexer.StringToken;
 import script.lexer.Token;
 
@@ -96,9 +97,57 @@ public class Execution extends Visitor {
         }
     }
 
+    public void visit(WhileExp whileExp) {
+        while (true) {
+            whileExp.getBooleanExp().accept(this);
+            if (!whileExp.getBooleanExp().getValue()) {
+                break;
+            }
+
+            whileExp.getBody().accept(this);
+        }
+    }
+
     @Override
     public void visit(BooleanExp booleanExp) {
-        // TODO: do something when booleanExp is composed and store result in value
+    }
+
+    @Override
+    public void visit(BooleanNotExp booleanNotExp) {
+        booleanNotExp.getBooleanExp().accept(this);
+        booleanNotExp.setValue(!booleanNotExp.getBooleanExp().getValue());
+    }
+
+    @Override
+    public void visit(BooleanOpExp booleanOpExp) {
+        booleanOpExp.getLhs().accept(this);
+        booleanOpExp.getRhs().accept(this);
+        switch (booleanOpExp.getOp()) {
+            case OR:
+                booleanOpExp.setValue(booleanOpExp.getLhs().getValue() || booleanOpExp.getRhs().getValue());
+                break;
+            case AND:
+                booleanOpExp.setValue(booleanOpExp.getLhs().getValue() && booleanOpExp.getRhs().getValue());
+                break;
+            case EQUAL:
+                booleanOpExp.setValue(booleanOpExp.getLhs().getValue() == booleanOpExp.getRhs().getValue());
+                break;
+            case DIFFERENT:
+                booleanOpExp.setValue(booleanOpExp.getLhs().getValue() != booleanOpExp.getRhs().getValue());
+                break;
+        }
+    }
+
+    @Override
+    public void visit(BooleanNameExp booleanNameExp) {
+         Token tok = getVariablesMap().get(booleanNameExp.getName());
+         if (tok == null) {
+             System.err.println("No variable named " + booleanNameExp.getName());
+         } else if (tok instanceof BooleanToken) {
+             booleanNameExp.setValue(((BooleanToken) tok).isValue());
+         } else {
+             System.err.println("The variable named " + booleanNameExp.getName() + " is not a boolean.");
+         }
     }
 
     private Token getVariable(StringToken token) {

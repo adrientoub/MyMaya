@@ -144,18 +144,19 @@ public class Parser {
         if (token instanceof StringToken) {
             StringToken stringToken = (StringToken) token;
             String realToken = stringToken.getString();
-            if (realToken.equals("var")) {
-                return parseVarDef();
-            } else if (realToken.equals("function")) {
-                return parseFunctionDec();
-            } else if (realToken.equals("if")) {
-                return parseIfExp();
-            } else if (realToken.equals("loop")) {
-                return parseLoopExp();
-            } else if (realToken.equals("while")) {
-                return parseWhileExp();
-            } else {
-                return parseCallExp(realToken);
+            switch (realToken) {
+                case "var":
+                    return parseVarDef();
+                case "function":
+                    return parseFunctionDec();
+                case "if":
+                    return parseIfExp();
+                case "loop":
+                    return parseLoopExp();
+                case "while":
+                    return parseWhileExp();
+                default:
+                    return parseCallExp(realToken);
             }
         } else {
             return (AstNode) parseError(token);
@@ -173,7 +174,7 @@ public class Parser {
         }
         cursor++;
 
-        SeqExp body = parseCompoundList("end");
+        SeqExp body = parseCommandList("end");
         if (body == null) {
             return null;
         }
@@ -202,7 +203,7 @@ public class Parser {
         }
         cursor++;
 
-        SeqExp body = parseCompoundList("end");
+        SeqExp body = parseCommandList("end");
         if (body == null) {
             return null;
         }
@@ -214,13 +215,16 @@ public class Parser {
 
     private IfExp parseIfExp() {
         BooleanExp booleanExp = parseBooleanExp();
+        if (booleanExp == null) {
+            return null;
+        }
         Token t = getKeywordToken(Keyword.THEN);
         if (t == null) {
             return null;
         }
         cursor++;
 
-        SeqExp ifClause = parseCompoundList("else", "end");
+        SeqExp ifClause = parseCommandList("else", "end");
         if (ifClause == null) {
             return null;
         }
@@ -232,7 +236,7 @@ public class Parser {
 
         SeqExp elseClause = null;
         if (stringToken.getString().equals("else")) {
-            elseClause = parseCompoundList("end");
+            elseClause = parseCommandList("end");
             if (elseClause == null) {
                 return null;
             }
@@ -243,13 +247,28 @@ public class Parser {
     }
 
     private BooleanExp parseBooleanExp() {
-        StringToken str = getStringToken();
-        // TODO: properly handle boolean exps
-        String token = str.getString();
-        if (token.equals("true") || token.equals("false")) {
-            return new BooleanExp(token.equals("true"));
+        List<String> booleanExpTokens = new ArrayList<>();
+
+        int i = cursor;
+        for (; i < tokens.size(); i++) {
+            Token t = tokens.get(i);
+            if (t instanceof StringToken) {
+                StringToken stringToken = (StringToken) t;
+                if (stringToken.getString().equals("do") || stringToken.getString().equals("then")) {
+                    break;
+                }
+                booleanExpTokens.add(stringToken.getString());
+            } else {
+                break;
+            }
         }
-        return null;
+
+        List<String> tokens = ToPolish.convert(booleanExpTokens);
+        if (tokens == null) {
+            return null;
+        }
+        cursor = i;
+        return ArithmeticParser.parse(tokens);
     }
 
     private AstNode parseVarDef() {
@@ -289,7 +308,7 @@ public class Parser {
         return seq;
     }
 
-    private SeqExp parseCompoundList(String... delimiters) {
+    private SeqExp parseCommandList(String... delimiters) {
         List<AstNode> exps = new ArrayList<>();
 
         while (cursor < tokens.size()) {
@@ -318,7 +337,7 @@ public class Parser {
             return null;
         }
 
-        SeqExp seqExp = parseCompoundList("end");
+        SeqExp seqExp = parseCommandList("end");
         if (seqExp == null) {
             return null;
         } else {

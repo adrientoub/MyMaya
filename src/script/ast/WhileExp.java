@@ -33,4 +33,9 @@ public class WhileExp extends AstNode {
     public void accept(Visitor v) {
         v.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return "WhileExp{" + "booleanExp=" + booleanExp + ", body=" + body + '}';
+    }
 }
