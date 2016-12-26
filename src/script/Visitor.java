@@ -33,6 +33,9 @@ public abstract class Visitor {
     public void visit(NumericExp numericExp) {
     }
 
+    public void visit(BooleanOpNumericExp booleanOpNumericExp) {
+    }
+
     public void visit(NumericOpExp numericOpExp) {
     }
 

@@ -157,6 +157,20 @@ public class Execution extends Visitor {
     }
 
     @Override
+    public void visit(BooleanOpNumericExp booleanOpNumericExp) {
+        booleanOpNumericExp.getLhs().accept(this);
+        booleanOpNumericExp.getRhs().accept(this);
+        switch (booleanOpNumericExp.getOp()) {
+            case EQUAL:
+                booleanOpNumericExp.setValue(booleanOpNumericExp.getLhs().getValue() == booleanOpNumericExp.getRhs().getValue());
+                break;
+            case DIFFERENT:
+                booleanOpNumericExp.setValue(booleanOpNumericExp.getLhs().getValue() != booleanOpNumericExp.getRhs().getValue());
+                break;
+        }
+    }
+
+    @Override
     public void visit(BooleanNameExp booleanNameExp) {
          Token tok = getVariablesMap().get(booleanNameExp.getName());
          if (tok == null) {
