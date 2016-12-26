@@ -40,11 +40,11 @@ public class Lexer {
                     String str = scanner.next();
                     if (str.equals(":=")) {
                         tokens.add(new OperatorToken(OperatorToken.Operator.ASSIGN, line));
-                    } else if (str.equals("+")) {
+                    } /*else if (str.equals("+")) {
                         tokens.add(new OperatorToken(OperatorToken.Operator.PLUS, line));
                     } else if (str.equals("-")) {
                         tokens.add(new OperatorToken(OperatorToken.Operator.MINUS, line));
-                    } else {
+                    } */else {
                         tokens.add(new StringToken(str, line));
                     }
                 }

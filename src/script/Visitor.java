@@ -21,9 +21,6 @@ public abstract class Visitor {
     public void visit(LoopExp loopExp) {
     }
 
-    public void visit(NumericExp numericExp) {
-    }
-
     public void visit(VarDef varDef) {
     }
 
@@ -31,6 +28,12 @@ public abstract class Visitor {
     }
 
     public void visit(IfExp ifExp) {
+    }
+
+    public void visit(NumericExp numericExp) {
+    }
+
+    public void visit(NumericOpExp numericOpExp) {
     }
 
     public void visit(WhileExp whileExp) {

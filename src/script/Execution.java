@@ -74,15 +74,10 @@ public class Execution extends Visitor {
     @Override
     public void visit(LoopExp loopExp) {
         loopExp.getNumericExp().accept(this);
-        int times = loopExp.getNumericExp().getValue();
+        int times = (int) loopExp.getNumericExp().getValue();
         for (int i = 0; i < times; i++) {
             loopExp.getBody().accept(this);
         }
-    }
-
-    @Override
-    public void visit(NumericExp numericExp) {
-        // TODO: do something for complex numeric exp
     }
 
     @Override
@@ -105,6 +100,29 @@ public class Execution extends Visitor {
             }
 
             whileExp.getBody().accept(this);
+        }
+    }
+
+    @Override
+    public void visit(NumericOpExp numericOpExp) {
+        numericOpExp.getLhs().accept(this);
+        numericOpExp.getRhs().accept(this);
+        switch (numericOpExp.getOp()) {
+            case PLUS:
+                numericOpExp.setValue(numericOpExp.getLhs().getValue() + numericOpExp.getRhs().getValue());
+                break;
+            case MINUS:
+                numericOpExp.setValue(numericOpExp.getLhs().getValue() - numericOpExp.getRhs().getValue());
+                break;
+            case TIMES:
+                numericOpExp.setValue(numericOpExp.getLhs().getValue() * numericOpExp.getRhs().getValue());
+                break;
+            case DIVIDE:
+                numericOpExp.setValue(numericOpExp.getLhs().getValue() / numericOpExp.getRhs().getValue());
+                break;
+            case MODULUS:
+                numericOpExp.setValue(numericOpExp.getLhs().getValue() % numericOpExp.getRhs().getValue());
+                break;
         }
     }
 

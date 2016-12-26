@@ -1,31 +1,30 @@
 package script.ast;
 
 import script.Visitor;
-import script.types.DoubleType;
+import script.types.IntegerType;
 import script.types.Type;
 
 /**
- * Created by Adrien on 19/12/2016.
+ * Created by Adrien on 26/12/2016.
  */
-public class NumericExp extends AstNode {
-    // TODO: handle both int and double
-    int value;
+public class NumericExp extends ArithmeticExp {
+    protected double value;
 
-    public NumericExp(int value) {
+    public NumericExp(double value) {
         this.value = value;
     }
 
-    public NumericExp(double value) {
-        this.value = (int) value;
+    public double getValue() {
+        return value;
     }
 
-    public int getValue() {
-        return value;
+    public void setValue(double value) {
+        this.value = value;
     }
 
     @Override
     public Type getType() {
-        return DoubleType.getInstance();
+        return IntegerType.getInstance();
     }
 
     @Override

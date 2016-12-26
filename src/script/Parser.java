@@ -184,12 +184,41 @@ public class Parser {
     }
 
     private NumericExp parseNumericExp() {
-        // TODO: handle complex numeric exp
-        Token t = getToken();
-        if (t instanceof NumberToken) {
-            return new NumericExp(((NumberToken) t).getValue());
+        ArithmeticExp arithmeticExp = parseArithmeticExp();
+        if (arithmeticExp instanceof NumericExp) {
+            return (NumericExp) arithmeticExp;
+        } else {
+            System.err.println("Error: not a NumericExp");
+            return null;
         }
-        return null;
+    }
+
+    private ArithmeticExp parseArithmeticExp() {
+        List<String> numericExpTokens = new ArrayList<>();
+
+        int i = cursor;
+        for (; i < tokens.size(); i++) {
+            Token t = tokens.get(i);
+            if (t instanceof StringToken) {
+                StringToken stringToken = (StringToken) t;
+                if (stringToken.getString().equals("do") || stringToken.getString().equals("then")
+                        || stringToken.getString().equals("times")) {
+                    break;
+                }
+                numericExpTokens.add(stringToken.getString());
+            } else if (t instanceof NumberToken) {
+                numericExpTokens.add(String.valueOf(((NumberToken) t).getValue()));
+            } else {
+                break;
+            }
+        }
+
+        List<String> tokens = ToPolish.convert(numericExpTokens);
+        if (tokens == null) {
+            return null;
+        }
+        cursor = i;
+        return ArithmeticParser.parse(tokens);
     }
 
     private WhileExp parseWhileExp() {
@@ -247,28 +276,13 @@ public class Parser {
     }
 
     private BooleanExp parseBooleanExp() {
-        List<String> booleanExpTokens = new ArrayList<>();
-
-        int i = cursor;
-        for (; i < tokens.size(); i++) {
-            Token t = tokens.get(i);
-            if (t instanceof StringToken) {
-                StringToken stringToken = (StringToken) t;
-                if (stringToken.getString().equals("do") || stringToken.getString().equals("then")) {
-                    break;
-                }
-                booleanExpTokens.add(stringToken.getString());
-            } else {
-                break;
-            }
-        }
-
-        List<String> tokens = ToPolish.convert(booleanExpTokens);
-        if (tokens == null) {
+        ArithmeticExp arithmeticExp = parseArithmeticExp();
+        if (arithmeticExp instanceof BooleanExp) {
+            return (BooleanExp) arithmeticExp;
+        } else {
+            System.err.println("Wrong expression type: expected Boolean, got Numeric");
             return null;
         }
-        cursor = i;
-        return ArithmeticParser.parse(tokens);
     }
 
     private AstNode parseVarDef() {

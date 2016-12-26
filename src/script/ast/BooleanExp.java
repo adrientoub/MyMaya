@@ -7,7 +7,7 @@ import script.types.Type;
 /**
  * Created by Adrien on 19/12/2016.
  */
-public class BooleanExp extends AstNode {
+public class BooleanExp extends ArithmeticExp {
     protected boolean value;
 
     public BooleanExp(boolean value) {
