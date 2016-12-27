@@ -22,11 +22,11 @@ public class NumericOpExp extends NumericExp {
         }
     }
 
-    private NumericExp lhs;
-    private NumericExp rhs;
+    private ArithmeticExp lhs;
+    private ArithmeticExp rhs;
     private Operator op;
 
-    public NumericOpExp(NumericExp lhs, NumericExp rhs, Operator op) {
+    public NumericOpExp(ArithmeticExp lhs, ArithmeticExp rhs, Operator op) {
         super(0);
         this.lhs = lhs;
         this.rhs = rhs;
@@ -48,11 +48,11 @@ public class NumericOpExp extends NumericExp {
         v.visit(this);
     }
 
-    public NumericExp getLhs() {
+    public ArithmeticExp getLhs() {
         return lhs;
     }
 
-    public NumericExp getRhs() {
+    public ArithmeticExp getRhs() {
         return rhs;
     }
 

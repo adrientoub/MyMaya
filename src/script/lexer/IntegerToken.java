@@ -28,4 +28,8 @@ public class IntegerToken extends NumberToken {
     public double getValue() {
         return i;
     }
+
+    public int getIntegerValue() {
+        return i;
+    }
 }

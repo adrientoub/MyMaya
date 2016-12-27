@@ -26,7 +26,7 @@ public class CustomFunction extends Function {
         Execution.newScope();
 
         for (int i = 0; i < variables.size(); i++) {
-            Execution.getVariablesMap().put(variables.get(i), arguments.get(i));
+            Execution.setVariable(variables.get(i), arguments.get(i));
         }
         exps.accept(Execution.getInstance());
 

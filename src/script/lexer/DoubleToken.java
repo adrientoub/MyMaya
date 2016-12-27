@@ -24,6 +24,7 @@ public class DoubleToken extends NumberToken {
         return "DoubleToken{" + d + '}';
     }
 
+    @Override
     public double getValue() {
         return d;
     }

@@ -206,8 +206,10 @@ public class Parser {
                     break;
                 }
                 numericExpTokens.add(stringToken.getString());
-            } else if (t instanceof NumberToken) {
-                numericExpTokens.add(String.valueOf(((NumberToken) t).getValue()));
+            } else if (t instanceof IntegerToken) {
+                numericExpTokens.add(String.valueOf(((IntegerToken) t).getIntegerValue()));
+            } else if (t instanceof DoubleToken) {
+                numericExpTokens.add(String.valueOf(((DoubleToken) t).getValue()));
             } else {
                 break;
             }

@@ -33,9 +33,6 @@ public abstract class Visitor {
     public void visit(NumericExp numericExp) {
     }
 
-    public void visit(BooleanOpNumericExp booleanOpNumericExp) {
-    }
-
     public void visit(NumericOpExp numericOpExp) {
     }
 
@@ -49,7 +46,7 @@ public abstract class Visitor {
         booleanOpExp.getRhs().accept(this);
     }
 
-    public void visit(BooleanNameExp booleanNameExp) {
+    public void visit(NameExp nameExp) {
     }
 
     public void visit(BooleanNotExp booleanNotExp) {

@@ -2,9 +2,10 @@ package script;
 
 import script.ast.*;
 import script.function.*;
-import script.lexer.BooleanToken;
-import script.lexer.StringToken;
-import script.lexer.Token;
+import script.lexer.*;
+import script.types.BooleanType;
+import script.types.IntegerType;
+import script.types.NumericType;
 
 import java.util.*;
 
@@ -41,7 +42,11 @@ public class Execution extends Visitor {
         return functionScopes.getLast();
     }
 
-    public static Map<String, Token> getVariablesMap() {
+    public static void setVariable(String name, Token value) {
+        getVariablesMap().put(name, value);
+    }
+
+    private static Map<String, Token> getVariablesMap() {
         if (variableScopes.isEmpty()) {
             variableScopes.addLast(new HashMap<>());
         }
@@ -107,22 +112,14 @@ public class Execution extends Visitor {
     public void visit(NumericOpExp numericOpExp) {
         numericOpExp.getLhs().accept(this);
         numericOpExp.getRhs().accept(this);
-        switch (numericOpExp.getOp()) {
-            case PLUS:
-                numericOpExp.setValue(numericOpExp.getLhs().getValue() + numericOpExp.getRhs().getValue());
-                break;
-            case MINUS:
-                numericOpExp.setValue(numericOpExp.getLhs().getValue() - numericOpExp.getRhs().getValue());
-                break;
-            case TIMES:
-                numericOpExp.setValue(numericOpExp.getLhs().getValue() * numericOpExp.getRhs().getValue());
-                break;
-            case DIVIDE:
-                numericOpExp.setValue(numericOpExp.getLhs().getValue() / numericOpExp.getRhs().getValue());
-                break;
-            case MODULUS:
-                numericOpExp.setValue(numericOpExp.getLhs().getValue() % numericOpExp.getRhs().getValue());
-                break;
+        if (numericOpExp.getLhs().getType() instanceof NumericType && numericOpExp.getRhs().getType() instanceof NumericType) {
+            if (numericOpExp.getLhs().getType() instanceof IntegerType && numericOpExp.getLhs().getType() instanceof IntegerType) {
+                visitIntegerOpExp(numericOpExp);
+            } else /* If the expressions are different types or double type */ {
+                visitDoubleOpExp(numericOpExp);
+            }
+        } else {
+            System.err.println("Error: Trying to use operator " + numericOpExp.getOp() + " on expressions not numeric");
         }
     }
 
@@ -136,56 +133,199 @@ public class Execution extends Visitor {
         booleanNotExp.setValue(!booleanNotExp.getBooleanExp().getValue());
     }
 
-    @Override
-    public void visit(BooleanOpExp booleanOpExp) {
-        booleanOpExp.getLhs().accept(this);
-        booleanOpExp.getRhs().accept(this);
+    private int getIntegerValue(ArithmeticExp arithmeticExp) {
+        if (arithmeticExp instanceof NameExp) {
+            return ((IntegerToken) getVariable(((NameExp) arithmeticExp).getName())).getIntegerValue();
+        } else {
+            return (int) ((NumericExp) arithmeticExp).getValue();
+        }
+    }
+
+    private boolean getBooleanValue(ArithmeticExp arithmeticExp) {
+        if (arithmeticExp instanceof NameExp) {
+            return ((BooleanToken) getVariable(((NameExp) arithmeticExp).getName())).getBooleanValue();
+        } else {
+            return ((BooleanExp) arithmeticExp).getValue();
+        }
+    }
+
+    private double getDoubleValue(ArithmeticExp arithmeticExp) {
+        if (arithmeticExp instanceof NameExp) {
+            Token var = getVariable(((NameExp) arithmeticExp).getName());
+            if (var instanceof DoubleToken) {
+                return ((DoubleToken) var).getValue();
+            } else {
+                return ((IntegerToken) var).getIntegerValue();
+            }
+        } else {
+            return ((NumericExp) arithmeticExp).getValue();
+        }
+    }
+
+    private void visitDoubleOpExp(NumericOpExp numericOpExp) {
+        double lhsDoubleValue = getDoubleValue(numericOpExp.getLhs());
+        double rhsDoubleValue = getDoubleValue(numericOpExp.getRhs());
+
+        switch (numericOpExp.getOp()) {
+            case PLUS:
+                numericOpExp.setValue(lhsDoubleValue + rhsDoubleValue);
+                break;
+            case MINUS:
+                numericOpExp.setValue(lhsDoubleValue - rhsDoubleValue);
+                break;
+            case TIMES:
+                numericOpExp.setValue(lhsDoubleValue * rhsDoubleValue);
+                break;
+            case DIVIDE:
+                numericOpExp.setValue(lhsDoubleValue / rhsDoubleValue);
+                break;
+            case MODULUS:
+                numericOpExp.setValue(lhsDoubleValue % rhsDoubleValue);
+                break;
+        }
+    }
+
+    private void visitIntegerOpExp(NumericOpExp numericOpExp) {
+        int lhsIntegerValue = getIntegerValue(numericOpExp.getLhs());
+        int rhsIntegerValue = getIntegerValue(numericOpExp.getRhs());
+
+        switch (numericOpExp.getOp()) {
+            case PLUS:
+                numericOpExp.setValue(lhsIntegerValue + rhsIntegerValue);
+                break;
+            case MINUS:
+                numericOpExp.setValue(lhsIntegerValue - rhsIntegerValue);
+                break;
+            case TIMES:
+                numericOpExp.setValue(lhsIntegerValue * rhsIntegerValue);
+                break;
+            case DIVIDE:
+                numericOpExp.setValue(lhsIntegerValue / rhsIntegerValue);
+                break;
+            case MODULUS:
+                numericOpExp.setValue(lhsIntegerValue % rhsIntegerValue);
+                break;
+        }
+    }
+
+    private void visitIntegerBooleanOpExp(BooleanOpExp booleanOpExp) {
+        int lhsIntegerValue = getIntegerValue(booleanOpExp.getLhs());
+        int rhsIntegerValue = getIntegerValue(booleanOpExp.getRhs());
+
         switch (booleanOpExp.getOp()) {
+            case EQUAL:
+                booleanOpExp.setValue(lhsIntegerValue == rhsIntegerValue);
+                break;
+            case DIFFERENT:
+                booleanOpExp.setValue(lhsIntegerValue != rhsIntegerValue);
+                break;
+            case LTHAN:
+                booleanOpExp.setValue(lhsIntegerValue < rhsIntegerValue);
+                break;
+            case GTHAN:
+                booleanOpExp.setValue(lhsIntegerValue > rhsIntegerValue);
+                break;
+            case LEQ:
+                booleanOpExp.setValue(lhsIntegerValue <= rhsIntegerValue);
+                break;
+            case GEQ:
+                booleanOpExp.setValue(lhsIntegerValue >= rhsIntegerValue);
+                break;
+            default:
+                System.err.println("Error: trying to use operator " + booleanOpExp.getOp() + " on integers");
+        }
+    }
+
+    private void visitDoubleBooleanOpExp(BooleanOpExp booleanOpExp) {
+        double lhsDoubleValue = getDoubleValue(booleanOpExp.getLhs());
+        double rhsDoubleValue = getDoubleValue(booleanOpExp.getRhs());
+
+        switch (booleanOpExp.getOp()) {
+            case EQUAL:
+                booleanOpExp.setValue(lhsDoubleValue == rhsDoubleValue);
+                break;
+            case DIFFERENT:
+                booleanOpExp.setValue(lhsDoubleValue != rhsDoubleValue);
+                break;
+            case LTHAN:
+                booleanOpExp.setValue(lhsDoubleValue < rhsDoubleValue);
+                break;
+            case GTHAN:
+                booleanOpExp.setValue(lhsDoubleValue > rhsDoubleValue);
+                break;
+            case LEQ:
+                booleanOpExp.setValue(lhsDoubleValue <= rhsDoubleValue);
+                break;
+            case GEQ:
+                booleanOpExp.setValue(lhsDoubleValue >= rhsDoubleValue);
+                break;
+            default:
+                System.err.println("Error: trying to use operator " + booleanOpExp.getOp() + " on doubles");
+        }
+    }
+
+    public void visitBooleanBooleanOpExp(BooleanOpExp booleanOpExp) {
+        boolean lhsBooleanValue = getBooleanValue(booleanOpExp.getLhs());
+        boolean rhsBooleanValue = getBooleanValue(booleanOpExp.getRhs());
+        switch (booleanOpExp.getOp()) {
+            case EQUAL:
+                booleanOpExp.setValue(lhsBooleanValue == rhsBooleanValue);
+                break;
+            case DIFFERENT:
+                booleanOpExp.setValue(lhsBooleanValue != rhsBooleanValue);
+                break;
             case OR:
-                booleanOpExp.setValue(booleanOpExp.getLhs().getValue() || booleanOpExp.getRhs().getValue());
+                booleanOpExp.setValue(lhsBooleanValue || rhsBooleanValue);
                 break;
             case AND:
-                booleanOpExp.setValue(booleanOpExp.getLhs().getValue() && booleanOpExp.getRhs().getValue());
+                booleanOpExp.setValue(lhsBooleanValue && rhsBooleanValue);
                 break;
-            case EQUAL:
-                booleanOpExp.setValue(booleanOpExp.getLhs().getValue() == booleanOpExp.getRhs().getValue());
-                break;
-            case DIFFERENT:
-                booleanOpExp.setValue(booleanOpExp.getLhs().getValue() != booleanOpExp.getRhs().getValue());
-                break;
+            default:
+                System.err.println("Error: trying to use operator " + booleanOpExp.getOp() + " on booleans");
         }
     }
 
     @Override
-    public void visit(BooleanOpNumericExp booleanOpNumericExp) {
-        booleanOpNumericExp.getLhs().accept(this);
-        booleanOpNumericExp.getRhs().accept(this);
-        switch (booleanOpNumericExp.getOp()) {
-            case EQUAL:
-                booleanOpNumericExp.setValue(booleanOpNumericExp.getLhs().getValue() == booleanOpNumericExp.getRhs().getValue());
-                break;
-            case DIFFERENT:
-                booleanOpNumericExp.setValue(booleanOpNumericExp.getLhs().getValue() != booleanOpNumericExp.getRhs().getValue());
-                break;
+    public void visit(BooleanOpExp booleanOpExp) {
+        ArithmeticExp rhs = booleanOpExp.getRhs();
+        ArithmeticExp lhs = booleanOpExp.getLhs();
+        lhs.accept(this);
+        rhs.accept(this);
+        if (rhs.getType() instanceof NumericType && lhs.getType() instanceof NumericType) {
+            if (lhs.getType() instanceof IntegerType && rhs.getType() instanceof IntegerType) {
+                visitIntegerBooleanOpExp(booleanOpExp);
+            } else /* If the expressions are different types or double type */ {
+                visitDoubleBooleanOpExp(booleanOpExp);
+            }
+        } else if (rhs.getType() instanceof BooleanType && lhs.getType() instanceof BooleanType) {
+            visitBooleanBooleanOpExp(booleanOpExp);
+        } else {
+            if (booleanOpExp.getOp() == BooleanOpExp.Operator.EQUAL) {
+                booleanOpExp.setValue(false);
+            } else if (booleanOpExp.getOp() == BooleanOpExp.Operator.DIFFERENT) {
+                booleanOpExp.setValue(true);
+            } else {
+                System.err.println("Error: cannot do operator " + booleanOpExp.getOp() + " between two expressions of different types (" + lhs + " and " + rhs + ")");
+            }
         }
     }
 
     @Override
-    public void visit(BooleanNameExp booleanNameExp) {
-         Token tok = getVariablesMap().get(booleanNameExp.getName());
+    public void visit(NameExp nameExp) {
+         Token tok = getVariablesMap().get(nameExp.getName());
          if (tok == null) {
-             System.err.println("No variable named " + booleanNameExp.getName());
-         } else if (tok instanceof BooleanToken) {
-             booleanNameExp.setValue(((BooleanToken) tok).isValue());
-         } else {
-             System.err.println("The variable named " + booleanNameExp.getName() + " is not a boolean.");
+             System.err.println("No variable named " + nameExp.getName());
          }
     }
 
-    private Token getVariable(StringToken token) {
-        Token t = getVariablesMap().get(token.getString());
+    public Token getVariable(StringToken token) {
+        return getVariable(token.getString());
+    }
+
+    public Token getVariable(String token) {
+        Token t = getVariablesMap().get(token);
         if (t == null) {
-            System.err.println("No variable named " + token.getString());
+            System.err.println("No variable named " + token);
         }
         return t;
     }

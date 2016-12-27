@@ -17,12 +17,16 @@ public class ToPolish {
                 return 0;
             case "==":
             case "!=":
+            case ">":
+            case "<":
+            case ">=":
+            case "<=":
                 return 2;
             case "&&":
             case "||":
-                return 3;
+                return 1;
             case "!":
-                return 4;
+                return 3;
             case "+":
             case "-":
                 return 5;
@@ -36,7 +40,7 @@ public class ToPolish {
     }
 
     private static boolean isOperator(String string) {
-        String[] operators = { "==", "!=", "&&", "||", "!", "+", "-", "*", "/", "%" };
+        String[] operators = { "<=", "<", ">", ">=", "==", "!=", "&&", "||", "!", "+", "-", "*", "/", "%" };
         for (String operator: operators) {
             if (operator.equals(string)) {
                 return true;

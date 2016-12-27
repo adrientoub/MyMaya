@@ -19,7 +19,7 @@ public class BooleanToken extends Token {
         return BooleanType.getInstance();
     }
 
-    public boolean isValue() {
+    public boolean getBooleanValue() {
         return value;
     }
 }

@@ -10,14 +10,18 @@ public class BooleanOpExp extends BooleanExp {
         OR,
         AND,
         EQUAL,
-        DIFFERENT
+        DIFFERENT,
+        LTHAN,
+        GTHAN,
+        LEQ,
+        GEQ
     }
 
-    private BooleanExp lhs;
-    private BooleanExp rhs;
+    private ArithmeticExp lhs;
+    private ArithmeticExp rhs;
     private Operator op;
 
-    public BooleanOpExp(BooleanExp lhs, BooleanExp rhs, Operator op) {
+    public BooleanOpExp(ArithmeticExp lhs, ArithmeticExp rhs, Operator op) {
         super(false);
         this.lhs = lhs;
         this.rhs = rhs;
@@ -34,11 +38,11 @@ public class BooleanOpExp extends BooleanExp {
         return "BooleanOpExp{" + lhs + ", " + op + ", rhs=" + rhs + '}';
     }
 
-    public BooleanExp getLhs() {
+    public ArithmeticExp getLhs() {
         return lhs;
     }
 
-    public BooleanExp getRhs() {
+    public ArithmeticExp getRhs() {
         return rhs;
     }
 
