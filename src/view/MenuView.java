@@ -1,5 +1,6 @@
 package view;
 
+import controller.RenderController;
 import controller.SelectController;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -109,9 +110,20 @@ public class MenuView extends MenuBar {
     public MenuView(Group root) {
         Menu menuFile = createFileMenu();
         Menu menuEdit = createEditMenu();
-        Menu menuView = new Menu("View");
+        Menu menuView = createViewMenu();
         Menu menuMesh = createMeshMenu(root);
 
         this.getMenus().addAll(menuFile, menuEdit, menuView, menuMesh);
+    }
+
+    private Menu createViewMenu() {
+        Menu menuView = new Menu("View");
+        MenuItem render = new MenuItem("Render");
+        render.addEventHandler(EventType.ROOT, new RenderController());
+        render.setAccelerator(new KeyCodeCombination(KeyCode.F5));
+
+        menuView.getItems().addAll(render);
+
+        return menuView;
     }
 }
