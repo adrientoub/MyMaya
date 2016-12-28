@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(raytracer)
 
 if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -std=c++14 -g -O3 -fopenmp=libiomp5")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -std=c++14 -g -O3")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
   if (DEFINED ENV{CXX})
     set(CMAKE_CXX_COMPILER "$ENV{CXX}")
