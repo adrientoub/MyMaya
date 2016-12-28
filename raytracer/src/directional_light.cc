@@ -1,5 +1,6 @@
 #include "directional_light.hh"
 #include <iomanip>
+#include <string>
 
 std::istream& operator>>(std::istream& is, DirectionalLight& value)
 {

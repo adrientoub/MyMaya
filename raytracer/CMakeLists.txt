@@ -1,17 +1,18 @@
 cmake_minimum_required(VERSION 2.8)
 project(raytracer)
 
-if (DEFINED ENV{CXX})
-  set(CMAKE_CXX_COMPILER "$ENV{CXX}")
-else ()
-  set(CMAKE_CXX_COMPILER "clang++")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-endif ()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -std=c++14 -g -O3")
-
 if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -std=c++14 -g -O3 -fopenmp=libiomp5")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
-endif()
+  if (DEFINED ENV{CXX})
+    set(CMAKE_CXX_COMPILER "$ENV{CXX}")
+  else ()
+    set(CMAKE_CXX_COMPILER "clang++")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+  endif ()
+else ()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /O2 /GL /MP /openmp")
+endif ()
 
 set(BASE_SOURCE_FILES
     src/main.cc

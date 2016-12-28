@@ -1,4 +1,5 @@
 #include "attributes.hh"
+#include <algorithm>
 
 static void between_zero_one(double& value)
 {

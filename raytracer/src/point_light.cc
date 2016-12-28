@@ -1,4 +1,5 @@
 #include "point_light.hh"
+#include <string>
 #include <iomanip>
 
 std::istream& operator>>(std::istream& is, PointLight& value)
