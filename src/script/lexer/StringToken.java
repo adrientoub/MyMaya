@@ -23,7 +23,7 @@ public class StringToken extends Token {
         if (string.equals("true") || string.equals("false")) {
             return BooleanType.getInstance();
         }
-        Token token = Execution.getInstance().getVariable(string);
+        Token token = Execution.getInstance().getVariableToken(string);
         if (token == null) {
             return null;
         }

@@ -4,6 +4,7 @@ import script.ast.*;
 import script.function.*;
 import script.lexer.*;
 import script.types.BooleanType;
+import script.types.DoubleType;
 import script.types.IntegerType;
 import script.types.NumericType;
 
@@ -14,7 +15,7 @@ import java.util.*;
  */
 public class Execution extends Visitor {
     private static Deque<Map<String, Function>> functionScopes = new ArrayDeque<>();
-    private static Deque<Map<String, Token>> variableScopes = new ArrayDeque<>();
+    private static Deque<Map<String, Object>> variableScopes = new ArrayDeque<>();
     private static Execution instance = new Execution();
 
     public static Execution getInstance() {
@@ -42,11 +43,11 @@ public class Execution extends Visitor {
         return functionScopes.getLast();
     }
 
-    public static void setVariable(String name, Token value) {
+    public static void setVariable(String name, Object value) {
         getVariablesMap().put(name, value);
     }
 
-    private static Map<String, Token> getVariablesMap() {
+    private static Map<String, Object> getVariablesMap() {
         if (variableScopes.isEmpty()) {
             variableScopes.addLast(new HashMap<>());
         }
@@ -60,11 +61,11 @@ public class Execution extends Visitor {
         List<Token> arguments = callExp.getArguments();
         for (int i = 0; i < arguments.size(); i++) {
             if (arguments.get(i) instanceof StringToken) {
-                Token tok = getVariable((StringToken) arguments.get(i));
-                if (tok == null) {
+                Token value = getVariableToken((StringToken) arguments.get(i));
+                if (value == null) {
                     return;
                 }
-                arguments.set(i, tok);
+                arguments.set(i, value);
             }
         }
         if (function == null) {
@@ -135,7 +136,7 @@ public class Execution extends Visitor {
 
     private int getIntegerValue(ArithmeticExp arithmeticExp) {
         if (arithmeticExp instanceof NameExp) {
-            return ((IntegerToken) getVariable(((NameExp) arithmeticExp).getName())).getIntegerValue();
+            return (int) getVariable(((NameExp) arithmeticExp).getName());
         } else {
             return (int) ((NumericExp) arithmeticExp).getValue();
         }
@@ -143,7 +144,7 @@ public class Execution extends Visitor {
 
     private boolean getBooleanValue(ArithmeticExp arithmeticExp) {
         if (arithmeticExp instanceof NameExp) {
-            return ((BooleanToken) getVariable(((NameExp) arithmeticExp).getName())).getBooleanValue();
+            return (boolean) getVariable(((NameExp) arithmeticExp).getName());
         } else {
             return ((BooleanExp) arithmeticExp).getValue();
         }
@@ -151,12 +152,7 @@ public class Execution extends Visitor {
 
     private double getDoubleValue(ArithmeticExp arithmeticExp) {
         if (arithmeticExp instanceof NameExp) {
-            Token var = getVariable(((NameExp) arithmeticExp).getName());
-            if (var instanceof DoubleToken) {
-                return ((DoubleToken) var).getValue();
-            } else {
-                return ((IntegerToken) var).getIntegerValue();
-            }
+            return (double) getVariable(((NameExp) arithmeticExp).getName());
         } else {
             return ((NumericExp) arithmeticExp).getValue();
         }
@@ -312,34 +308,69 @@ public class Execution extends Visitor {
 
     @Override
     public void visit(NameExp nameExp) {
-         Token tok = getVariablesMap().get(nameExp.getName());
-         if (tok == null) {
+         Object value = getVariablesMap().get(nameExp.getName());
+         if (value == null) {
              System.err.println("No variable named " + nameExp.getName());
          }
     }
 
-    public Token getVariable(StringToken token) {
+    public Token getVariableToken(StringToken token) {
+        return getVariableToken(token.getString());
+    }
+
+    public Object getVariable(StringToken token) {
         return getVariable(token.getString());
     }
 
-    public Token getVariable(String token) {
-        Token t = getVariablesMap().get(token);
-        if (t == null) {
+    public Token getVariableToken(String token) {
+        Object obj = getVariable(token);
+        if (obj instanceof String) {
+            return new QuotedStringToken((String) obj, 0);
+        } else if (obj instanceof Double) {
+            return new DoubleToken((Double) obj, 0);
+        } else if (obj instanceof Integer) {
+            return new IntegerToken((Integer) obj, 0);
+        } else if (obj instanceof Boolean) {
+            return new BooleanToken((Boolean) obj, 0);
+        } else {
+            return null;
+        }
+    }
+
+    public Object getVariable(String token) {
+        Object value = getVariablesMap().get(token);
+        if (value == null) {
             System.err.println("No variable named " + token);
         }
-        return t;
+        return value;
     }
 
     @Override
     public void visit(VarDef varDef) {
-        Token value = varDef.getValue();
-        if (value instanceof StringToken) {
-            value = getVariable(((StringToken) value));
-            if (value == null) {
+        AstNode varDefValue = varDef.getValue();
+        Object value;
+
+        varDefValue.accept(this);
+        if (varDefValue instanceof StringExp) {
+            value = ((StringExp) varDefValue).getValue();
+        } else if (varDefValue instanceof ArithmeticExp) {
+            ArithmeticExp arithmeticExp = (ArithmeticExp) varDefValue;
+            if (arithmeticExp.getType() instanceof IntegerType) {
+                value = getIntegerValue(arithmeticExp);
+            } else if (arithmeticExp.getType() instanceof DoubleType) {
+                value = getDoubleValue(arithmeticExp);
+            } else if (arithmeticExp.getType() instanceof BooleanType) {
+                value = getBooleanValue(arithmeticExp);
+            } else {
+                System.err.println("Error: not handled arithmetic expression type.");
                 return;
             }
+        } else {
+            System.err.println("Wrong variable value");
+            return;
         }
-        getVariablesMap().put(varDef.getName(), value);
+        setVariable(varDef.getName(), value);
+
     }
 
     @Override
@@ -350,7 +381,7 @@ public class Execution extends Visitor {
 
     public static void newScope() {
         Map<String, Function> functions = new HashMap<>(getFunctionMap());
-        Map<String, Token> variables = new HashMap<>(getVariablesMap());
+        Map<String, Object> variables = new HashMap<>(getVariablesMap());
 
         functionScopes.addLast(functions);
         variableScopes.addLast(variables);

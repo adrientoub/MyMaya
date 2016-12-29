@@ -1,7 +1,6 @@
 package script.ast;
 
 import script.Visitor;
-import script.lexer.Token;
 import script.types.Type;
 import script.types.VoidType;
 
@@ -10,17 +9,17 @@ import script.types.VoidType;
  */
 public class VarDef extends AstNode {
     private String name;
-    private Token value;
+    private AstNode value;
 
     public String getName() {
         return name;
     }
 
-    public Token getValue() {
+    public AstNode getValue() {
         return value;
     }
 
-    public VarDef(String name, Token value) {
+    public VarDef(String name, AstNode value) {
         this.name = name;
         this.value = value;
     }

@@ -17,7 +17,7 @@ public class NameExp extends ArithmeticExp {
 
     @Override
     public Type getType() {
-        Token var = Execution.getInstance().getVariable(name);
+        Token var = Execution.getInstance().getVariableToken(name);
         if (var == null) {
             return null;
         }

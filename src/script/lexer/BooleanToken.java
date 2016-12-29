@@ -9,7 +9,7 @@ import script.types.Type;
 public class BooleanToken extends Token {
     private boolean value;
 
-    public BooleanToken(int lineNumber, boolean value) {
+    public BooleanToken(boolean value, int lineNumber) {
         super(lineNumber);
         this.value = value;
     }

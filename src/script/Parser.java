@@ -296,13 +296,25 @@ public class Parser {
         if (t == null) {
             return null;
         }
-        t = getToken();
+        t = tokens.get(cursor);
+        AstNode astNode;
+        if (t instanceof QuotedStringToken) {
+            cursor++;
+            astNode = new StringExp(((QuotedStringToken) t).getString());
+        } else {
+            astNode = parseArithmeticExp();
+        }
+
+        if (astNode == null) {
+            return null;
+        }
+
         NewlineToken nl = getNewlineToken();
         if (nl == null) {
             return (AstNode) parseError("No end of line after vardec " + varNameToken);
         }
 
-        return new VarDef(varNameToken.getString(), t);
+        return new VarDef(varNameToken.getString(), astNode);
     }
 
     private AstNode parseTokens() {
