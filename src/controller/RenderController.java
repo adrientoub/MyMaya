@@ -49,14 +49,12 @@ public class RenderController implements EventHandler<Event> {
             double duration = (endTime - startTime) / 1000.;
             System.out.println("Generated output in " + outputFile + ", done in " + duration + " seconds. Exit status " + outValue);
 
-            BufferedImage bi = ConverterModel.openPPM(outputFile);
-            WritableImage image = new WritableImage(bi.getWidth(), bi.getHeight());
-            SwingFXUtils.toFXImage(bi, image);
+            WritableImage image = ConverterModel.openPPM(outputFile);
             Stage stage = new Stage();
             stage.setTitle("Render");
             StackPane secondaryLayout = new StackPane();
             secondaryLayout.getChildren().addAll(new ImageView(image));
-            stage.setScene(new Scene(secondaryLayout, bi.getWidth(), bi.getHeight()));
+            stage.setScene(new Scene(secondaryLayout, image.getWidth(), image.getHeight()));
             stage.show();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
