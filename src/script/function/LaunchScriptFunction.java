@@ -10,6 +10,7 @@ import script.types.StringType;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 
 /**
@@ -31,6 +32,8 @@ public class LaunchScriptFunction extends Function {
             if (ast != null) {
                 ast.accept(Execution.getInstance());
             }
+        } catch (NoSuchFileException e) {
+            System.err.println(t.getString() + " not found");
         } catch (IOException e) {
             e.printStackTrace();
         }
