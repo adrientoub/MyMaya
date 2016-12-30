@@ -16,4 +16,8 @@ public abstract class Shape extends Object3D {
     public Attributes getAttributes() {
         return attributes;
     }
+
+    public void setAttributes(Attributes attributes) {
+        this.attributes = attributes;
+    }
 }

@@ -4,6 +4,8 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import view.AttributesView;
 
+import java.io.File;
+
 /**
  * Created by Adrien on 15/12/2016.
  */
@@ -53,5 +55,9 @@ public class HistoryModel {
 
     public static void addRename(String name, String new_name) {
         addLine("rename \"" + name + "\" \"" + new_name + "\"");
+    }
+
+    public static void addOpen(String name) {
+        addLine("open \"" + name + "\"");
     }
 }

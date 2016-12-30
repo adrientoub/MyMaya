@@ -16,4 +16,8 @@ public class AmbientLight {
     public String toString() {
         return "alight " + Object3D.getColorString(color);
     }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

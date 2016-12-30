@@ -7,10 +7,7 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -54,8 +51,22 @@ public class MenuView extends MenuBar {
     private Menu createFileMenu() {
         Menu menuFile = new Menu("File");
 
-        MenuItem open = new MenuItem("Open script");
-        open.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
+        MenuItem open = new MenuItem("Open");
+        open.addEventHandler(EventType.ROOT, event -> {
+            FileChooser fileChooser = new FileChooser();
+            File file = fileChooser.showOpenDialog(null);
+            if (file != null) {
+                ImportSceneModel.importScene(file);
+            }
+        });
+        open.setAccelerator(KeyCombination.keyCombination("Ctrl+O"));
+
+        MenuItem save = new MenuItem("Save");
+        save.addEventHandler(EventType.ROOT, event -> ExportSceneModel.exportScene("out.in"));
+        save.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
+
+        MenuItem openScript = new MenuItem("Open script");
+        openScript.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
             @Override
             public void handle(Event event) {
                 FileChooser fileChooser = new FileChooser();
@@ -74,16 +85,7 @@ public class MenuView extends MenuBar {
             }
         });
 
-        MenuItem save = new MenuItem("Save");
-        save.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                ExportSceneModel.exportScene("out.in");
-            }
-        });
-        save.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
-
-        menuFile.getItems().addAll(save, open);
+        menuFile.getItems().addAll(open, save, new SeparatorMenuItem(), openScript);
 
         return menuFile;
     }

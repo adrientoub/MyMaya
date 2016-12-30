@@ -122,6 +122,12 @@ public class SceneModel {
         return pl;
     }
 
+    public static model.Sphere addSphere(double radius, Color color, Point3D pos, String name, Attributes attributes) {
+        model.Sphere sphere = addSphere(radius, color, pos, name);
+        sphere.setAttributes(attributes);
+        return sphere;
+    }
+
     public static model.Sphere addSphere(double radius, Color color, Point3D pos, String name) {
         Sphere sphere = new Sphere(radius);
         if (color == null)
@@ -171,5 +177,12 @@ public class SceneModel {
 
     public static void setCamera(model.Camera camera) {
         SceneModel.camera = camera;
+    }
+
+    public static void clear() {
+        for (int i = 0; i < object3DS.size(); i++) {
+            remove(object3DS.get(i));
+            i--;
+        }
     }
 }
