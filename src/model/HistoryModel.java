@@ -35,6 +35,11 @@ public class HistoryModel {
                 + colorToString(sphere.getColor()));
     }
 
+    public static void addNewBox(Box box) {
+        addLine("box \"" + box.getName() + "\" " + nodeToString(box.getInnerObject()) + " "
+                + colorToString(box.getColor()));
+    }
+
     public static void addNewDirectionalLight(DirectionalLight dl) {
         addLine("directional_light \"" + dl.getName() + "\" " + nodeToString(dl.getInnerObject()) + " "
                 + colorToString(dl.getColor()));

@@ -6,7 +6,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.geometry.Point3D;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -24,7 +23,7 @@ import java.io.IOException;
  * Created by Adrien on 18/11/2016.
  */
 public class MenuView extends MenuBar {
-    private Menu createMeshMenu(Group root) {
+    private Menu createMeshMenu() {
         Menu menuMesh = new Menu("Mesh");
         MenuItem sphereItem = new MenuItem("Sphere");
         sphereItem.addEventHandler(EventType.ROOT, event -> {
@@ -109,11 +108,11 @@ public class MenuView extends MenuBar {
         return menuEdit;
     }
 
-    public MenuView(Group root) {
+    public MenuView() {
         Menu menuFile = createFileMenu();
         Menu menuEdit = createEditMenu();
         Menu menuView = createViewMenu();
-        Menu menuMesh = createMeshMenu(root);
+        Menu menuMesh = createMeshMenu();
 
         this.getMenus().addAll(menuFile, menuEdit, menuView, menuMesh);
     }

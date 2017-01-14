@@ -148,15 +148,19 @@ public class SceneModel {
         return modelSphere;
     }
 
-    public static Box addBox(Color color) {
+    public static model.Box addBox(Color color) {
         Box box = new Box(1, 1, 1);
         if (color == null)
             color = getRandomColor();
         box.setMaterial(new PhongMaterial(color));
         box.setDrawMode(DrawMode.FILL);
-/*        box.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(box, false));*/
+        model.Box modelBox = new model.Box(box, color, null);
+        box.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(modelBox));
+        object3DS.add(modelBox);
         scene.getChildren().addAll(box);
-        return box;
+
+        HistoryModel.addNewBox(modelBox);
+        return modelBox;
     }
 
     public static Group getScene() {

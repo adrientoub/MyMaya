@@ -15,7 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Camera;
 import model.SceneModel;
-import model.Sphere;
 import view.AttributesView;
 import view.MenuView;
 
@@ -78,7 +77,7 @@ public class Main extends Application {
     }
 
     public void addMenu(Pane root) {
-        MenuBar menuBar = new MenuView(SceneModel.getScene());
+        MenuBar menuBar = new MenuView();
 
         root.getChildren().addAll(menuBar);
     }
