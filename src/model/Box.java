@@ -40,14 +40,14 @@ public class Box extends Shape {
 
     @Override
     public double getScale() {
-        return internalBox.getScaleX();
+        return internalBox.getWidth();
     }
 
     @Override
     public void setScale(double scale) {
-        internalBox.setScaleX(scale);
-        internalBox.setScaleY(scale);
-        internalBox.setScaleZ(scale);
+        internalBox.setWidth(scale);
+        internalBox.setHeight(scale);
+        internalBox.setDepth(scale);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class MenuView extends MenuBar {
         });
         MenuItem boxItem = new MenuItem("Box");
         boxItem.addEventHandler(EventType.ROOT, event -> {
-            SceneModel.addBox(null);
+            SceneModel.addBox(null, null, null);
         });
         MenuItem pointLight = new MenuItem("Point Light");
         pointLight.addEventHandler(EventType.ROOT, event -> {

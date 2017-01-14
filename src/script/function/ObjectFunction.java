@@ -19,6 +19,7 @@ import java.util.List;
 public class ObjectFunction extends Function {
     public enum ObjectType {
         SPHERE,
+        BOX,
         POINT_LIGHT,
         DIRECTIONAL_LIGHT
     }
@@ -46,6 +47,9 @@ public class ObjectFunction extends Function {
         Color c = Color.color(r.getValue(), g.getValue(), b.getValue());
         Point3D pos = new Point3D(x.getValue(), y.getValue(), z.getValue());
         switch (objectType) {
+            case BOX:
+                SceneModel.addBox(c, pos, name.getString());
+                break;
             case POINT_LIGHT:
                 SceneModel.addPointLight(c, pos, name.getString());
                 break;
