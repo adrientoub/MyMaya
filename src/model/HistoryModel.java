@@ -40,6 +40,10 @@ public class HistoryModel {
                 + colorToString(box.getColor()));
     }
 
+    public static void addNewMesh(Mesh modelMesh, String filename) {
+        addLine("mesh \"" + filename + "\" " + colorToString(modelMesh.getColor()));
+    }
+
     public static void addNewDirectionalLight(DirectionalLight dl) {
         addLine("directional_light \"" + dl.getName() + "\" " + nodeToString(dl.getInnerObject()) + " "
                 + colorToString(dl.getColor()));

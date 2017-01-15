@@ -20,11 +20,11 @@ public class ObjReader {
             this.vertices = vertices;
         }
 
-        private int[] vertices;
+        public int[] vertices;
     }
 
     public static void openObj(File file) throws IOException {
-        System.out.println("Openning " + file.getAbsolutePath());
+        System.out.println("Opening " + file.getAbsolutePath());
         Path path = Paths.get(file.getAbsolutePath());
         String content = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
 
@@ -81,6 +81,6 @@ public class ObjReader {
         for (Face face: faces) {
             tm.getFaces().addAll(face.vertices);
         }
-        SceneModel.addMesh(tm);
+        SceneModel.addMesh(tm, file.getPath(), vertices, faces);
     }
 }

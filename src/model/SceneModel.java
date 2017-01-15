@@ -147,6 +147,20 @@ public class SceneModel {
         return modelSphere;
     }
 
+    public static model.Mesh addMesh(TriangleMesh tm, String path, ArrayList<Point3D> vertices, ArrayList<ObjReader.Face> faces) {
+        MeshView mv = new MeshView(tm);
+        Color color = getRandomColor();
+        mv.setMaterial(new PhongMaterial(color));
+        mv.setDrawMode(DrawMode.FILL);
+        model.Mesh modelMesh = new Mesh(mv, color, path, vertices, faces);
+        mv.addEventFilter(MouseEvent.MOUSE_CLICKED, SelectController.getSelectController().newSelection(modelMesh));
+        object3DS.add(modelMesh);
+        scene.getChildren().addAll(mv);
+        HistoryModel.addNewMesh(modelMesh, path);
+
+        return modelMesh;
+    }
+
     public static model.Box addBox(Color color, Point3D pos, String name) {
         Box box = new Box(1, 1, 1);
         if (color == null)
@@ -192,11 +206,5 @@ public class SceneModel {
             remove(object3DS.get(i));
             i--;
         }
-    }
-
-    public static void addMesh(TriangleMesh tm) {
-        MeshView mv = new MeshView(tm);
-        mv.setDrawMode(DrawMode.FILL);
-        scene.getChildren().addAll(mv);
     }
 }
