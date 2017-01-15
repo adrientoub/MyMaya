@@ -20,6 +20,7 @@ set(BASE_SOURCE_FILES
     src/color.cc
     src/shape.cc
     src/sphere.cc
+    src/box.cc
     src/plane.cc
     src/triangle.cc
     src/image.cc

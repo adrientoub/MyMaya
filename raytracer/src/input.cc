@@ -2,13 +2,34 @@
 #include "sphere.hh"
 #include "plane.hh"
 #include "triangle.hh"
+#include "box.hh"
 
 #include <iostream>
 #include <cmath>
+#include <atomic>
 
 Input::Input(const std::string& filename)
       : filename(filename)
 {}
+
+void display_progress(float progress)
+{
+  int bar_width = 70;
+
+  std::cout << "[";
+  int pos = bar_width * progress;
+  for (int i = 0; i < bar_width; ++i)
+  {
+    if (i < pos)
+      std::cout << "=";
+    else if (i == pos)
+      std::cout << ">";
+    else
+      std::cout << " ";
+  }
+  std::cout << "] " << int(progress * 100.0) << " %\r";
+  std::cout.flush();
+}
 
 void Input::calculate()
 {
@@ -23,9 +44,15 @@ void Input::calculate()
   double l = half_width / (tan(fov / 2));
   Vector3 c = camera.pos + w * l;
 
+  std::atomic_int count(0);
+
 #pragma omp parallel for
   for (long i = -half_height; i < half_height; ++i)
   {
+    int local_value = count++;
+    if (local_value % 10 == 0)
+      display_progress((float) local_value / height);
+
     for (long j = -half_width; j < half_width; ++j)
     {
       Vector3 pos = u * j + v * i;
@@ -52,6 +79,15 @@ void Input::parse_sphere(std::istream& is)
   Sphere* sphere = new Sphere();
   is >> *sphere;
   std::shared_ptr<Shape> ptr(sphere);
+  shapes.push_back(ptr);
+}
+
+void Input::parse_box(std::istream& is)
+{
+  Box* box = new Box();
+  is >> *box;
+  box->calculate_bounds();
+  std::shared_ptr<Shape> ptr(box);
   shapes.push_back(ptr);
 }
 
@@ -96,6 +132,8 @@ std::istream& operator>>(std::istream& is, Input& input)
       is >> input.camera;
     else if (field == "sphere")
       input.parse_sphere(is);
+    else if (field == "box")
+      input.parse_box(is);
     else if (field == "plane")
       input.parse_plane(is);
     else if (field == "triangle")
@@ -116,8 +154,11 @@ std::ostream& operator<<(std::ostream& os, const Input& value)
 {
   os << "w: " << value.width << " h: " << value.height << std::endl;
   os << value.camera << std::endl;
-  for (const auto& shape: value.shapes)
-    os << *shape << std::endl;
+  if (value.shapes.size() > 100)
+    std::cout << value.shapes.size() << " shapes read from file." << std::endl;
+  else
+    for (const auto& shape: value.shapes)
+      os << *shape << std::endl;
   for (const auto& point_light: value.point_lights)
     os << point_light << std::endl;
   for (const auto& directional_light: value.directional_lights)

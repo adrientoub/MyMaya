@@ -28,6 +28,21 @@ inline Vector3 Vector3::operator*(double scale) const
                  scale * z_);
 }
 
+inline double Vector3::getX() const
+{
+  return x_;
+}
+
+inline double Vector3::getY() const
+{
+  return y_;
+}
+
+inline double Vector3::getZ() const
+{
+  return z_;
+}
+
 inline Vector3 Vector3::operator+(const Vector3& v) const
 {
   return Vector3(x_ + v.x_, y_ + v.y_, z_ + v.z_);
@@ -61,4 +76,9 @@ inline bool Vector3::operator!=(const Vector3& other) const
 inline Vector3::operator bool() const
 {
   return x_ != 0. || y_ != 0. || z_ != 0.;
+}
+
+inline Vector3 operator/(const double& r, const Vector3& v)
+{
+  return Vector3(r / v.x_, r / v.y_, r / v.z_);
 }

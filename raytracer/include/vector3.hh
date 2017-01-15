@@ -19,8 +19,13 @@ public:
   inline bool operator==(const Vector3& vect) const;
   inline bool operator!=(const Vector3& vect) const;
   inline explicit operator bool() const;
+  friend Vector3 operator/(const double& d, const Vector3& vector3);
   friend std::ostream& operator<<(std::ostream& os, const Vector3& vect);
   friend std::istream& operator>>(std::istream& is, Vector3& vector3);
+
+  inline double getX() const;
+  inline double getY() const;
+  inline double getZ() const;
 
 private:
   double x_;
@@ -28,6 +33,7 @@ private:
   double z_;
 };
 
+inline Vector3 operator/(const double& d, const Vector3& vector3);
 std::ostream& operator<<(std::ostream& os, const Vector3& vect);
 std::istream& operator>>(std::istream& is, Vector3& vector3);
 
