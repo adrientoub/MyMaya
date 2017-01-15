@@ -1,5 +1,6 @@
 package view;
 
+import controller.ObjController;
 import controller.RenderController;
 import controller.SelectController;
 import javafx.event.Event;
@@ -64,6 +65,9 @@ public class MenuView extends MenuBar {
         save.addEventHandler(EventType.ROOT, event -> ExportSceneModel.exportScene("out.in"));
         save.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
 
+        MenuItem openObj = new MenuItem("Open OBJ");
+        openObj.addEventHandler(EventType.ROOT, new ObjController());
+
         MenuItem openScript = new MenuItem("Open script");
         openScript.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
             @Override
@@ -84,7 +88,7 @@ public class MenuView extends MenuBar {
             }
         });
 
-        menuFile.getItems().addAll(open, save, new SeparatorMenuItem(), openScript);
+        menuFile.getItems().addAll(open, save, new SeparatorMenuItem(), openScript, openObj);
 
         return menuFile;
     }

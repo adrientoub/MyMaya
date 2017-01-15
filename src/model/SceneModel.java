@@ -6,9 +6,8 @@ import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.*;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.Sphere;
 
 import java.util.ArrayList;
@@ -193,5 +192,11 @@ public class SceneModel {
             remove(object3DS.get(i));
             i--;
         }
+    }
+
+    public static void addMesh(TriangleMesh tm) {
+        MeshView mv = new MeshView(tm);
+        mv.setDrawMode(DrawMode.FILL);
+        scene.getChildren().addAll(mv);
     }
 }
