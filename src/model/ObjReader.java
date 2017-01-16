@@ -58,7 +58,11 @@ public class ObjReader {
                     for (int i = 0; i < 3; i++) {
                         String[] splited = tokens[i + 1].split("/");
                         f[i * 2] = Integer.parseInt(splited[0]) - 1;
-                        f[i * 2 + 1] = Integer.parseInt(splited[1]) - 1;
+                        if (splited.length > 1) {
+                            f[i * 2 + 1] = Integer.parseInt(splited[1]) - 1;
+                        } else {
+                            f[i * 2 + 1] = 0;
+                        }
                     }
                     faces.add(new Face(f));
                     break;
@@ -77,6 +81,9 @@ public class ObjReader {
         tm.getPoints().addAll(points);
         for (Double d: verticeTexture) {
             tm.getTexCoords().addAll(d.floatValue());
+        }
+        if (verticeTexture.size() == 0) {
+            tm.getTexCoords().addAll(0, 1);
         }
         for (Face face: faces) {
             tm.getFaces().addAll(face.vertices);
