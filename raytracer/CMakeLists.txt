@@ -22,6 +22,7 @@ set(BASE_SOURCE_FILES
     src/sphere.cc
     src/box.cc
     src/plane.cc
+    src/mesh.cc
     src/triangle.cc
     src/image.cc
     src/input.cc

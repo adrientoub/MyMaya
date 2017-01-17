@@ -11,8 +11,8 @@ public:
         double d);
   virtual Vector3 intersect(const Ray& ray) override;
 
-  friend std::istream& operator>>(std::istream& is, Plane& sphere);
-  friend std::ostream& operator<<(std::ostream& is, const Plane& sphere);
+  friend std::istream& operator>>(std::istream& is, Plane& plane);
+  friend std::ostream& operator<<(std::ostream& is, const Plane& plane);
 
 protected:
   virtual Vector3 normal_vect(const Vector3& intersect) const override;
@@ -22,5 +22,5 @@ private:
   double d;
 };
 
-std::istream& operator>>(std::istream& is, Plane& sphere);
-std::ostream& operator<<(std::ostream& is, const Plane& sphere);
+std::istream& operator>>(std::istream& is, Plane& plane);
+std::ostream& operator<<(std::ostream& is, const Plane& plane);

@@ -20,6 +20,38 @@ void Box::calculate_bounds()
 
 Vector3 Box::intersect(const Ray& ray)
 {
+  return box_intersect(bounds, ray);
+}
+
+std::istream& operator>>(std::istream& is, Box& box)
+{
+  return is >> std::quoted(box.name) >> box.scale >> box.pos
+            >> box.attr >> box.color;
+}
+
+std::ostream& operator<<(std::ostream& os, const Box& box)
+{
+  return os << "Box: " << box.name << " Scale: " << box.scale << " Pos: "
+            << box.pos << " " << box.attr << " Color: " << box.color;
+}
+
+Vector3 Box::normal_vect_point(const Vector3& intersect) const
+{
+  return intersect - pos;
+}
+
+Vector3 Box::normal_vect(const Vector3& intersect) const
+{
+  return pos - intersect;
+}
+
+std::ostream& Box::display(std::ostream& os) const
+{
+  return os << *this;
+}
+
+Vector3 box_intersect(const Vector3* bounds, const Ray& ray)
+{
   Vector3 invdir = 1 / ray.direction.normalize();
 
   float tmin = (bounds[ray.direction.getX() < 0].getX() - ray.position.getX()) * invdir.getX();
@@ -52,31 +84,4 @@ Vector3 Box::intersect(const Ray& ray)
   }
 
   return ray.position + ray.direction * t;
-}
-
-std::istream& operator>>(std::istream& is, Box& box)
-{
-  return is >> std::quoted(box.name) >> box.scale >> box.pos
-            >> box.attr >> box.color;
-}
-
-std::ostream& operator<<(std::ostream& os, const Box& box)
-{
-  return os << "Box: " << box.name << " Scale: " << box.scale << " Pos: "
-            << box.pos << " " << box.attr << " Color: " << box.color;
-}
-
-Vector3 Box::normal_vect_point(const Vector3& intersect) const
-{
-  return intersect - pos;
-}
-
-Vector3 Box::normal_vect(const Vector3& intersect) const
-{
-  return pos - intersect;
-}
-
-std::ostream& Box::display(std::ostream& os) const
-{
-  return os << *this;
 }

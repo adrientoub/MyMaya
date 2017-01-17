@@ -3,6 +3,7 @@
 #include "plane.hh"
 #include "triangle.hh"
 #include "box.hh"
+#include "mesh.hh"
 
 #include <iostream>
 #include <cmath>
@@ -107,6 +108,15 @@ void Input::parse_triangle(std::istream& is)
   shapes.push_back(ptr);
 }
 
+
+void Input::parse_mesh(std::istream& is)
+{
+  Mesh* mesh = new Mesh();
+  is >> *mesh;
+  std::shared_ptr<Shape> ptr(mesh);
+  shapes.push_back(ptr);
+}
+
 void Input::parse_directional_light(std::istream& is)
 {
   DirectionalLight dl;
@@ -136,6 +146,8 @@ std::istream& operator>>(std::istream& is, Input& input)
       input.parse_box(is);
     else if (field == "plane")
       input.parse_plane(is);
+    else if (field == "mesh")
+      input.parse_mesh(is);
     else if (field == "triangle")
       input.parse_triangle(is);
     else if (field == "plight")

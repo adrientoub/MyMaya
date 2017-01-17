@@ -27,3 +27,5 @@ private:
 
 std::istream& operator>>(std::istream& is, Box& box);
 std::ostream& operator<<(std::ostream& is, const Box& box);
+
+Vector3 box_intersect(const Vector3* bounds, const Ray& ray);

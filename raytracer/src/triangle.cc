@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <array>
 
 Triangle::Triangle(const Vector3& a, const Vector3& b, const Vector3& c,
                    const Attributes& attr, const Color& color)
@@ -15,6 +16,12 @@ Vector3 Triangle::normal_vect(const Vector3&) const
   Vector3 ab = b - a;
   Vector3 ac = c - a;
   return ab * ac;
+}
+
+std::array<Vector3, 3> Triangle::get_vertices() const
+{
+  std::array<Vector3, 3> vertices {{ pos, b, c }};
+  return vertices;
 }
 
 Vector3 Triangle::intersect(const Ray& ray)

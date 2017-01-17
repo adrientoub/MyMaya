@@ -74,6 +74,8 @@ public class Mesh extends Shape {
         double translateY = internalMesh.getTranslateY();
         double translateZ = internalMesh.getTranslateZ();
 
+        sb.append("mesh \"").append(name).append("\"\n");
+
         for (ObjReader.Face face: faces) {
             sb.append("triangle \"").append(name).append(triangle++).append("\" ");
 
@@ -86,6 +88,6 @@ public class Mesh extends Shape {
             sb.append(attributeString).append(" ").append(colorString).append("\n");
         }
 
-        return sb.toString();
+        return sb.append("end").toString();
     }
 }
