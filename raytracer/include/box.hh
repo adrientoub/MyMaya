@@ -33,5 +33,11 @@ std::ostream& operator<<(std::ostream& is, const Box& box);
 
 Vector3 box_intersect(const std::array<Triangle, 12>& triangles, const Ray& ray);
 
+void calculate_box_triangles(Vector3* bounds,
+                             std::array<Triangle, 12>& triangles,
+                             const Attributes& attr, const Color& color);
+
 template <typename T>
 Vector3 find_closest_intersection(T& triangles, const Ray& ray);
+
+#include "box.hxx"

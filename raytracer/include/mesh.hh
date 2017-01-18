@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <memory>
+#include <array>
 
 class Mesh: public Shape
 {
@@ -26,7 +27,7 @@ private:
   void calculate_bounds();
 
   std::vector<Triangle> triangles;
-  Vector3 bounds[2];
+  std::array<Triangle, 12> box_triangle_bounds;
 };
 
 std::istream& operator>>(std::istream& is, Mesh& mesh);
