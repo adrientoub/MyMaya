@@ -41,7 +41,8 @@ void Mesh::calculate_bounds()
 
 Vector3 Mesh::intersect(const Ray& ray)
 {
-  Vector3 intersect = box_intersect(bounds, ray);
+  // FIXME: uncomment when box_intersect works correctly
+  Vector3 intersect; // = box_intersect(bounds, ray);
   if (intersect)
   {
     double min_dist = INFINITY;

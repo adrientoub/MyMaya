@@ -16,11 +16,36 @@ void Box::calculate_bounds()
   Vector3 half_scale = Vector3(scale / 2, scale / 2, scale / 2);
   bounds[0] = pos - half_scale;
   bounds[1] = pos + half_scale;
+  std::array<Vector3, 8> vertices {{
+    bounds[0],
+    {bounds[0].getX(), bounds[0].getY(), bounds[1].getZ()},
+    {bounds[0].getX(), bounds[1].getY(), bounds[0].getZ()},
+    {bounds[0].getX(), bounds[1].getY(), bounds[1].getZ()},
+    {bounds[1].getX(), bounds[0].getY(), bounds[0].getZ()},
+    {bounds[1].getX(), bounds[0].getY(), bounds[1].getZ()},
+    {bounds[1].getX(), bounds[1].getY(), bounds[0].getZ()},
+    bounds[1]
+  }};
+  // FIXME: front and back not displaying?
+  triangles = {{
+    { Triangle(vertices[0], vertices[1], vertices[2], attr, color) }, // left
+    { Triangle(vertices[1], vertices[2], vertices[3], attr, color) },
+    { Triangle(vertices[0], vertices[1], vertices[4], attr, color) }, // bottom
+    { Triangle(vertices[1], vertices[4], vertices[5], attr, color) },
+    { Triangle(vertices[0], vertices[2], vertices[4], attr, color) }, // front
+    { Triangle(vertices[2], vertices[4], vertices[6], attr, color) },
+    { Triangle(vertices[4], vertices[5], vertices[6], attr, color) }, // right
+    { Triangle(vertices[5], vertices[6], vertices[7], attr, color) },
+    { Triangle(vertices[1], vertices[3], vertices[7], attr, color) }, // back
+    { Triangle(vertices[1], vertices[7], vertices[5], attr, color) },
+    { Triangle(vertices[2], vertices[3], vertices[6], attr, color) }, // top
+    { Triangle(vertices[3], vertices[6], vertices[7], attr, color) }
+  }};
 }
 
 Vector3 Box::intersect(const Ray& ray)
 {
-  return box_intersect(bounds, ray);
+  return box_intersect(triangles, ray);
 }
 
 std::istream& operator>>(std::istream& is, Box& box)
@@ -38,7 +63,7 @@ std::ostream& operator<<(std::ostream& os, const Box& box)
 Vector3 Box::normal_vect(const Vector3& intersect) const
 {
   // FIXME
-  return pos - intersect;
+  return intersect - pos;
 }
 
 std::ostream& Box::display(std::ostream& os) const
@@ -46,38 +71,13 @@ std::ostream& Box::display(std::ostream& os) const
   return os << *this;
 }
 
-Vector3 box_intersect(const Vector3* bounds, const Ray& ray)
+Vector3 box_intersect(const std::array<Triangle, 12> triangles, const Ray& ray)
 {
-  Vector3 invdir = 1 / ray.direction.normalize();
-
-  float tmin = (bounds[ray.direction.getX() < 0].getX() - ray.position.getX()) * invdir.getX();
-  float tmax = (bounds[1 - ray.direction.getX() < 0].getX() - ray.position.getX()) * invdir.getX();
-  float tymin = (bounds[ray.direction.getY() < 0].getY() - ray.position.getY()) * invdir.getY();
-  float tymax = (bounds[1 - ray.direction.getY() < 0].getY() - ray.position.getY()) * invdir.getY();
-
-  if ((tmin > tymax) || (tymin > tmax))
-    return Vector3();
-
-  tmin = std::max(tymin, tmin);
-  tmax = std::min(tymax, tmax);
-
-  float tzmin = (bounds[ray.direction.getZ() < 0].getZ() - ray.position.getZ()) * invdir.getZ();
-  float tzmax = (bounds[1 - ray.direction.getZ() < 0].getZ() - ray.position.getZ()) * invdir.getZ();
-
-  if ((tmin > tzmax) || (tzmin > tmax))
-    return Vector3();
-
-  tmin = std::max(tmin, tzmin);
-  tmax = std::min(tzmax, tmax);
-
-  double t = tmin;
-
-  if (t < 0)
+  for (Triangle triangle: triangles)
   {
-    t = tmax;
-    if (t < 0)
-      return Vector3();
+    Vector3 intersect = triangle.intersect(ray);
+    if (intersect)
+      return intersect;
   }
-
-  return ray.position + ray.direction * t;
+  return Vector3();
 }

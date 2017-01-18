@@ -1,6 +1,9 @@
 #pragma once
 
 #include "shape.hh"
+#include "triangle.hh"
+
+#include <array>
 
 class Box: public Shape
 {
@@ -22,9 +25,10 @@ protected:
 private:
   double scale;
   Vector3 bounds[2];
+  std::array<Triangle, 12> triangles;
 };
 
 std::istream& operator>>(std::istream& is, Box& box);
 std::ostream& operator<<(std::ostream& is, const Box& box);
 
-Vector3 box_intersect(const Vector3* bounds, const Ray& ray);
+Vector3 box_intersect(const std::array<Triangle, 12> triangles, const Ray& ray);
