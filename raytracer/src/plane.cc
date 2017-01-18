@@ -9,7 +9,7 @@ Plane::Plane(const Vector3& pos, const Attributes& attr, const Color& color,
       : Shape(pos, attr, color), d(d)
 {}
 
-Vector3 Plane::intersect(const Ray& ray)
+Vector3 Plane::intersect(const Ray& ray) const
 {
   const Vector3 r = ray.direction.normalize();
   const Vector3 p = pos.normalize();

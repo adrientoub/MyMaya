@@ -9,7 +9,7 @@ Sphere::Sphere(const Vector3& pos, const Attributes& attr, const Color& color,
        : Shape(pos, attr, color), radius(radius)
 {}
 
-Vector3 Sphere::intersect(const Ray& ray)
+Vector3 Sphere::intersect(const Ray& ray) const
 {
   const double a = ray.direction.dot_product(ray.direction);
   const Vector3 sub = ray.position - pos;

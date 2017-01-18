@@ -13,7 +13,7 @@ public:
   Mesh() = default;
   Mesh(const Vector3& pos, const Attributes& attr, const Color& color,
        const std::vector<Triangle>& triangles);
-  virtual Vector3 intersect(const Ray& ray) override;
+  virtual Vector3 intersect(const Ray& ray) const override;
 
   friend std::istream& operator>>(std::istream& is, Mesh& mesh);
   friend std::ostream& operator<<(std::ostream& is, const Mesh& mesh);

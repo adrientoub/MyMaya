@@ -9,7 +9,7 @@ public:
   Triangle() = default;
   Triangle(const Vector3& a, const Vector3& b, const Vector3& c,
            const Attributes& attr, const Color& color);
-  virtual Vector3 intersect(const Ray& ray) override;
+  virtual Vector3 intersect(const Ray& ray) const override;
   std::array<Vector3, 3> get_vertices() const;
 
   friend std::istream& operator>>(std::istream& is, Triangle& sphere);

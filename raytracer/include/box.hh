@@ -12,7 +12,7 @@ public:
   Box() = default;
   Box(const Vector3& pos, const Attributes& attr, const Color& color,
       double scale);
-  virtual Vector3 intersect(const Ray& ray) override;
+  virtual Vector3 intersect(const Ray& ray) const override;
   void calculate_bounds();
 
   friend std::istream& operator>>(std::istream& is, Box& box);
@@ -31,4 +31,7 @@ private:
 std::istream& operator>>(std::istream& is, Box& box);
 std::ostream& operator<<(std::ostream& is, const Box& box);
 
-Vector3 box_intersect(const std::array<Triangle, 12> triangles, const Ray& ray);
+Vector3 box_intersect(const std::array<Triangle, 12>& triangles, const Ray& ray);
+
+template <typename T>
+Vector3 find_closest_intersection(T& triangles, const Ray& ray);

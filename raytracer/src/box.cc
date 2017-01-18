@@ -28,12 +28,12 @@ void Box::calculate_bounds()
   }};
   // FIXME: front and back not displaying?
   triangles = {{
+    { Triangle(vertices[0], vertices[2], vertices[4], attr, color) }, // front
+    { Triangle(vertices[2], vertices[4], vertices[6], attr, color) },
     { Triangle(vertices[0], vertices[1], vertices[2], attr, color) }, // left
     { Triangle(vertices[1], vertices[2], vertices[3], attr, color) },
     { Triangle(vertices[0], vertices[1], vertices[4], attr, color) }, // bottom
     { Triangle(vertices[1], vertices[4], vertices[5], attr, color) },
-    { Triangle(vertices[0], vertices[2], vertices[4], attr, color) }, // front
-    { Triangle(vertices[2], vertices[4], vertices[6], attr, color) },
     { Triangle(vertices[4], vertices[5], vertices[6], attr, color) }, // right
     { Triangle(vertices[5], vertices[6], vertices[7], attr, color) },
     { Triangle(vertices[1], vertices[3], vertices[7], attr, color) }, // back
@@ -43,7 +43,7 @@ void Box::calculate_bounds()
   }};
 }
 
-Vector3 Box::intersect(const Ray& ray)
+Vector3 Box::intersect(const Ray& ray) const
 {
   return box_intersect(triangles, ray);
 }
@@ -71,13 +71,28 @@ std::ostream& Box::display(std::ostream& os) const
   return os << *this;
 }
 
-Vector3 box_intersect(const std::array<Triangle, 12> triangles, const Ray& ray)
+Vector3 box_intersect(const std::array<Triangle, 12>& triangles, const Ray& ray)
 {
-  for (Triangle triangle: triangles)
+  return find_closest_intersection(triangles, ray);
+}
+
+template <typename T>
+Vector3 find_closest_intersection(T& triangles, const Ray& ray)
+{
+  Vector3 intersect;
+  double min_dist = INFINITY;
+  for (const Triangle& triangle: triangles)
   {
-    Vector3 intersect = triangle.intersect(ray);
-    if (intersect)
-      return intersect;
+    Vector3 vect = triangle.intersect(ray);
+    if (!vect)
+      continue;
+    double norm = (vect - ray.position).norm();
+
+    if (min_dist > norm)
+    {
+      min_dist = norm;
+      intersect = vect;
+    }
   }
-  return Vector3();
+  return intersect;
 }

@@ -9,7 +9,7 @@ public:
   Sphere() = default;
   Sphere(const Vector3& pos, const Attributes& attr, const Color& color,
          double radius);
-  virtual Vector3 intersect(const Ray& ray) override;
+  virtual Vector3 intersect(const Ray& ray) const override;
 
   friend std::istream& operator>>(std::istream& is, Sphere& sphere);
   friend std::ostream& operator<<(std::ostream& is, const Sphere& sphere);

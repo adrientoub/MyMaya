@@ -24,47 +24,37 @@ std::array<Vector3, 3> Triangle::get_vertices() const
   return vertices;
 }
 
-Vector3 Triangle::intersect(const Ray& ray)
+// Use Möller-Trumbore intersection algorithm
+Vector3 Triangle::intersect(const Ray& ray) const
 {
-  // Argument is ignored
-  Vector3 n = normal_vect(ray.position);
   const Vector3& a = pos;
 
-  double n_dot_direction = n.dot_product(ray.direction);
-  if (std::abs(n_dot_direction) < epsilon)
-    return Vector3();
-  double d = n.dot_product(a);
-  double t0 = (n.dot_product(ray.position) + d)
-               / n_dot_direction;
-
-  // Triangle is behind the ray
-  if (t0 < 0)
-    return Vector3();
-
-  Vector3 p = ray.position + ray.direction * t0;
-
-  // perpendicular to triangle plane
-  Vector3 C;
-
   Vector3 ab = b - a;
-  Vector3 ap = p - a;
-  C = ab * ap;
-  if (n.dot_product(C) < 0)
+  Vector3 ac = c - a;
+  Vector3 pvec = ray.direction * ac;
+  double determinant = ab.dot_product(pvec);
+
+  if (std::abs(determinant) < epsilon)
     return Vector3();
 
-  Vector3 bc = c - b;
-  Vector3 bp = p - b;
-  C = bc * bp;
-  if (n.dot_product(C) < 0)
+  double inverse_determinant = 1. / determinant;
+
+  Vector3 tvec = ray.position - a;
+  double u = tvec.dot_product(pvec) * inverse_determinant;
+  if (u < 0 || u > 1)
     return Vector3();
 
-  Vector3 ca = a - c;
-  Vector3 cp = p - c;
-  C = ca * cp;
-  if (n.dot_product(C) < 0)
+  Vector3 qvec = tvec * ab;
+  double v = ray.direction.dot_product(qvec) * inverse_determinant;
+  if (v < 0 || u + v > 1)
     return Vector3();
 
-  return p;
+  double t = ac.dot_product(qvec) * inverse_determinant;
+
+  if (t > epsilon)
+    return ray.direction * t + ray.position;
+
+  return Vector3();
 }
 
 std::istream& operator>>(std::istream& is, Triangle& triangle)

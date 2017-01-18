@@ -15,7 +15,7 @@ public:
   virtual ~Shape() = default;
   Shape() = default;
   Shape(const Vector3& pos, const Attributes& attr, const Color& color);
-  virtual Vector3 intersect(const Ray& ray) = 0;
+  virtual Vector3 intersect(const Ray& ray) const = 0;
   inline const Attributes& get_attributes() const;
   void apply_lights(const Input& file, Color& r, const Vector3& intersect,
                     const Vector3& direction, size_t ttl) const;

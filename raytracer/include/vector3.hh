@@ -28,9 +28,9 @@ public:
   inline double getZ() const;
 
 private:
-  double x_;
-  double y_;
-  double z_;
+  double x_ = 0.;
+  double y_ = 0.;
+  double z_ = 0.;
 };
 
 inline Vector3 operator/(const double& d, const Vector3& vector3);
