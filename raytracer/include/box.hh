@@ -17,7 +17,6 @@ public:
 
 protected:
   virtual Vector3 normal_vect(const Vector3& intersect) const override;
-  virtual Vector3 normal_vect_point(const Vector3& intersect) const override;
   virtual std::ostream& display(std::ostream& os) const override;
 
 private:

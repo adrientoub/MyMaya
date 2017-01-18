@@ -71,16 +71,19 @@ std::istream& operator>>(std::istream& is, Mesh& mesh)
   while (is >> field)
   {
     if (field == "end")
+    {
+      mesh.calculate_bounds();
       return is;
+    }
 
     if (field == "triangle")
     {
       Triangle triangle;
       is >> triangle;
-      mesh.calculate_bounds();
       mesh.triangles.push_back(triangle);
     }
   }
+  mesh.calculate_bounds();
   return is;
 }
 
@@ -92,6 +95,7 @@ std::ostream& operator<<(std::ostream& os, const Mesh& mesh)
 
 Vector3 Mesh::normal_vect(const Vector3& intersect) const
 {
+  // FIXME
   return pos - intersect;
 }
 

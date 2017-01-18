@@ -35,13 +35,9 @@ std::ostream& operator<<(std::ostream& os, const Box& box)
             << box.pos << " " << box.attr << " Color: " << box.color;
 }
 
-Vector3 Box::normal_vect_point(const Vector3& intersect) const
-{
-  return intersect - pos;
-}
-
 Vector3 Box::normal_vect(const Vector3& intersect) const
 {
+  // FIXME
   return pos - intersect;
 }
 
