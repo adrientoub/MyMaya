@@ -58,6 +58,9 @@ public class SceneModel {
                 break;
             }
         }
+        if (camera.getName().equals(objectName)) {
+            object3D = camera;
+        }
         if (object3D == null) {
             System.err.println("No object with name " + objectName + " found in scene.");
             return null;

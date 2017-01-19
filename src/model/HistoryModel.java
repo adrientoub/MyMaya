@@ -18,6 +18,10 @@ public class HistoryModel {
         addLine("translate \"" + name + "\" " + x + " " + y + " " + z);
     }
 
+    public static void addRotation(double x, double y, String name) {
+        addLine("rotate \"" + name + "\" " + x + " " + y);
+    }
+
     public static void addScale(double scale, String name) {
         addLine("scale \"" + name + "\" " + scale);
     }

@@ -44,6 +44,14 @@ public abstract class Object3D {
         return true;
     }
 
+    public boolean canRotate() {
+        return false;
+    }
+
+    public boolean canChangeColor() {
+        return true;
+    }
+
     public String getName() {
         return name;
     }

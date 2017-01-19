@@ -26,6 +26,14 @@ public class Camera extends Object3D {
         rotateX.setAngle(rotateX.getAngle() + angle);
     }
 
+    public double getRotateX() {
+        return rotateX.getAngle();
+    }
+
+    public double getRotateY() {
+        return rotateY.getAngle();
+    }
+
     public void rotateY(double angle) {
         rotateY.setAngle(rotateY.getAngle() + angle);
     }
@@ -65,6 +73,21 @@ public class Camera extends Object3D {
         return new Point3D(r00 * point.getX() + r01 * point.getY() + r02 * point.getZ(),
                 r10 * point.getX() + r11 * point.getY() + r12 * point.getZ(),
                 r20 * point.getX() + r21 * point.getY() + r22 * point.getZ());
+    }
+
+    @Override
+    public boolean isScalable() {
+        return false;
+    }
+
+    @Override
+    public boolean canChangeColor() {
+        return false;
+    }
+
+    @Override
+    public boolean canRotate() {
+        return true;
     }
 
     @Override

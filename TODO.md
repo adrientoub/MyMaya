@@ -11,6 +11,8 @@
   - [x] Spheres
   - [ ] Planes
   - [ ] Triangles
+  - [x] Mesh
+  - [x] Box
 - [x] Lights
   - [x] Display lights
   - [x] Move lights
@@ -22,6 +24,8 @@
 - [x] Save into a good scene format
   - [ ] Save shapes
     - [x] Save spheres
+    - [x] Save box
+    - [x] Save mesh
     - [ ] Save triangles
     - [ ] Save planes
   - [x] Save camera position
@@ -34,13 +38,13 @@
 ### Step 2
 - [x] Add scripting language
 - [x] Add history
-- [ ] Launch raytracer
+- [x] Launch raytracer
 
 ### Step 3
-- [ ] Add rendering of videos
+- [ x Add rendering of videos
   - [ ] Call raytracer automatically
   - [ ] OR
-  - [ ] Create all scenes to render separately
+  - [x] Create all scenes to render separately
 
 ## Raytracer
 

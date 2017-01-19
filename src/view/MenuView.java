@@ -127,7 +127,15 @@ public class MenuView extends MenuBar {
         render.addEventHandler(EventType.ROOT, new RenderController());
         render.setAccelerator(new KeyCodeCombination(KeyCode.F5));
 
-        menuView.getItems().addAll(render);
+        MenuItem selectCamera = new MenuItem("Select camera");
+        selectCamera.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                SelectController.getSelectController().newSelection(SceneModel.getCamera()).handle(null);
+            }
+        });
+
+        menuView.getItems().addAll(render, new SeparatorMenuItem(), selectCamera);
 
         return menuView;
     }

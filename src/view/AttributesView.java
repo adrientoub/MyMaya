@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.Attributes;
+import model.Camera;
 import model.HistoryModel;
 import model.Object3D;
 import script.Execution;
@@ -127,8 +128,45 @@ public class AttributesView {
         int i = addNamePanel(shape3D, 0);
         i = addPositionPanel(shape3D, i);
         i = addScalePanel(shape3D, i);
+        i = addRotatePanel(shape3D, i);
         i = addColorPanel(shape3D, i);
         i = addAttributesPanel(shape3D, i);
+    }
+
+    private int addRotatePanel(Object3D shape3D, int i) {
+        if (!shape3D.canRotate()) {
+            return i;
+        }
+        // TODO: add to all shapes
+        Camera c = (Camera) shape3D;
+        Text rotate = new Text("Rotate");
+        grid.add(rotate, 0, i++);
+
+        TextField rotateXTextField = addTextField("X", c.getRotateX(), i++);
+        rotateXTextField.setOnKeyReleased(event -> {
+            try {
+                TextField tf = (TextField) event.getSource();
+                double newRotate = Double.valueOf(tf.getText());
+                if (newRotate != c.getRotateX()) {
+                    HistoryModel.addRotation(newRotate - c.getRotateX(), 0, shape3D.getName());
+                    c.rotateX(newRotate - c.getRotateX());
+                }
+            } catch (NumberFormatException ignored) {}
+        });
+        TextField rotateYTextField = addTextField("Y", c.getRotateY(), i++);
+        rotateYTextField.setOnKeyReleased(event -> {
+            try {
+                TextField tf = (TextField) event.getSource();
+                double newRotate = Double.valueOf(tf.getText());
+                if (newRotate != c.getRotateY()) {
+                    HistoryModel.addRotation(0, newRotate - c.getRotateY(), shape3D.getName());
+                    c.rotateY(newRotate - c.getRotateY());
+                }
+            } catch (NumberFormatException ignored) {}
+        });
+
+        return i;
+
     }
 
     private int addScalePanel(Object3D shape3D, int i) {
@@ -223,6 +261,9 @@ public class AttributesView {
     }
 
     private int addColorPanel(Object3D shape3D, int i) {
+        if (!shape3D.canChangeColor()) {
+            return i;
+        }
         Text colorText = new Text("Color");
         grid.add(colorText, 0, i++);
 
