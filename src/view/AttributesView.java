@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.Attributes;
+import model.HistoryModel;
 import model.Object3D;
 import script.Execution;
 import script.Parser;
@@ -125,8 +126,31 @@ public class AttributesView {
         grid.getChildren().clear();
         int i = addNamePanel(shape3D, 0);
         i = addPositionPanel(shape3D, i);
+        i = addScalePanel(shape3D, i);
         i = addColorPanel(shape3D, i);
         i = addAttributesPanel(shape3D, i);
+    }
+
+    private int addScalePanel(Object3D shape3D, int i) {
+        if (!shape3D.isScalable()) {
+            return i;
+        }
+        Text scale = new Text("Scale");
+        grid.add(scale, 0, i++);
+
+        TextField scaleTextField = addTextField("Scale", shape3D.getScale(), i++);
+        scaleTextField.setOnKeyReleased(event -> {
+            try {
+                TextField tf = (TextField) event.getSource();
+                double newScale = Double.valueOf(tf.getText());
+                if (newScale != 0 && newScale != shape3D.getScale()) {
+                    HistoryModel.addScale(newScale / shape3D.getScale(), shape3D.getName());
+                    shape3D.setScale(newScale);
+                }
+            } catch (NumberFormatException ignored) {}
+        });
+
+        return i;
     }
 
     private int addNamePanel(Object3D shape3D, int i) {

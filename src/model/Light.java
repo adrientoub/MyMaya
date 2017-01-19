@@ -22,4 +22,9 @@ public abstract class Light extends Object3D {
 
     @Override
     public void setDrawMode(DrawMode drawMode) {}
+
+    @Override
+    public boolean isScalable() {
+        return false;
+    }
 }

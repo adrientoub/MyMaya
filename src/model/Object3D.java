@@ -40,6 +40,10 @@ public abstract class Object3D {
         }
     }
 
+    public boolean isScalable() {
+        return true;
+    }
+
     public String getName() {
         return name;
     }
