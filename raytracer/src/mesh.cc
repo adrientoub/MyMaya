@@ -59,6 +59,8 @@ std::istream& operator>>(std::istream& is, Mesh& mesh)
     if (field == "end")
     {
       mesh.calculate_bounds();
+      mesh.attr = mesh.triangles[0].get_attributes();
+      mesh.color = mesh.triangles[0].get_color();
       return is;
     }
 
@@ -69,6 +71,11 @@ std::istream& operator>>(std::istream& is, Mesh& mesh)
       mesh.triangles.push_back(triangle);
     }
   }
+  if (mesh.triangles.size() > 0)
+  {
+    mesh.attr = mesh.triangles[0].get_attributes();
+    mesh.color = mesh.triangles[0].get_color();
+  }
   mesh.calculate_bounds();
   return is;
 }
@@ -76,7 +83,7 @@ std::istream& operator>>(std::istream& is, Mesh& mesh)
 std::ostream& operator<<(std::ostream& os, const Mesh& mesh)
 {
   return os << "Mesh: " << mesh.name << ": triangle count: "
-            << mesh.triangles.size();
+            << mesh.triangles.size() << " attr: " << mesh.attr << " color: " << mesh.color;
 }
 
 Vector3 Mesh::normal_vect(const Vector3& intersect) const

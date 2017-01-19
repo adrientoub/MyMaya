@@ -13,3 +13,8 @@ inline const Attributes& Shape::get_attributes() const
 {
   return attr;
 }
+
+inline const Color& Shape::get_color() const
+{
+  return color;
+}

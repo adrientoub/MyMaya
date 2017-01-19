@@ -17,6 +17,7 @@ public:
   Shape(const Vector3& pos, const Attributes& attr, const Color& color);
   virtual Vector3 intersect(const Ray& ray) const = 0;
   inline const Attributes& get_attributes() const;
+  inline const Color& get_color() const;
   void apply_lights(const Input& file, Color& r, const Vector3& intersect,
                     const Vector3& direction, size_t ttl) const;
   friend std::ostream& operator<<(std::ostream& os, const Shape& shape);
