@@ -32,7 +32,7 @@ public class ObjReader {
         ArrayList<Double> verticeTexture = new ArrayList<>();
         ArrayList<Face> faces = new ArrayList<>();
 
-        String[] lines = content.split("\n");
+        String[] lines = content.split("\r?\n");
         for (String line: lines) {
             if (line.length() == 0 || line.startsWith("#")) {
                 continue;
