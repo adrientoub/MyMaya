@@ -122,6 +122,7 @@ public class AttributesView {
     }
 
     public void updateForObject(Object3D shape3D) {
+        grid.getChildren().clear();
         int i = addNamePanel(shape3D, 0);
         i = addPositionPanel(shape3D, i);
         i = addColorPanel(shape3D, i);

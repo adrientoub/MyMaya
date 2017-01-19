@@ -50,6 +50,8 @@ public class RenderController implements EventHandler<Event> {
             System.out.println("Generated output in " + outputFile + ", done in " + duration + " seconds. Exit status " + outValue);
 
             WritableImage image = ConverterModel.openPPM(outputFile);
+
+            // TODO: add ability to save to usual file format
             Stage stage = new Stage();
             stage.setTitle("Render");
             StackPane secondaryLayout = new StackPane();
