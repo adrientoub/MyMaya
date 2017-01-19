@@ -4,6 +4,8 @@
 #include "triangle.hh"
 
 #include <array>
+#include <utility>
+#include <map>
 
 class Box: public Shape
 {
@@ -26,6 +28,8 @@ private:
   double scale;
   Vector3 bounds[2];
   std::array<Triangle, 12> triangles;
+
+  std::map<Vector3, const Triangle*> intersect_to_triangle;
 };
 
 std::istream& operator>>(std::istream& is, Box& box);
@@ -38,6 +42,6 @@ void calculate_box_triangles(Vector3* bounds,
                              const Attributes& attr, const Color& color);
 
 template <typename T>
-Vector3 find_closest_intersection(T& triangles, const Ray& ray);
+std::pair<Vector3, const Triangle*> find_closest_intersection(T& triangles, const Ray& ray);
 
 #include "box.hxx"

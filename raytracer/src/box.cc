@@ -23,7 +23,9 @@ void Box::calculate_bounds()
 
 Vector3 Box::intersect(const Ray& ray) const
 {
-  return box_intersect(triangles, ray);
+  std::pair<Vector3, const Triangle*> pair = find_closest_intersection(triangles, ray);
+  const_cast<std::map<Vector3, const Triangle*>&>(intersect_to_triangle).insert(pair);
+  return pair.first;
 }
 
 std::istream& operator>>(std::istream& is, Box& box)
@@ -40,7 +42,10 @@ std::ostream& operator<<(std::ostream& os, const Box& box)
 
 Vector3 Box::normal_vect(const Vector3& intersect) const
 {
-  // FIXME
+  auto triangle = intersect_to_triangle.find(intersect);
+  if (triangle != intersect_to_triangle.end())
+    return triangle->second->normal_vect(intersect);
+
   return intersect - pos;
 }
 
@@ -51,7 +56,8 @@ std::ostream& Box::display(std::ostream& os) const
 
 Vector3 box_intersect(const std::array<Triangle, 12>& triangles, const Ray& ray)
 {
-  return find_closest_intersection(triangles, ray);
+  auto pair = find_closest_intersection(triangles, ray);
+  return pair.first;
 }
 
 void calculate_box_triangles(Vector3* bounds, std::array<Triangle, 12>& triangles, const Attributes& attr, const Color& color)

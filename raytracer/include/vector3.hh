@@ -17,6 +17,7 @@ public:
   inline Vector3 operator-(const Vector3& v) const;
   inline Vector3 operator-() const;
   inline bool operator==(const Vector3& vect) const;
+  inline bool operator<(const Vector3& vect) const;
   inline bool operator!=(const Vector3& vect) const;
   inline explicit operator bool() const;
   friend Vector3 operator/(const double& d, const Vector3& vector3);

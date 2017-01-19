@@ -45,7 +45,11 @@ Vector3 Mesh::intersect(const Ray& ray) const
 {
   Vector3 intersect = box_intersect(box_triangle_bounds, ray);
   if (intersect)
-    return find_closest_intersection(triangles, ray);
+  {
+    auto pair = find_closest_intersection(triangles, ray);
+    const_cast<std::map<Vector3, const Triangle*>&>(intersect_to_triangle).insert(pair);
+    return pair.first;
+  }
 
   return Vector3();
 }
@@ -88,7 +92,10 @@ std::ostream& operator<<(std::ostream& os, const Mesh& mesh)
 
 Vector3 Mesh::normal_vect(const Vector3& intersect) const
 {
-  // FIXME
+  auto triangle = intersect_to_triangle.find(intersect);
+  if (triangle != intersect_to_triangle.end())
+    return triangle->second->normal_vect(intersect);
+
   return pos - intersect;
 }
 

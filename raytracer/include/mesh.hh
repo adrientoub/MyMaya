@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <array>
+#include <map>
 
 class Mesh: public Shape
 {
@@ -28,6 +29,7 @@ private:
 
   std::vector<Triangle> triangles;
   std::array<Triangle, 12> box_triangle_bounds;
+  std::map<Vector3, const Triangle*> intersect_to_triangle;
 };
 
 std::istream& operator>>(std::istream& is, Mesh& mesh);

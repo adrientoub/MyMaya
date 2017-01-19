@@ -63,6 +63,13 @@ inline double Vector3::norm() const
   return std::sqrt(std::pow(x_, 2) + std::pow(y_, 2) + std::pow(z_, 2));
 }
 
+inline bool Vector3::operator<(const Vector3& other) const
+{
+  return x_ < other.x_ ||
+         (x_ == other.x_ && y_ < other.y_) ||
+         (x_ == other.x_ && y_ == other.y_ && z_ < other.z_);
+}
+
 inline bool Vector3::operator==(const Vector3& other) const
 {
   return x_ == other.x_ && y_ == other.y_ && z_ == other.z_;

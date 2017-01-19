@@ -3,9 +3,10 @@
 #include "box.hh"
 
 template <typename T>
-Vector3 find_closest_intersection(T& triangles, const Ray& ray)
+std::pair<Vector3, const Triangle*> find_closest_intersection(T& triangles, const Ray& ray)
 {
   Vector3 intersect;
+  const Triangle* min_triangle;
   double min_dist = INFINITY;
   for (const Triangle& triangle: triangles)
   {
@@ -18,7 +19,8 @@ Vector3 find_closest_intersection(T& triangles, const Ray& ray)
     {
       min_dist = norm;
       intersect = vect;
+      min_triangle = &triangle;
     }
   }
-  return intersect;
+  return std::make_pair(intersect, min_triangle);
 }
