@@ -43,6 +43,21 @@ public class SceneModel {
         }
     }
 
+    public static void rotate(String name, double x, double y) {
+        Object3D object3D = findObject(name);
+        if (object3D != null) {
+            if (object3D.canRotate()) {
+                // TODO: be more generic
+                Camera camera = (Camera) object3D;
+                camera.rotateX(x);
+                camera.rotateY(y);
+                HistoryModel.addRotation(x, y, name);
+            } else {
+                System.err.println("Object " + object3D + " cannot rotate.");
+            }
+        }
+    }
+
     public static void rename(String from, String to) {
         Object3D object3D = findObject(from);
         if (object3D != null) {

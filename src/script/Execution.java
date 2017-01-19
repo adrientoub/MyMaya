@@ -31,6 +31,7 @@ public class Execution extends Visitor {
             functions.put("remove", new RemoveFunction());
             functions.put("rename", new RenameFunction());
             functions.put("translate", new TranslateFunction());
+            functions.put("rotate", new RotateFunction());
             functions.put("scale", new ScaleFunction());
             functions.put("exec", new LaunchScriptFunction());
             functions.put("save", new SaveFunction());
