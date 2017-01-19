@@ -23,6 +23,20 @@ public class ObjReader {
         public int[] vertices;
     }
 
+    public static Face createFace(String[] tokens, int k) {
+        int[] f = new int[6];
+        for (int i = 0; i < 3; i++) {
+            String[] splited = tokens[i == 0 ? i + 1: i + k].split("/");
+            f[i * 2] = Integer.parseInt(splited[0]) - 1;
+            if (splited.length > 1 && splited[1].length() > 0) {
+                f[i * 2 + 1] = Integer.parseInt(splited[1]) - 1;
+            } else {
+                f[i * 2 + 1] = 0;
+            }
+        }
+        return new Face(f);
+    }
+
     public static void openObj(File file) throws IOException {
         System.out.println("Opening " + file.getAbsolutePath());
         Path path = Paths.get(file.getAbsolutePath());
@@ -53,22 +67,17 @@ public class ObjReader {
                 case "vn": // vertex normal
                 case "vp": // parameter space vertices
                 case "o": // Object name
+                case "g": // Group name
                 case "s": // Smooth shading
                 case "usemtl": // Use material
                 case "mtllib": // Open .mtl file
                     break;
                 case "f": // face
-                    int[] f = new int[6];
-                    for (int i = 0; i < 3; i++) {
-                        String[] splited = tokens[i + 1].split("/");
-                        f[i * 2] = Integer.parseInt(splited[0]) - 1;
-                        if (splited.length > 1 && splited[1].length() > 0) {
-                            f[i * 2 + 1] = Integer.parseInt(splited[1]) - 1;
-                        } else {
-                            f[i * 2 + 1] = 0;
-                        }
+                    int k = 1;
+                    while (tokens.length >= k + 3) {
+                        faces.add(createFace(tokens, k));
+                        k++;
                     }
-                    faces.add(new Face(f));
                     break;
                 default:
                     System.err.println(tokens[0] + " unknown");
