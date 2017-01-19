@@ -39,6 +39,7 @@ public class Execution extends Visitor {
             functions.put("box", new ObjectFunction(ObjectFunction.ObjectType.BOX));
             functions.put("point_light", new ObjectFunction(ObjectFunction.ObjectType.POINT_LIGHT));
             functions.put("directional_light", new ObjectFunction(ObjectFunction.ObjectType.DIRECTIONAL_LIGHT));
+            functions.put("mesh", new ObjectFunction(ObjectFunction.ObjectType.MESH));
             functions.put("echo", new EchoFunction());
             functionScopes.addLast(functions);
         }

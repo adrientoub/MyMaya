@@ -2,6 +2,8 @@ package script.function;
 
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
+import model.Mesh;
+import model.ObjReader;
 import model.SceneModel;
 import model.Sphere;
 import script.ast.ArgumentListDef;
@@ -11,6 +13,8 @@ import script.lexer.Token;
 import script.types.DoubleType;
 import script.types.StringType;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,6 +24,7 @@ public class ObjectFunction extends Function {
     public enum ObjectType {
         SPHERE,
         BOX,
+        MESH,
         POINT_LIGHT,
         DIRECTIONAL_LIGHT
     }
@@ -58,6 +63,17 @@ public class ObjectFunction extends Function {
                 break;
             case DIRECTIONAL_LIGHT:
                 SceneModel.addDirectionalLight(c, pos, name.getString());
+                break;
+            case MESH:
+                try {
+                    Mesh m = ObjReader.openObj(new File(name.getString()));
+                    m.setColor(c);
+                    m.getInnerObject().setTranslateX(pos.getX());
+                    m.getInnerObject().setTranslateY(pos.getY());
+                    m.getInnerObject().setTranslateZ(pos.getZ());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 System.err.println("Not implemented for " + objectType);
