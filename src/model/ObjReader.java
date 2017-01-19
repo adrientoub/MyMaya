@@ -37,7 +37,11 @@ public class ObjReader {
             if (line.length() == 0 || line.startsWith("#")) {
                 continue;
             }
-            String[] tokens = line.split(" ");
+            String[] tokens = line.split(" +");
+            if (tokens.length == 0) {
+                continue;
+            }
+
             switch (tokens[0]) {
                 case "v": // vertex
                     vertices.add(new Point3D(Double.valueOf(tokens[1]), Double.valueOf(tokens[2]), Double.valueOf(tokens[3])));
@@ -58,7 +62,7 @@ public class ObjReader {
                     for (int i = 0; i < 3; i++) {
                         String[] splited = tokens[i + 1].split("/");
                         f[i * 2] = Integer.parseInt(splited[0]) - 1;
-                        if (splited.length > 1) {
+                        if (splited.length > 1 && splited[1].length() > 0) {
                             f[i * 2 + 1] = Integer.parseInt(splited[1]) - 1;
                         } else {
                             f[i * 2 + 1] = 0;
