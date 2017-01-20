@@ -28,8 +28,9 @@ import java.io.IOException;
  */
 public class RenderController implements EventHandler<Event> {
     private File renderer;
-    private static final String outputFile = "myout.ppm";
-    private static final String inputFile = "temporary.in";
+    private static final String outputFile = "myout-%d.ppm";
+    private static final String inputFile = "temporary-%d.in";
+    private static int i = 0;
 
     @Override
     public void handle(Event event) {
@@ -45,18 +46,20 @@ public class RenderController implements EventHandler<Event> {
                 return;
             }
         }
-        ExportSceneModel.exportScene(inputFile);
+        String inputFilename = String.format(inputFile, i);
+        String outputFilename = String.format(outputFile, i++);
+        ExportSceneModel.exportScene(inputFilename);
         try {
-            ProcessBuilder pb = new ProcessBuilder(renderer.getAbsolutePath(), inputFile, outputFile);
+            ProcessBuilder pb = new ProcessBuilder(renderer.getAbsolutePath(), inputFilename, outputFilename);
             pb.inheritIO();
             long startTime = System.currentTimeMillis();
             Process p = pb.start();
             int outValue = p.waitFor();
             long endTime = System.currentTimeMillis();
             double duration = (endTime - startTime) / 1000.;
-            System.out.println("Generated output in " + outputFile + ", done in " + duration + " seconds. Exit status " + outValue);
+            System.out.println("Generated output in " + outputFilename + ", done in " + duration + " seconds. Exit status " + outValue);
 
-            WritableImage image = ConverterModel.openPPM(outputFile);
+            WritableImage image = ConverterModel.openPPM(outputFilename);
 
             Stage stage = new Stage();
             stage.setTitle("Render");
