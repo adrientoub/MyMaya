@@ -113,6 +113,12 @@ public class SelectController {
             if (shape instanceof Sphere) {
                 Sphere sphere = (Sphere) shape;
                 sphere.setRadius(sphere.getRadius() + scale);
+            } else if (shape instanceof Box) {
+                Box box = (Box) shape;
+                double newScale = box.getWidth() + scale;
+                box.setWidth(newScale);
+                box.setHeight(newScale);
+                box.setDepth(newScale);
             } else {
                 double newScale = shape.getScaleX() + scale;
                 shape.setScaleX(newScale);

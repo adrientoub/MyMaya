@@ -28,7 +28,7 @@ public class Box extends Shape {
 
     @Override
     public String toString() {
-        return new StringBuilder().append("box \"").append(name).append("\" ").append(internalBox.getScaleX())
+        return new StringBuilder().append("box \"").append(name).append("\" ").append(getScale())
                 .append(" ").append(Shape.getPositionString(internalBox)).append(" ").append(attributes.toString())
                 .append(" ").append(getColorString(color)).toString();
     }
