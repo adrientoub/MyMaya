@@ -22,12 +22,6 @@ import view.MenuView;
  * Created by Adrien on 20/10/2016.
  */
 public class Main extends Application {
-    private void addSpheres() {
-        SceneModel.addSphere(3, Color.RED, null, null);
-        SceneModel.addSphere(3, Color.BLUE, new Point3D(5, 0, 0), null);
-        SceneModel.addSphere(2, Color.GREEN, new Point3D(0, -1, 0), null);
-    }
-
     private void addLights() {
         SceneModel.addAmbientLight(Color.WHITE);
         SceneModel.addDirectionalLight(Color.WHITE, new Point3D(0, 1, 1), null);
@@ -39,8 +33,6 @@ public class Main extends Application {
         // Create and position camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
         model.Camera myCamera = new Camera(camera);
-        myCamera.rotateX(-20);
-        myCamera.rotateY(-20);
 
         myCamera.translateX(0);
         myCamera.translateY(0);
@@ -54,7 +46,6 @@ public class Main extends Application {
         SubScene subScene = new SubScene(scene, 1024, 768);
         subScene.setManaged(false);
         SelectController.initializeSelectController(scene);
-        addSpheres();
         addLights();
         subScene.setFill(Color.ALICEBLUE);
         subScene.setCamera(camera);
