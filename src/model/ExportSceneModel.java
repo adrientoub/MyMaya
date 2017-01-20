@@ -15,7 +15,7 @@ public class ExportSceneModel {
             lastFilename = filename;
             count = 0;
         } else {
-            filename = lastFilename + count;
+            filename = lastFilename + String.format("%04d", count);
             count++;
         }
 
