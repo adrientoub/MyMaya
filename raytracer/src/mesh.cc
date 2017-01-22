@@ -61,12 +61,7 @@ std::istream& operator>>(std::istream& is, Mesh& mesh)
   while (is >> field)
   {
     if (field == "end")
-    {
-      mesh.calculate_bounds();
-      mesh.attr = mesh.triangles[0].get_attributes();
-      mesh.color = mesh.triangles[0].get_color();
-      return is;
-    }
+      break;
 
     if (field == "triangle")
     {
