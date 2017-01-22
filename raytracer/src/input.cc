@@ -9,12 +9,31 @@
 #include <cmath>
 #include <atomic>
 
+#ifdef _WIN32
+# include <io.h>
+#else
+# include <unistd.h>
+#endif
+
 Input::Input(const std::string& filename)
       : filename(filename)
 {}
 
+int is_stdout_atty()
+{
+#ifdef _WIN32
+  return _isatty(_fileno(stdout));
+#else
+  return isatty(fileno(stdout));
+#endif
+}
+
 void display_progress(float progress)
 {
+  // Only display progress on a tty
+  if (!is_stdout_atty())
+    return;
+
   int bar_width = 70;
 
   std::cout << "[";
