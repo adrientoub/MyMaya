@@ -1,0 +1,106 @@
+mesh "obj/cessna.obj" 0 0 0 0.5 0.5 0.5
+rename "obj\cessna.obj" "cessna"
+scale "cessna" -0.5
+
+save "video/out"
+
+loop 90 times
+  rotate "camera1" 0 -1
+  translate "camera1" 1 0 0.1
+  save_next
+end
+
+remove "cessna"
+
+rotate "camera1" 0 90
+translate "camera1" -90 0 -9.0
+
+mesh "obj/teapot.obj" 0 0 0 0.5 0.5 0.5
+sphere "sphere0" -2 0 2 1 0.5 0
+sphere "sphere1" 2 0 2 0 1 0.5
+sphere "sphere2" 4 0 2 0 0.7 1
+rename "obj\teapot.obj" "teapot"
+scale "teapot" -1
+
+loop 90 times
+  rotate "camera1" 0 -1
+  translate "camera1" -0.05 0 0.1
+  save_next
+end
+
+rotate "camera1" 0 90
+translate "camera1" 4.5 0 -9.0
+
+remove "teapot"
+remove "sphere0"
+remove "sphere1"
+remove "sphere2"
+
+sphere "sphere0" 0 1 0 1 0 0
+sphere "sphere1" 1 3 0 0 1 0
+sphere "sphere2" 0 1 2 0 0 1
+sphere "sphere3" 0 1 0 1 0 1
+sphere "sphere4" 1 1 0 1 1 0
+sphere "sphere5" 0 0 1 1 1 1
+
+save_next
+loop 90 times
+  translate "sphere1" 0.01 0.02 0.03
+  translate "sphere2" -0.01 0.02 -0.03
+  translate "sphere3" -0.01 0.02 0.03
+  translate "sphere4" 0.01 -0.02 0.03
+  save_next
+end
+
+remove "sphere0"
+remove "sphere1"
+remove "sphere2"
+remove "sphere3"
+remove "sphere4"
+remove "sphere5"
+
+box "box0" 0 1 0 1 0 0
+box "box1" 1 0 0 0 1 0
+box "box2" 0 1 1 0 0 1
+box "box3" 0 1 0 1 0 1
+box "box4" 2 1 0 1 1 0
+box "box5" 0 0 1 1 1 1
+
+save_next
+loop 90 times
+  translate "box0" 0.01 0.02 0.03
+  translate "box1" 0.0 0.10 0.02
+  translate "box2" 0.0 0.05 0
+  translate "box3" -0.01 0.02 0.03
+  translate "box4" 0.01 -0.02 -0.03
+  translate "box5" 0.01 -0.02 0.03
+  save_next
+end
+
+remove "box0"
+remove "box1"
+remove "box2"
+remove "box3"
+remove "box4"
+remove "box5"
+
+mesh "obj/teapot.obj" 0 0 0 1 0.5 0.5
+rename "obj\teapot.obj" "teapot0"
+scale "teapot0" -1
+mesh "obj/teapot.obj" 0 1 0 0 1 0.5
+rename "obj\teapot.obj" "teapot1"
+scale "teapot1" -1
+mesh "obj/teapot.obj" 0 0 0 1 0 1
+rename "obj\teapot.obj" "teapot2"
+scale "teapot2" -1
+mesh "obj/teapot.obj" 0 2 0 1 0 1
+rename "obj\teapot.obj" "teapot3"
+scale "teapot3" -1
+
+loop 90 times
+  translate "teapot0" 0.03 0.02 0.03
+  translate "teapot1" 0.0 0.10 0.02
+  translate "teapot2" 0.0 0.05 0
+  translate "teapot3" 0 0.01 0.0
+  save_next
+end
