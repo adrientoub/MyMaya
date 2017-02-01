@@ -1,0 +1,17 @@
+group 'MyMaya'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'Main'
+sourceSets.main.java.srcDirs = ['src']
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': mainClassName
+        )
+    }
+}
