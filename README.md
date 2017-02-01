@@ -77,29 +77,19 @@ convert out.ppm out.jpg
 ```
 To convert the output image to JPG.
 
-
 ## GUI
 
 ### Dependencies
 
 * Java 8.0 with JavaFX support
+* Gradle
 
 ### Build
 
-#### In Intellij IDEA
-
-* Open the source repository with Intellij IDEA
-* On the top-right, Edit configurations
-* Add New configuration: 'Application'
-* Point the Main class option to src/Main.java file
-* Save it, and run it
-
-#### In CLI
+To build the project you can simply use Gradle:
 
 ```
-cd src
-javac Main.java
-java Main
+gradle run
 ```
 
 ### Usage
