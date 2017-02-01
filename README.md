@@ -1,35 +1,90 @@
+# MyMaya
+
 [![Build Status][travis-image]][travis-url]
 
-# MyMaya
+## Description
+
 A simple 3D computer graphics software.
 
 This project is divided in two parts:
-* The GUI application written in Java consists of:
-  * A WYSIWIG 3D editor to model your scenes
+* The GUI application written in Java consisting of:
+  - A WYSIWIG 3D editor to model your scenes
+    * You can add primitives or complex meshes from .obj files
     * Each scene can be saved to a `.scene` file for further image generation.
-  * It's own script language to create sequences of scenes: `mymel`.
-    * You can also save/load `mymel` script files.
+  - Its own scripting language
+    * Able to edit the scene
+    * Each visual action is recorded and added to history in a repeatable form
+    * Can be loaded from file to generate complexe scenes and annimation
+    * [For more information about the language](SCRIPT.md)
 * The raytracer application written in C++:
-  * Taking `.scene` scripts as input and generating the corresponding images.
+  - Taking scenes as input and generating the corresponding image in PPM.
 
+## Compatibility
 
-## Installation
+Supported platforms are:
+
+- Windows x64 (tested on Windows 10)
+- Linux x64
+
+## Raytracer
 
 ### Dependencies
 
-* clang/gcc with C++14 compatibility
-* Java 8.0
+* A C++ compiler with C++14 compatibility
+  - If the compiler supports OpenMP it will be used to speed up the renders
+* Cmake
 
-### Building the raytracer
+This was tested on:
+* Windows 10 with VS2017
+* Ubuntu with clang++ 3.8
+* Ubuntu with g++ 4.9, 5.0 and 6.0
 
-```
-cd src
+### Build
+
+#### Windows
+
+To compile the Raytracer on Windows you can use Cmake to generate a Visual
+Studio Solution or just simply use the Open Directory feature of VS2017.
+
+When the project is open in Visual Studio we recommend to compile using the
+Release preset (instead of Debug) in order to get the best performance
+possible.
+
+#### Linux
+
+```bash
+cd raytracer
 make
 ```
 
-## Usage
+### Usage
 
-### Run the GUI application
+After creating a scene file with the GUI application, it is possible to run the
+raytracer to make a realistic render of this scene.
+
+```bash
+./raytracer/_build/raytracer your_input.scene out.ppm
+```
+
+This will generate a [PPM](https://fr.wikipedia.org/wiki/Portable_pixmap) file.
+
+You can view this PPM file using diverse image viewer or convert it to popular
+image formats using a program like ImageMagick. With ImageMagick you can just
+launch:
+
+```bash
+convert out.ppm out.jpg
+```
+To convert the output image to JPG.
+
+
+## GUI
+
+### Dependencies
+
+* Java 8.0 with JavaFX support
+
+### Build
 
 #### In Intellij IDEA
 
@@ -47,13 +102,9 @@ javac Main.java
 java Main
 ```
 
-### Run the Raytracer application
+### Usage
 
-When you created a `.scene` file with the GUI application, just run `./raytracer/_build/raytracer your_input.scene out.ppm`. This will generate a [ppm](https://fr.wikipedia.org/wiki/Portable_pixmap) file. To convert it to jpg, type: `convert out.ppm out.jpg`.
-
-## GUI Commands
-
-#todo
+TODO
 
 [travis-url]: https://travis-ci.com/adrientoub/MyMaya
 [travis-image]: https://travis-ci.com/adrientoub/MyMaya.svg?token=JzsZbq1sQfwhFpuF1GXJ&branch=master
