@@ -11,6 +11,7 @@ addons:
     - g++-5
     - g++-6
     - clang-3.8
+    - gradle
 
 matrix:
   include:
@@ -22,6 +23,9 @@ matrix:
       env: COMPILER=g++-6
     - compiler: clang
       env: COMPILER=clang++-3.8
+    - language: java
+      script:
+        - gradle jar
 
 script:
   cd raytracer && make CXX=$COMPILER
