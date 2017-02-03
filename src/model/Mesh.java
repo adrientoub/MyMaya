@@ -43,6 +43,7 @@ public class Mesh extends Shape {
 
     @Override
     public void setScale(double scale) {
+        super.setScale(scale);
         internalMesh.setScaleX(scale);
         internalMesh.setScaleY(scale);
         internalMesh.setScaleZ(scale);

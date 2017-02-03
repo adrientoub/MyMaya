@@ -45,6 +45,7 @@ public class Box extends Shape {
 
     @Override
     public void setScale(double scale) {
+        super.setScale(scale);
         internalBox.setWidth(scale);
         internalBox.setHeight(scale);
         internalBox.setDepth(scale);

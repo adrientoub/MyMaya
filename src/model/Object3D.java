@@ -1,8 +1,11 @@
 package model;
 
+import controller.SelectController;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.DrawMode;
+import view.AttributesView;
 
 /**
  * Created by Adrien on 14/12/2016.
@@ -26,7 +29,13 @@ public abstract class Object3D {
 
     public abstract Node getInnerObject();
     public abstract double getScale();
-    public abstract void setScale(double scale);
+
+    public void setScale(double scale) {
+        if (SelectController.getSelectController().getSelected() == this) {
+            AttributesView.getInstance().getScaleTextField().setText(Double.toString(scale));
+        }
+    }
+
     public abstract void setDrawMode(DrawMode drawMode);
 
     public Color getColor() {
@@ -57,13 +66,27 @@ public abstract class Object3D {
     }
 
     public void moveBy(double translateX, double translateY, double translateZ) {
-        getInnerObject().setTranslateX(getInnerObject().getTranslateX() + translateX);
-        getInnerObject().setTranslateY(getInnerObject().getTranslateY() + translateY);
-        getInnerObject().setTranslateZ(getInnerObject().getTranslateZ() + translateZ);
+        translateBy(translateX, translateY, translateZ);
         HistoryModel.addTranslation(translateX, translateY, translateZ, name);
     }
 
-    public void setTranslateX(Double translateX) {
+    public void translateBy(double translateX, double translateY, double translateZ) {
+        double x = getInnerObject().getTranslateX();
+        double y = getInnerObject().getTranslateY();
+        double z = getInnerObject().getTranslateZ();
+        if (translateX != 0 || translateY != 0 || translateZ != 0) {
+            if (SelectController.getSelectController().getSelected() == this) {
+                AttributesView.getInstance().getxTextField().setText(Double.toString(x + translateX));
+                AttributesView.getInstance().getyTextField().setText(Double.toString(y + translateY));
+                AttributesView.getInstance().getzTextField().setText(Double.toString(z + translateZ));
+            }
+            getInnerObject().setTranslateX(x + translateX);
+            getInnerObject().setTranslateY(y + translateY);
+            getInnerObject().setTranslateZ(z + translateZ);
+        }
+    }
+
+    public void setTranslateX(double translateX) {
         double x = getInnerObject().getTranslateX();
         if (translateX - x != 0) {
             getInnerObject().setTranslateX(translateX);
@@ -71,7 +94,7 @@ public abstract class Object3D {
         }
     }
 
-    public void setTranslateY(Double translateY) {
+    public void setTranslateY(double translateY) {
         double y = getInnerObject().getTranslateY();
         if (translateY - y != 0) {
             getInnerObject().setTranslateY(translateY);
@@ -79,7 +102,7 @@ public abstract class Object3D {
         }
     }
 
-    public void setTranslateZ(Double translateZ) {
+    public void setTranslateZ(double translateZ) {
         double z = getInnerObject().getTranslateZ();
         if (translateZ - z != 0) {
             getInnerObject().setTranslateZ(translateZ);

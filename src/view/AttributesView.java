@@ -32,6 +32,11 @@ public class AttributesView {
     private TextField commandTextField;
     private GridPane grid;
 
+    private TextField xTextField;
+    private TextField yTextField;
+    private TextField zTextField;
+    private TextField scaleTextField;
+
     private static AttributesView instance = new AttributesView();
 
     private TextField addTextField(String str, double value, int i) {
@@ -96,7 +101,7 @@ public class AttributesView {
 
         Node inner = shape3D.getInnerObject();
 
-        TextField xTextField = addTextField("x", inner.getTranslateX(), i++);
+        xTextField = addTextField("x", inner.getTranslateX(), i++);
         xTextField.setOnKeyReleased(event -> {
             try {
                 TextField tf = (TextField) event.getSource();
@@ -104,7 +109,7 @@ public class AttributesView {
             } catch (NumberFormatException ignored) {}
         });
 
-        TextField yTextField = addTextField("y", inner.getTranslateY(), i++);
+        yTextField = addTextField("y", inner.getTranslateY(), i++);
         yTextField.setOnKeyReleased(event -> {
             try {
                 TextField tf = (TextField) event.getSource();
@@ -112,7 +117,7 @@ public class AttributesView {
             } catch (NumberFormatException ignored) {}
         });
 
-        TextField zTextField = addTextField("z", inner.getTranslateZ(), i++);
+        zTextField = addTextField("z", inner.getTranslateZ(), i++);
         zTextField.setOnKeyReleased(event -> {
             try {
                 TextField tf = (TextField) event.getSource();
@@ -131,6 +136,22 @@ public class AttributesView {
         i = addRotatePanel(shape3D, i);
         i = addColorPanel(shape3D, i);
         i = addAttributesPanel(shape3D, i);
+    }
+
+    public TextField getxTextField() {
+        return xTextField;
+    }
+
+    public TextField getyTextField() {
+        return yTextField;
+    }
+
+    public TextField getzTextField() {
+        return zTextField;
+    }
+
+    public TextField getScaleTextField() {
+        return scaleTextField;
     }
 
     private int addRotatePanel(Object3D shape3D, int i) {
@@ -176,7 +197,7 @@ public class AttributesView {
         Text scale = new Text("Scale");
         grid.add(scale, 0, i++);
 
-        TextField scaleTextField = addTextField("Scale", shape3D.getScale(), i++);
+        scaleTextField = addTextField("Scale", shape3D.getScale(), i++);
         scaleTextField.setOnKeyReleased(event -> {
             try {
                 TextField tf = (TextField) event.getSource();

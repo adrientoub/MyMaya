@@ -46,6 +46,7 @@ public class Sphere extends Shape {
 
     @Override
     public void setScale(double radius) {
+        super.setScale(radius);
         internalSphere.setRadius(radius);
     }
 

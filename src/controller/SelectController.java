@@ -10,7 +10,6 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.DrawMode;
-import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import model.HistoryModel;
@@ -54,6 +53,10 @@ public class SelectController {
         selected = null;
     }
 
+    public Object3D getSelected() {
+        return selected;
+    }
+
     public class AxisMovement implements EventHandler<MouseEvent> {
         private double x = -1;
         private double y = -1;
@@ -91,11 +94,15 @@ public class SelectController {
             }
 
             if (event.isPrimaryButtonDown()) {
-                Node[] nodes = new Node[] { innerObject, getTools().far, getTools().right, getTools().up };
+                double moveX = axis.getX() * (event.getSceneX() - x) / 100;
+                double moveY = axis.getY() * (event.getSceneY() - y) / 100;
+                double moveZ = axis.getZ() * (event.getSceneX() - x) / 100;
+                selected.translateBy(moveX, moveY, moveZ);
+                Node[] nodes = new Node[] { getTools().far, getTools().right, getTools().up };
                 for (Node node: nodes) {
-                    node.setTranslateX(node.getTranslateX() + axis.getX() * (event.getSceneX() - x) / 100);
-                    node.setTranslateY(node.getTranslateY() + axis.getY() * (event.getSceneY() - y) / 100);
-                    node.setTranslateZ(node.getTranslateZ() + axis.getZ() * (event.getSceneX() - x) / 100);
+                    node.setTranslateX(node.getTranslateX() + moveX);
+                    node.setTranslateY(node.getTranslateY() + moveY);
+                    node.setTranslateZ(node.getTranslateZ() + moveZ);
                 }
             }
             x = event.getSceneX();
@@ -109,22 +116,11 @@ public class SelectController {
         private Point3D axis;
         private double scale;
 
-        private void setScale(Node shape, double scale) {
-            if (shape instanceof Sphere) {
-                Sphere sphere = (Sphere) shape;
-                sphere.setRadius(sphere.getRadius() + scale);
-            } else if (shape instanceof Box) {
-                Box box = (Box) shape;
-                double newScale = box.getWidth() + scale;
-                box.setWidth(newScale);
-                box.setHeight(newScale);
-                box.setDepth(newScale);
-            } else {
-                double newScale = shape.getScaleX() + scale;
-                shape.setScaleX(newScale);
-                shape.setScaleY(newScale);
-                shape.setScaleZ(newScale);
-            }
+        private void setScale(Box box, double scale) {
+            double newScale = box.getWidth() + scale;
+            box.setWidth(newScale);
+            box.setHeight(newScale);
+            box.setDepth(newScale);
         }
 
         public AxisScale(Point3D axis) {
@@ -153,11 +149,9 @@ public class SelectController {
             }
 
             if (event.isPrimaryButtonDown()) {
-                Node[] nodes = new Node[] { selected.getInnerObject(), getTools().scaler };
                 double scale = axis.getX() * (event.getSceneX() - x) / 100;
-                for (Node node: nodes) {
-                    setScale(node, scale);
-                }
+                selected.setScale(selected.getScale() + scale);
+                setScale(getTools().scaler, scale);
             }
             x = event.getSceneX();
             y = event.getSceneY();
