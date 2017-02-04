@@ -78,17 +78,14 @@ public class AttributesView {
         textArea.setEditable(false);
 
         commandTextField = new TextField();
-        commandTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ENTER) {
-                    Parser p = new Parser();
-                    AstNode parsed = p.parse(commandTextField.getText());
-                    if (parsed != null) {
-                        parsed.accept(Execution.getInstance());
-                    }
-                    commandTextField.setText("");
+        commandTextField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                Parser p = new Parser();
+                AstNode parsed = p.parse(commandTextField.getText());
+                if (parsed != null) {
+                    parsed.accept(Execution.getInstance());
                 }
+                commandTextField.setText("");
             }
         });
 

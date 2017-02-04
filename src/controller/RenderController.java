@@ -39,7 +39,8 @@ public class RenderController implements EventHandler<Event> {
             fileChooser.setTitle("Open executable Raytracer");
             String os = System.getProperty("os.name");
             if (os.startsWith("Windows")) {
-                fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Executable", "exe"));
+                fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter("Executable", "*.exe"));
             }
             renderer = fileChooser.showOpenDialog(null);
             if (renderer == null) {

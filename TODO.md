@@ -30,7 +30,7 @@
     - [ ] Save planes
   - [x] Save camera position
   - [x] Save lights
-- [ ] Open from scene format
+- [x] Open from scene format
 - [x] Add ability to change shape color
 - [x] Add ability to change shape attributes
 - [x] Add ability to change light color
@@ -41,7 +41,7 @@
 - [x] Launch raytracer
 
 ### Step 3
-- [ x Add rendering of videos
+- [x] Add rendering of videos
   - [ ] Call raytracer automatically
   - [ ] OR
   - [x] Create all scenes to render separately

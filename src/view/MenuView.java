@@ -1,8 +1,6 @@
 package view;
 
-import controller.ObjController;
-import controller.RenderController;
-import controller.SelectController;
+import controller.*;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -11,14 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.stage.FileChooser;
 import model.*;
-import script.Execution;
-import script.Parser;
-import script.ast.AstNode;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by Adrien on 18/11/2016.
@@ -52,13 +43,7 @@ public class MenuView extends MenuBar {
         Menu menuFile = new Menu("File");
 
         MenuItem open = new MenuItem("Open");
-        open.addEventHandler(EventType.ROOT, event -> {
-            FileChooser fileChooser = new FileChooser();
-            File file = fileChooser.showOpenDialog(null);
-            if (file != null) {
-                ImportSceneModel.importScene(file);
-            }
-        });
+        open.addEventHandler(EventType.ROOT, new OpenController());
         open.setAccelerator(KeyCombination.keyCombination("Ctrl+O"));
 
         MenuItem save = new MenuItem("Save");
@@ -66,27 +51,10 @@ public class MenuView extends MenuBar {
         save.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
 
         MenuItem openObj = new MenuItem("Open OBJ");
-        openObj.addEventHandler(EventType.ROOT, new ObjController());
+        openObj.addEventHandler(EventType.ROOT, new OpenObjController());
 
         MenuItem openScript = new MenuItem("Open script");
-        openScript.addEventHandler(EventType.ROOT, new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                FileChooser fileChooser = new FileChooser();
-                File file = fileChooser.showOpenDialog(null);
-                if (file != null) {
-                    Parser parser = new Parser();
-                    try {
-                        AstNode astNode = parser.parse(file);
-                        if (astNode != null) {
-                            astNode.accept(Execution.getInstance());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        openScript.addEventHandler(EventType.ROOT, new OpenScriptController());
 
         menuFile.getItems().addAll(open, save, new SeparatorMenuItem(), openScript, openObj);
 

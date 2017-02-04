@@ -11,11 +11,13 @@ import java.io.IOException;
 /**
  * Created by Adrien on 15/01/2017.
  */
-public class ObjController implements EventHandler<Event> {
+public class OpenObjController implements EventHandler<Event> {
     @Override
     public void handle(Event event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open executable Raytracer");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Object file", "*.obj"));
+        fileChooser.setTitle("Import model");
         File file = fileChooser.showOpenDialog(null);
         if (file == null) {
             return;
