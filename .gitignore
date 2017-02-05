@@ -17,6 +17,8 @@
 .idea/gradle.xml
 .idea/libraries
 .gradle
+gradle
+gradlew*
 build/
 
 # IntelliJ
@@ -27,6 +29,16 @@ build/
 *.o
 raytracer/_build
 raytracer/build
+raytracer/.vs
 
 *.ppm
 *.jpg
+*.gif
+*.mp4
+*.obj
+*.mtl
+*.in
+
+*.swp
+
+video/out*

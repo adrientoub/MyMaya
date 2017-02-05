@@ -3,6 +3,7 @@ package controller;
 import javafx.event.EventHandler;
 import javafx.scene.SubScene;
 import javafx.scene.input.MouseEvent;
+import view.AttributesView;
 
 /**
  * Created by Adrien on 27/10/2016.
@@ -21,6 +22,13 @@ public class MouseController implements EventHandler<MouseEvent> {
         this.subScene = subScene;
     }
 
+    private void updateAttributes() {
+        if (SelectController.getSelectController().getSelected() == camera) {
+            AttributesView.getInstance().getRotateXTextField().setText(Double.toString(camera.getRotateX()));
+            AttributesView.getInstance().getRotateYTextField().setText(Double.toString(camera.getRotateY()));
+        }
+    }
+
     @Override
     public void handle(MouseEvent event) {
         if (event.getEventType().equals(MouseEvent.MOUSE_RELEASED)) {
@@ -35,6 +43,7 @@ public class MouseController implements EventHandler<MouseEvent> {
         if (event.isAltDown() && event.isPrimaryButtonDown()) {
             camera.rotateX(angleScale * (y - event.getSceneY()) / subScene.getHeight());
             camera.rotateY(-angleScale * (x - event.getSceneX()) / subScene.getWidth());
+            updateAttributes();
         } else if (event.isAltDown() && event.isMiddleButtonDown()) {
             camera.translateX(translateScale * (x - event.getSceneX()) / subScene.getWidth());
             camera.translateY(translateScale * (y - event.getSceneY()) / subScene.getHeight());

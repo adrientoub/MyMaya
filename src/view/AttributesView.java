@@ -36,6 +36,8 @@ public class AttributesView {
     private TextField yTextField;
     private TextField zTextField;
     private TextField scaleTextField;
+    private TextField rotateXTextField;
+    private TextField rotateYTextField;
 
     private static AttributesView instance = new AttributesView();
 
@@ -147,6 +149,14 @@ public class AttributesView {
         return zTextField;
     }
 
+    public TextField getRotateXTextField() {
+        return rotateXTextField;
+    }
+
+    public TextField getRotateYTextField() {
+        return rotateYTextField;
+    }
+
     public TextField getScaleTextField() {
         return scaleTextField;
     }
@@ -160,7 +170,7 @@ public class AttributesView {
         Text rotate = new Text("Rotate");
         grid.add(rotate, 0, i++);
 
-        TextField rotateXTextField = addTextField("X", c.getRotateX(), i++);
+        rotateXTextField = addTextField("X", c.getRotateX(), i++);
         rotateXTextField.setOnKeyReleased(event -> {
             try {
                 TextField tf = (TextField) event.getSource();
@@ -171,7 +181,7 @@ public class AttributesView {
                 }
             } catch (NumberFormatException ignored) {}
         });
-        TextField rotateYTextField = addTextField("Y", c.getRotateY(), i++);
+        rotateYTextField = addTextField("Y", c.getRotateY(), i++);
         rotateYTextField.setOnKeyReleased(event -> {
             try {
                 TextField tf = (TextField) event.getSource();
