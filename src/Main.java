@@ -96,6 +96,7 @@ public class Main extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+        splitPane.setDividerPosition(0, 0.8);
     }
 
     public static void main(String[] args) {
