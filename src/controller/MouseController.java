@@ -1,8 +1,10 @@
 package controller;
 
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.SubScene;
 import javafx.scene.input.MouseEvent;
+import model.HistoryModel;
 import view.AttributesView;
 
 /**
@@ -13,6 +15,12 @@ public class MouseController implements EventHandler<MouseEvent> {
     private double y = -1;
     private model.Camera camera;
     private SubScene subScene;
+
+    private double originalX;
+    private double originalY;
+    private double originalZ;
+    private double originalRotateX;
+    private double originalRotateY;
 
     private final double angleScale = 90;
     private final double translateScale = 5;
@@ -34,10 +42,25 @@ public class MouseController implements EventHandler<MouseEvent> {
         if (event.getEventType().equals(MouseEvent.MOUSE_RELEASED)) {
             x = -1;
             y = -1;
+            if (camera.getRotateX() != originalRotateX || camera.getRotateY() != originalRotateY) {
+                HistoryModel.addRotation(camera.getRotateX() - originalRotateX,
+                        camera.getRotateY() - originalRotateY, camera.getName());
+            }
+            Node node = camera.getInnerObject();
+            if (node.getTranslateX() != originalX || node.getTranslateY() != originalY ||
+                    node.getTranslateZ() != originalZ) {
+                HistoryModel.addTranslation(node.getTranslateX() - originalX, node.getTranslateY() - originalY,
+                        node.getTranslateZ() - originalZ, camera.getName());
+            }
             return;
         } else if ((x == -1 && y == -1)) {
             x = event.getSceneX();
             y = event.getSceneY();
+            originalX = camera.getInnerObject().getTranslateX();
+            originalY = camera.getInnerObject().getTranslateY();
+            originalZ = camera.getInnerObject().getTranslateZ();
+            originalRotateX = camera.getRotateX();
+            originalRotateY = camera.getRotateY();
             return;
         }
         if (event.isAltDown() && event.isPrimaryButtonDown()) {

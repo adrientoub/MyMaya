@@ -12,9 +12,9 @@ This project is divided in two parts:
   - Its own scripting language
     * Able to edit the scene
     * Each visual action is recorded and added to history in a repeatable form
-    * Can be loaded from file to generate complexe scenes and annimation
+    * Can be loaded from file to generate complex scenes and animations
     * [For more information about the language](SCRIPT.md)
-* The raytracer application written in C++:
+* The Raytracer written in C++:
   - Taking scenes as input and generating the corresponding image in PPM.
 
 ## Compatibility
@@ -34,7 +34,7 @@ Supported platforms are:
 
 * A C++ compiler with C++14 compatibility
   - If the compiler supports OpenMP it will be used to speed up the renders
-* Cmake
+* Cmake (version 2.8 or up)
 
 This was tested on:
 * Windows 10 with VS2017
