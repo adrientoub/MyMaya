@@ -28,6 +28,10 @@ Supported platforms are:
 
 ## Raytracer
 
+### Sample images
+
+![Raytraced box with reflection](/raytracer/check/box-reflect.jpg?raw=true)
+
 ### Dependencies
 
 * A C++ compiler with C++14 compatibility
