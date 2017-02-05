@@ -1,6 +1,4 @@
-# MyMaya
-
-[![Build Status][travis-image]][travis-url]
+# MyMaya [![Build Status][travis-image]][travis-url]
 
 ## Description
 

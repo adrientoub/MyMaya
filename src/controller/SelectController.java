@@ -12,6 +12,7 @@ import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import model.Camera;
 import model.HistoryModel;
 import model.Object3D;
 import model.SceneModel;
@@ -269,10 +270,14 @@ public class SelectController {
 
             if (state == ToolsState.TRANSLATING) {
                 removeRotors();
-                addTranslators();
+                if (!(selected instanceof Camera)) {
+                    addTranslators();
+                }
             } else if (state == ToolsState.SCALING) {
                 removeRotors();
-                addScalers();
+                if (selected.isScalable()) {
+                    addScalers();
+                }
             }
         }
     }
