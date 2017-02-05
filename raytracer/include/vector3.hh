@@ -6,7 +6,7 @@ class Vector3
 {
 public:
   Vector3() = default;
-  Vector3(double x, double y, double z);
+  inline Vector3(double x, double y, double z);
   inline Vector3 normalize() const;
   inline double dot_product(const Vector3& v) const;
   inline double norm() const;

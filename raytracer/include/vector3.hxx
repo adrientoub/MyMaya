@@ -3,6 +3,10 @@
 #include "vector3.hh"
 #include <cmath>
 
+inline Vector3::Vector3(double x, double y, double z)
+               : x_(x), y_(y), z_(z)
+{}
+
 inline double Vector3::dot_product(const Vector3& v) const
 {
   return x_ * v.x_ + y_ * v.y_ + z_ * v.z_;
