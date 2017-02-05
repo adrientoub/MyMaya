@@ -1,10 +1,12 @@
 package model;
 
+import controller.SelectController;
 import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
+import view.AttributesView;
 
 /**
  * Created by Adrien on 08/12/2016.
@@ -39,15 +41,27 @@ public class Camera extends Object3D {
     }
 
     public void translateX(double movement) {
-        camera.setTranslateX(camera.getTranslateX() + movement);
+        double newX = camera.getTranslateX() + movement;
+        camera.setTranslateX(newX);
+        if (SelectController.getSelectController().getSelected() == this) {
+            AttributesView.getInstance().getxTextField().setText(Double.toString(newX));
+        }
     }
 
     public void translateY(double movement) {
-        camera.setTranslateY(camera.getTranslateY() + movement);
+        double newY = camera.getTranslateY() + movement;
+        camera.setTranslateY(newY);
+        if (SelectController.getSelectController().getSelected() == this) {
+            AttributesView.getInstance().getyTextField().setText(Double.toString(newY));
+        }
     }
 
     public void translateZ(double movement) {
-        camera.setTranslateZ(camera.getTranslateZ() + movement);
+        double newZ = camera.getTranslateZ() + movement;
+        camera.setTranslateZ(newZ);
+        if (SelectController.getSelectController().getSelected() == this) {
+            AttributesView.getInstance().getzTextField().setText(Double.toString(newZ));
+        }
     }
 
     private Point3D rotate(Point3D point, Rotate rotate) {

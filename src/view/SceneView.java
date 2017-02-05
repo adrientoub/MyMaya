@@ -30,9 +30,9 @@ public class SceneView extends Group {
         PerspectiveCamera camera = new PerspectiveCamera(true);
         model.Camera myCamera = new Camera(camera);
 
-        myCamera.translateX(0);
-        myCamera.translateY(0);
-        myCamera.translateZ(-15);
+        myCamera.setTranslateX(0);
+        myCamera.setTranslateY(0);
+        myCamera.setTranslateZ(-15);
 
         // Build the Scene Graph
         Group scene = SceneModel.getScene();
