@@ -87,3 +87,33 @@ void calculate_box_triangles(Vector3* bounds, std::array<Triangle, 12>& triangle
     { Triangle(vertices[3], vertices[6], vertices[7], attr, color) }
   }};
 }
+
+bool box_is_intersecting(const Ray& ray, const Vector3 bounds[2])
+{
+  Vector3 inv_direction = 1 / ray.direction;
+  int sign[] = {
+    inv_direction.getX() < 0,
+    inv_direction.getY() < 0,
+    inv_direction.getZ() < 0
+  };
+
+  double tmin = (bounds[sign[0]].getX() - ray.position.getX()) * inv_direction.getX();
+  double tmax = (bounds[1 - sign[0]].getX() - ray.position.getX()) * inv_direction.getX();
+  double tymin = (bounds[sign[1]].getY() - ray.position.getY()) * inv_direction.getY();
+  double tymax = (bounds[1 - sign[1]].getY() - ray.position.getY()) * inv_direction.getY();
+  if ((tmin > tymax) || (tymin > tmax))
+    return false;
+  if (tymin > tmin)
+    tmin = tymin;
+  if (tymax < tmax)
+    tmax = tymax;
+  double tzmin = (bounds[sign[2]].getZ() - ray.position.getZ()) * inv_direction.getZ();
+  double tzmax = (bounds[1 - sign[2]].getZ() - ray.position.getZ()) * inv_direction.getZ();
+  if ((tmin > tzmax) || (tzmin > tmax))
+    return false;
+  if (tzmin > tmin)
+    tmin = tzmin;
+  if (tzmax < tmax)
+    tmax = tzmax;
+  return true;
+}

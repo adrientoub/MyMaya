@@ -15,7 +15,6 @@ Mesh::Mesh(const Vector3& pos, const Attributes& attr, const Color& color,
 
 void Mesh::calculate_bounds()
 {
-  Vector3 bounds[2];
   if (triangles.size() > 0)
   {
     bounds[0] = Vector3(std::numeric_limits<double>::max(),
@@ -38,13 +37,11 @@ void Mesh::calculate_bounds()
       }
     }
   }
-  calculate_box_triangles(bounds, box_triangle_bounds, attr, color);
 }
 
 Vector3 Mesh::intersect(const Ray& ray) const
 {
-  Vector3 intersect = box_intersect(box_triangle_bounds, ray);
-  if (intersect)
+  if (box_is_intersecting(ray, bounds))
   {
     auto pair = find_closest_intersection(triangles, ray);
     const_cast<std::map<Vector3, const Triangle*>&>(intersect_to_triangle).insert(pair);

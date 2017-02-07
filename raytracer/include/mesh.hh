@@ -27,8 +27,8 @@ protected:
 private:
   void calculate_bounds();
 
+  Vector3 bounds[2];
   std::vector<Triangle> triangles;
-  std::array<Triangle, 12> box_triangle_bounds;
   std::map<Vector3, const Triangle*> intersect_to_triangle;
 };
 
