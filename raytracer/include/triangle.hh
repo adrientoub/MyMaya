@@ -12,6 +12,7 @@ public:
   virtual Vector3 intersect(const Ray& ray) const override;
   std::array<Vector3, 3> get_vertices() const;
   virtual Vector3 normal_vect(const Vector3& intersect) const override;
+  bool inside(const std::array<Vector3, 2> bounds) const;
 
   friend std::istream& operator>>(std::istream& is, Triangle& sphere);
   friend std::ostream& operator<<(std::ostream& is, const Triangle& sphere);

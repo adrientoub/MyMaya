@@ -74,3 +74,8 @@ std::ostream& Triangle::display(std::ostream& os) const
 {
   return os << *this;
 }
+
+bool Triangle::inside(const std::array<Vector3, 2> bounds) const
+{
+  return pos.inside(bounds) || b.inside(bounds) || c.inside(bounds);
+}

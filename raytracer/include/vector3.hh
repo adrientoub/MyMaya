@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+#include <array>
 
 class Vector3
 {
@@ -13,6 +14,7 @@ public:
 
   inline Vector3 operator*(const Vector3& v) const;
   inline Vector3 operator*(double scale) const;
+  inline Vector3 operator/(double factor) const;
   inline Vector3 operator+(const Vector3& v) const;
   inline Vector3 operator-(const Vector3& v) const;
   inline Vector3 operator-() const;
@@ -27,6 +29,8 @@ public:
   inline double getX() const;
   inline double getY() const;
   inline double getZ() const;
+
+  bool inside(const std::array<Vector3, 2> bounds) const;
 
 private:
   double x_ = 0.;
