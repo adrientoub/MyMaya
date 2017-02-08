@@ -26,7 +26,7 @@ protected:
 
 private:
   double scale;
-  Vector3 bounds[2];
+  std::array<Vector3, 2> bounds;
   std::array<Triangle, 12> triangles;
 
   std::map<Vector3, const Triangle*> intersect_to_triangle;
@@ -36,9 +36,9 @@ std::istream& operator>>(std::istream& is, Box& box);
 std::ostream& operator<<(std::ostream& is, const Box& box);
 
 Vector3 box_intersect(const std::array<Triangle, 12>& triangles, const Ray& ray);
-bool box_is_intersecting(const Ray& ray, const Vector3 bounds[2]);
+bool box_is_intersecting(const Ray& ray, const std::array<Vector3, 2>& bounds);
 
-void calculate_box_triangles(Vector3* bounds,
+void calculate_box_triangles(const std::array<Vector3, 2>& bounds,
                              std::array<Triangle, 12>& triangles,
                              const Attributes& attr, const Color& color);
 

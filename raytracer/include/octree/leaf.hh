@@ -4,7 +4,11 @@
 
 class Leaf: public Node
 {
-  friend class Octree;
+public:
+  virtual ~Leaf() = default;
+
 private:
+  friend class Octree;
+
   std::vector<Triangle*> triangles;
 };

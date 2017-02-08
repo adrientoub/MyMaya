@@ -2,6 +2,7 @@
 
 #include "shape.hh"
 #include "triangle.hh"
+#include "octree/octree.hh"
 
 #include <vector>
 #include <memory>
@@ -27,9 +28,10 @@ protected:
 private:
   void calculate_bounds();
 
-  Vector3 bounds[2];
+  std::array<Vector3, 2> bounds;
   std::vector<Triangle> triangles;
   std::map<Vector3, const Triangle*> intersect_to_triangle;
+  std::shared_ptr<Octree> octree;
 };
 
 std::istream& operator>>(std::istream& is, Mesh& mesh);

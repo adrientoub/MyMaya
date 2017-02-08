@@ -36,6 +36,7 @@ void Mesh::calculate_bounds()
                             std::max(vertex.getZ(), bounds[1].getZ()));
       }
     }
+    octree = std::shared_ptr<Octree>(Octree::build_octree(triangles, bounds));
   }
 }
 

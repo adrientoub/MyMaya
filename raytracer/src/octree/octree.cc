@@ -5,7 +5,6 @@
 #include <iterator>
 #include <memory>
 
-
 std::vector<Triangle*> find_all_triangles(const std::vector<Triangle>& triangles,
                                           const std::array<Vector3, 2>& bounds)
 {
@@ -17,16 +16,16 @@ std::vector<Triangle*> find_all_triangles(const std::vector<Triangle>& triangles
   return out;
 }
 
-Octree Octree::build_octree(const std::vector<Triangle>& triangles,
-                            const std::array<Vector3, 2>& bounds,
-                            const size_t depth)
+Octree* Octree::build_octree(const std::vector<Triangle>& triangles,
+                             const std::array<Vector3, 2>& bounds,
+                             const size_t depth)
 {
-  Octree tree;
-  std::copy(bounds.begin(), bounds.end(), tree.bounds.begin());
+  Octree* tree = new Octree();
+  std::copy(bounds.begin(), bounds.end(), tree->bounds.begin());
 
   Vector3 mid = (bounds[1] - bounds[0]) / 2;
 
-  for (size_t i = 0; i < tree.children.size(); ++i)
+  for (size_t i = 0; i < tree->children.size(); ++i)
   {
     std::array<Vector3, 2> bnds;
     bnds[0] = Vector3(
@@ -38,7 +37,7 @@ Octree Octree::build_octree(const std::vector<Triangle>& triangles,
     std::vector<Triangle*> part_triangles = find_all_triangles(triangles, bnds);
 
     if (part_triangles.size() == 0)
-      tree.children[i] = nullptr;
+      tree->children[i] = nullptr;
     else
     {
       if (depth == 0 || part_triangles.size() < optimal_by_node)
@@ -46,10 +45,10 @@ Octree Octree::build_octree(const std::vector<Triangle>& triangles,
         std::unique_ptr<Leaf> leaf = std::make_unique<Leaf>();
         leaf->triangles = part_triangles;
         leaf->bounds = bnds;
-        tree.children[i] = std::move(leaf);
+        tree->children[i] = std::move(leaf);
       }
       else
-        tree.children[i] = std::make_unique<Octree>(build_octree(triangles, bnds, depth - 1));
+        tree->children[i] = std::unique_ptr<Octree>(build_octree(triangles, bnds, depth - 1));
     }
   }
 
