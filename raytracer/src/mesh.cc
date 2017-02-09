@@ -42,14 +42,10 @@ void Mesh::calculate_bounds()
 
 Vector3 Mesh::intersect(const Ray& ray) const
 {
-  if (box_is_intersecting(ray, bounds))
-  {
-    auto pair = find_closest_intersection(triangles, ray);
-    const_cast<std::map<Vector3, const Triangle*>&>(intersect_to_triangle).insert(pair);
-    return pair.first;
-  }
-
-  return Vector3();
+  std::vector<const Triangle*> t = octree->intersect(ray);
+  auto pair = find_closest_intersection_ptr(t, ray);
+  const_cast<std::map<Vector3, const Triangle*>&>(intersect_to_triangle).insert(pair);
+  return pair.first;
 }
 
 std::istream& operator>>(std::istream& is, Mesh& mesh)

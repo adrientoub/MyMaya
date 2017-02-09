@@ -1,19 +1,42 @@
 #include "octree/octree.hh"
 #include "octree/leaf.hh"
+#include "box.hh"
 
 #include <algorithm>
 #include <iterator>
 #include <memory>
 
-std::vector<Triangle*> find_all_triangles(const std::vector<Triangle>& triangles,
-                                          const std::array<Vector3, 2>& bounds)
+std::vector<const Triangle*> find_all_triangles(const std::vector<Triangle>& triangles,
+                                                const std::array<Vector3, 2>& bounds)
 {
-  std::vector<Triangle*> out;
-  for (Triangle triangle: triangles)
+  std::vector<const Triangle*> out;
+  for (const Triangle& triangle: triangles)
     if (triangle.inside(bounds))
       out.push_back(&triangle);
 
   return out;
+}
+
+std::vector<const Triangle*> Octree::intersect(const Ray& ray) const
+{
+  std::vector<const Triangle*> triangles;
+  intersect(ray, triangles);
+  std::sort(triangles.begin(), triangles.end());
+  triangles.erase(std::unique(triangles.begin(), triangles.end()), triangles.end());
+  return triangles;
+}
+
+void Octree::intersect(const Ray& ray,
+                       std::vector<const Triangle*>& triangles) const
+{
+  if (!box_is_intersecting(ray, bounds))
+    return;
+
+  for (size_t i = 0; i < children.size(); ++i)
+  {
+    if (children[i])
+      children[i]->intersect(ray, triangles);
+  }
 }
 
 Octree* Octree::build_octree(const std::vector<Triangle>& triangles,
@@ -30,13 +53,13 @@ Octree* Octree::build_octree(const std::vector<Triangle>& triangles,
     std::array<Vector3, 2> bnds;
     bnds[0] = Vector3(
       bounds[0].getX() + (i & 1) * mid.getX(),
-      bounds[0].getY() + (i & 2) * mid.getY(),
-      bounds[0].getZ() + (i & 4) * mid.getZ()
+      bounds[0].getY() + ((i & 2) >> 1) * mid.getY(),
+      bounds[0].getZ() + ((i & 4) >> 2) * mid.getZ()
     );
     bnds[1] = bnds[0] + mid;
-    std::vector<Triangle*> part_triangles = find_all_triangles(triangles, bnds);
+    std::vector<const Triangle*> part_triangles = find_all_triangles(triangles, bnds);
 
-    if (part_triangles.size() == 0)
+    if (part_triangles.empty())
       tree->children[i] = nullptr;
     else
     {

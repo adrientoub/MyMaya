@@ -45,4 +45,7 @@ void calculate_box_triangles(const std::array<Vector3, 2>& bounds,
 template <typename T>
 std::pair<Vector3, const Triangle*> find_closest_intersection(T& triangles, const Ray& ray);
 
+template <typename T>
+std::pair<Vector3, const Triangle*> find_closest_intersection_ptr(T& triangles, const Ray& ray);
+
 #include "box.hxx"
