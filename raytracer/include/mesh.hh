@@ -28,7 +28,6 @@ protected:
 private:
   void calculate_bounds();
 
-  std::array<Vector3, 2> bounds;
   std::vector<Triangle> triangles;
   std::map<Vector3, const Triangle*> intersect_to_triangle;
   std::shared_ptr<Octree> octree;
