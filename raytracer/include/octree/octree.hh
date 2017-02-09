@@ -16,7 +16,7 @@ public:
   template <typename T>
   static Octree* build_octree(const T& triangles,
                               const std::array<Vector3, 2>& bounds,
-                              const size_t depth = 3);
+                              const size_t depth = 9);
 
   virtual void intersect(const Ray& ray, std::vector<const Triangle*>& triangles) const;
 
