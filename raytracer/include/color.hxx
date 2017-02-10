@@ -46,3 +46,10 @@ inline Color Color::operator*(const Color& c) const
                std::max(0., std::min(1., g * c.g)),
                std::max(0., std::min(1.,  b * c.b)));
 }
+
+inline std::ostream& operator<<(std::ostream& os, const Color& c)
+{
+  return os << std::min(255, std::max(0, static_cast<int>(c.r * 255))) << ' '
+            << std::min(255, std::max(0, static_cast<int>(c.g * 255))) << ' '
+            << std::min(255, std::max(0, static_cast<int>(c.b * 255)));
+}
