@@ -24,7 +24,7 @@ private:
   double b = 0.;
 };
 
-std::ostream& operator<<(std::ostream& os, const Color& color);
+inline std::ostream& operator<<(std::ostream& os, const Color& color);
 std::istream& operator>>(std::istream& is, Color& color);
 
 #include "color.hxx"

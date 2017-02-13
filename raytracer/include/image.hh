@@ -17,7 +17,7 @@ public:
   inline const Color& get(size_t x, size_t y) const;
   inline Color& get(size_t x, size_t y);
   inline std::vector<Color>& operator[](size_t x);
-  Image reduce_mat() const;
+  Image* reduce_mat() const;
 
 private:
   size_t width;

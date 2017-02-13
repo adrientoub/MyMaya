@@ -14,10 +14,10 @@ Box::Box(const Vector3& pos, const Attributes& attr, const Color& color,
 void Box::calculate_bounds()
 {
   Vector3 half_scale = Vector3(scale / 2, scale / 2, scale / 2);
-  Vector3 bounds[] {
+  std::array<Vector3, 2> bounds {{
     pos - half_scale,
     pos + half_scale
-  };
+  }};
   calculate_box_triangles(bounds, triangles, attr, color);
 }
 
@@ -60,7 +60,7 @@ Vector3 box_intersect(const std::array<Triangle, 12>& triangles, const Ray& ray)
   return pair.first;
 }
 
-void calculate_box_triangles(Vector3* bounds, std::array<Triangle, 12>& triangles, const Attributes& attr, const Color& color)
+void calculate_box_triangles(const std::array<Vector3, 2>& bounds, std::array<Triangle, 12>& triangles, const Attributes& attr, const Color& color)
 {
   std::array<Vector3, 8> vertices {{
     bounds[0],
@@ -88,7 +88,7 @@ void calculate_box_triangles(Vector3* bounds, std::array<Triangle, 12>& triangle
   }};
 }
 
-bool box_is_intersecting(const Ray& ray, const Vector3 bounds[2])
+bool box_is_intersecting(const Ray& ray, const std::array<Vector3, 2>& bounds)
 {
   Vector3 inv_direction = 1 / ray.direction;
   int sign[] = {

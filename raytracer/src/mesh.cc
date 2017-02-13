@@ -17,12 +17,14 @@ void Mesh::calculate_bounds()
 {
   if (triangles.size() > 0)
   {
-    bounds[0] = Vector3(std::numeric_limits<double>::max(),
-                        std::numeric_limits<double>::max(),
-                        std::numeric_limits<double>::max());
-    bounds[1] = Vector3(std::numeric_limits<double>::min(),
-                        std::numeric_limits<double>::min(),
-                        std::numeric_limits<double>::min());
+    std::array<Vector3, 2> bounds {{
+      Vector3(std::numeric_limits<double>::max(),
+              std::numeric_limits<double>::max(),
+              std::numeric_limits<double>::max()),
+      Vector3(std::numeric_limits<double>::min(),
+              std::numeric_limits<double>::min(),
+              std::numeric_limits<double>::min())
+    }};
     for (const Triangle& triangle: triangles)
     {
       std::array<Vector3, 3> vertices = triangle.get_vertices();
@@ -36,18 +38,19 @@ void Mesh::calculate_bounds()
                             std::max(vertex.getZ(), bounds[1].getZ()));
       }
     }
+    octree = std::shared_ptr<Octree>(Octree::build_octree(triangles, bounds));
   }
 }
 
 Vector3 Mesh::intersect(const Ray& ray) const
 {
-  if (box_is_intersecting(ray, bounds))
+  if (octree)
   {
-    auto pair = find_closest_intersection(triangles, ray);
+    std::vector<const Triangle*> t = octree->intersect(ray);
+    auto pair = find_closest_intersection_ptr(t, ray);
     const_cast<std::map<Vector3, const Triangle*>&>(intersect_to_triangle).insert(pair);
     return pair.first;
   }
-
   return Vector3();
 }
 

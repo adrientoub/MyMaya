@@ -32,6 +32,13 @@ inline Vector3 Vector3::operator*(double scale) const
                  scale * z_);
 }
 
+inline Vector3 Vector3::operator/(double factor) const
+{
+  return Vector3(x_ / factor,
+                 y_ / factor,
+                 z_ / factor);
+}
+
 inline double Vector3::getX() const
 {
   return x_;

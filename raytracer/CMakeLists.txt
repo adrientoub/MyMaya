@@ -33,6 +33,9 @@ set(BASE_SOURCE_FILES
     src/point_light.cc
     src/ambiant_light.cc
     src/directional_light.cc
+
+    src/octree/octree.cc
+    src/octree/leaf.cc
   )
 
 include_directories(include)
