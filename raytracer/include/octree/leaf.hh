@@ -6,10 +6,10 @@ class Leaf: public Node
 {
 public:
   virtual ~Leaf() = default;
-  virtual void intersect(const Ray& ray, std::vector<const Triangle*>& triangles) const;
+  virtual void intersect(const Ray& ray, std::vector<const BasicTriangle*>& triangles) const;
 
 private:
   friend class Octree;
 
-  std::vector<const Triangle*> triangles;
+  std::vector<const BasicTriangle*> triangles;
 };

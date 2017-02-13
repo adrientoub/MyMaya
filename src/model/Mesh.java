@@ -62,7 +62,6 @@ public class Mesh extends Shape {
 
     @Override
     public String toString() {
-        int triangle = 0;
         StringBuilder sb = new StringBuilder();
         String colorString = getColorString(color);
         String attributeString = attributes.toString();
@@ -75,10 +74,10 @@ public class Mesh extends Shape {
         double translateY = internalMesh.getTranslateY();
         double translateZ = internalMesh.getTranslateZ();
 
-        sb.append("mesh \"").append(name).append("\"\n");
+        sb.append("mesh \"").append(name).append("\" ").append(attributeString).append(" ").append(colorString).append("\n");
 
         for (ObjReader.Face face: faces) {
-            sb.append("triangle \"").append(name).append(triangle++).append("\" ");
+            sb.append("triangle ");
 
             for (int i = 0; i < 3; i++) {
                 Point3D point3D = vertices.get(face.vertices[i * 2]);
@@ -86,7 +85,6 @@ public class Mesh extends Shape {
                   .append(point3D.getY() * scaleY + translateY).append(" ")
                   .append(point3D.getZ() * scaleZ + translateZ).append(" ");
             }
-            sb.append(attributeString).append(" ").append(colorString).append("\n");
         }
 
         return sb.append("end").toString();

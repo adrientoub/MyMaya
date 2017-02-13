@@ -22,7 +22,7 @@ Octree* Octree::build_octree(const T& triangles,
       bounds[0].getZ() + ((i & 4) >> 2) * mid.getZ()
     );
     bnds[1] = bnds[0] + mid;
-    std::vector<const Triangle*> part_triangles = find_all_triangles(triangles, bnds);
+    std::vector<const BasicTriangle*> part_triangles = find_all_triangles(triangles, bnds);
 
     if (part_triangles.empty())
       tree->children[i] = nullptr;

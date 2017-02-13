@@ -11,7 +11,7 @@ class Node
 {
 public:
   virtual ~Node() = default;
-  virtual void intersect(const Ray& ray, std::vector<const Triangle*>& triangles) const = 0;
+  virtual void intersect(const Ray& ray, std::vector<const BasicTriangle*>& triangles) const = 0;
 
 protected:
   // can be recalculated
