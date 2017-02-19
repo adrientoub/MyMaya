@@ -3,12 +3,12 @@
 #include "box.hh"
 
 template <typename T>
-std::pair<Vector3, const Triangle*> find_closest_intersection(T& triangles, const Ray& ray)
+std::pair<Vector3, const BasicTriangle*> find_closest_intersection(T& triangles, const Ray& ray)
 {
   Vector3 intersect;
-  const Triangle* min_triangle;
+  const BasicTriangle* min_triangle;
   double min_dist = INFINITY;
-  for (const Triangle& triangle: triangles)
+  for (const BasicTriangle& triangle: triangles)
   {
     Vector3 vect = triangle.intersect(ray);
     if (!vect)
@@ -26,12 +26,12 @@ std::pair<Vector3, const Triangle*> find_closest_intersection(T& triangles, cons
 }
 
 template <typename T>
-std::pair<Vector3, const Triangle*> find_closest_intersection_ptr(T& triangles, const Ray& ray)
+std::pair<Vector3, const BasicTriangle*> find_closest_intersection_ptr(T& triangles, const Ray& ray)
 {
   Vector3 intersect;
-  const Triangle* min_triangle;
+  const BasicTriangle* min_triangle;
   double min_dist = INFINITY;
-  for (const Triangle* triangle: triangles)
+  for (const BasicTriangle* triangle: triangles)
   {
     Vector3 vect = triangle->intersect(ray);
     if (!vect)

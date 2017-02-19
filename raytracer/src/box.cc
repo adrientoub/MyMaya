@@ -18,13 +18,13 @@ void Box::calculate_bounds()
     pos - half_scale,
     pos + half_scale
   }};
-  calculate_box_triangles(bounds, triangles, attr, color);
+  calculate_box_triangles(bounds, triangles);
 }
 
 Vector3 Box::intersect(const Ray& ray) const
 {
-  std::pair<Vector3, const Triangle*> pair = find_closest_intersection(triangles, ray);
-  const_cast<std::map<Vector3, const Triangle*>&>(intersect_to_triangle).insert(pair);
+  std::pair<Vector3, const BasicTriangle*> pair = find_closest_intersection(triangles, ray);
+  const_cast<std::map<Vector3, const BasicTriangle*>&>(intersect_to_triangle).insert(pair);
   return pair.first;
 }
 
@@ -44,7 +44,7 @@ Vector3 Box::normal_vect(const Vector3& intersect) const
 {
   auto triangle = intersect_to_triangle.find(intersect);
   if (triangle != intersect_to_triangle.end())
-    return triangle->second->normal_vect(intersect);
+    return triangle->second->normal_vect();
 
   return intersect - pos;
 }
@@ -54,13 +54,14 @@ std::ostream& Box::display(std::ostream& os) const
   return os << *this;
 }
 
-Vector3 box_intersect(const std::array<Triangle, 12>& triangles, const Ray& ray)
+Vector3 box_intersect(const std::array<BasicTriangle, 12>& triangles, const Ray& ray)
 {
   auto pair = find_closest_intersection(triangles, ray);
   return pair.first;
 }
 
-void calculate_box_triangles(const std::array<Vector3, 2>& bounds, std::array<Triangle, 12>& triangles, const Attributes& attr, const Color& color)
+void calculate_box_triangles(const std::array<Vector3, 2>& bounds,
+                            std::array<BasicTriangle, 12>& triangles)
 {
   std::array<Vector3, 8> vertices {{
     bounds[0],
@@ -73,18 +74,18 @@ void calculate_box_triangles(const std::array<Vector3, 2>& bounds, std::array<Tr
     bounds[1]
   }};
   triangles = {{
-    { Triangle(vertices[0], vertices[2], vertices[4], attr, color) }, // front
-    { Triangle(vertices[2], vertices[4], vertices[6], attr, color) },
-    { Triangle(vertices[0], vertices[1], vertices[2], attr, color) }, // left
-    { Triangle(vertices[1], vertices[2], vertices[3], attr, color) },
-    { Triangle(vertices[0], vertices[1], vertices[4], attr, color) }, // bottom
-    { Triangle(vertices[1], vertices[4], vertices[5], attr, color) },
-    { Triangle(vertices[4], vertices[5], vertices[6], attr, color) }, // right
-    { Triangle(vertices[5], vertices[6], vertices[7], attr, color) },
-    { Triangle(vertices[1], vertices[3], vertices[7], attr, color) }, // back
-    { Triangle(vertices[1], vertices[7], vertices[5], attr, color) },
-    { Triangle(vertices[2], vertices[3], vertices[6], attr, color) }, // top
-    { Triangle(vertices[3], vertices[6], vertices[7], attr, color) }
+    { BasicTriangle(vertices[0], vertices[2], vertices[4]) }, // front
+    { BasicTriangle(vertices[2], vertices[4], vertices[6]) },
+    { BasicTriangle(vertices[0], vertices[1], vertices[2]) }, // left
+    { BasicTriangle(vertices[1], vertices[2], vertices[3]) },
+    { BasicTriangle(vertices[0], vertices[1], vertices[4]) }, // bottom
+    { BasicTriangle(vertices[1], vertices[4], vertices[5]) },
+    { BasicTriangle(vertices[4], vertices[5], vertices[6]) }, // right
+    { BasicTriangle(vertices[5], vertices[6], vertices[7]) },
+    { BasicTriangle(vertices[1], vertices[3], vertices[7]) }, // back
+    { BasicTriangle(vertices[1], vertices[7], vertices[5]) },
+    { BasicTriangle(vertices[2], vertices[3], vertices[6]) }, // top
+    { BasicTriangle(vertices[3], vertices[6], vertices[7]) }
   }};
 }
 

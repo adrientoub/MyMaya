@@ -1,6 +1,7 @@
 #pragma once
 
 #include "shape.hh"
+#include "basic_triangle.hh"
 
 class Triangle: public Shape
 {
@@ -14,15 +15,14 @@ public:
   virtual Vector3 normal_vect(const Vector3& intersect) const override;
   bool inside(const std::array<Vector3, 2> bounds) const;
 
-  friend std::istream& operator>>(std::istream& is, Triangle& sphere);
-  friend std::ostream& operator<<(std::ostream& is, const Triangle& sphere);
+  friend std::istream& operator>>(std::istream& is, Triangle& triangle);
+  friend std::ostream& operator<<(std::ostream& is, const Triangle& triangle);
 
 protected:
   virtual std::ostream& display(std::ostream& os) const override;
 
 private:
-  Vector3 b;
-  Vector3 c;
+  BasicTriangle triangle;
 };
 
 std::istream& operator>>(std::istream& is, Triangle& sphere);
