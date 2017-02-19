@@ -37,6 +37,7 @@ set(BASE_SOURCE_FILES
 
     src/octree/octree.cc
     src/octree/leaf.cc
+    src/octree/node.cc
   )
 
 include_directories(include)

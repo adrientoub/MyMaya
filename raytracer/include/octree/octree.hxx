@@ -30,9 +30,7 @@ Octree* Octree::build_octree(const T& triangles,
     {
       if (depth == 0 || part_triangles.size() < optimal_by_node)
       {
-        std::unique_ptr<Leaf> leaf = std::make_unique<Leaf>();
-        leaf->triangles = part_triangles;
-        leaf->bounds = bnds;
+        std::unique_ptr<Leaf> leaf = std::make_unique<Leaf>(part_triangles, bnds);
         tree->children[i] = std::move(leaf);
       }
       else

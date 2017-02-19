@@ -18,8 +18,6 @@ public:
   friend std::istream& operator>>(std::istream& is, BasicTriangle& triangle);
   friend std::ostream& operator<<(std::ostream& os, const BasicTriangle& triangle);
 
-  friend class Triangle;
-
 private:
   Vector3 a;
   Vector3 b;
