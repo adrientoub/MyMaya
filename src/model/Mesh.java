@@ -85,6 +85,7 @@ public class Mesh extends Shape {
                   .append(point3D.getY() * scaleY + translateY).append(" ")
                   .append(point3D.getZ() * scaleZ + translateZ).append(" ");
             }
+            sb.append("\n");
         }
 
         return sb.append("end").toString();
