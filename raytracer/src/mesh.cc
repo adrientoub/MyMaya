@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <array>
+#include <limits>
 
 Mesh::Mesh(const Vector3& pos, const Attributes& attr, const Color& color,
           const std::vector<Triangle>& triangles)
