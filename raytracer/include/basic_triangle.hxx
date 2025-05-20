@@ -53,5 +53,16 @@ Vector3 BasicTriangle::intersect(const Ray& ray) const
 
 bool BasicTriangle::inside(const std::array<Vector3, 2> bounds) const
 {
-  return a.inside(bounds) || b.inside(bounds) || c.inside(bounds);
+  // Compute triangle's bounding box
+  double min_x = std::min({a.getX(), b.getX(), c.getX()});
+  double min_y = std::min({a.getY(), b.getY(), c.getY()});
+  double min_z = std::min({a.getZ(), b.getZ(), c.getZ()});
+  double max_x = std::max({a.getX(), b.getX(), c.getX()});
+  double max_y = std::max({a.getY(), b.getY(), c.getY()});
+  double max_z = std::max({a.getZ(), b.getZ(), c.getZ()});
+
+  // Check for AABB overlap
+  return (min_x <= bounds[1].getX() && max_x >= bounds[0].getX() &&
+          min_y <= bounds[1].getY() && max_y >= bounds[0].getY() &&
+          min_z <= bounds[1].getZ() && max_z >= bounds[0].getZ());
 }
