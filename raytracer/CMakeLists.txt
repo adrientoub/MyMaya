@@ -23,6 +23,7 @@ set(BASE_SOURCE_FILES
     src/box.cc
     src/plane.cc
     src/mesh.cc
+    src/basic_triangle.cc
     src/triangle.cc
     src/image.cc
     src/input.cc
@@ -36,6 +37,7 @@ set(BASE_SOURCE_FILES
 
     src/octree/octree.cc
     src/octree/leaf.cc
+    src/octree/node.cc
   )
 
 include_directories(include)

@@ -22,7 +22,7 @@ Octree* Octree::build_octree(const T& triangles,
       bounds[0].getZ() + ((i & 4) >> 2) * mid.getZ()
     );
     bnds[1] = bnds[0] + mid;
-    std::vector<const Triangle*> part_triangles = find_all_triangles(triangles, bnds);
+    std::vector<const BasicTriangle*> part_triangles = find_all_triangles(triangles, bnds);
 
     if (part_triangles.empty())
       tree->children[i] = nullptr;
@@ -30,9 +30,7 @@ Octree* Octree::build_octree(const T& triangles,
     {
       if (depth == 0 || part_triangles.size() < optimal_by_node)
       {
-        std::unique_ptr<Leaf> leaf = std::make_unique<Leaf>();
-        leaf->triangles = part_triangles;
-        leaf->bounds = bnds;
+        std::unique_ptr<Leaf> leaf = std::make_unique<Leaf>(part_triangles, bnds);
         tree->children[i] = std::move(leaf);
       }
       else

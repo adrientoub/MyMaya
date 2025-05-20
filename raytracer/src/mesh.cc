@@ -8,7 +8,7 @@
 #include <limits>
 
 Mesh::Mesh(const Vector3& pos, const Attributes& attr, const Color& color,
-          const std::vector<Triangle>& triangles)
+          const std::vector<BasicTriangle>& triangles)
        : Shape(pos, attr, color), triangles(triangles)
 {
   calculate_bounds();
@@ -26,7 +26,7 @@ void Mesh::calculate_bounds()
               std::numeric_limits<double>::lowest(),
               std::numeric_limits<double>::lowest())
     }};
-    for (const Triangle& triangle: triangles)
+    for (const BasicTriangle& triangle: triangles)
     {
       std::array<Vector3, 3> vertices = triangle.get_vertices();
       for (Vector3 vertex: vertices)
@@ -47,9 +47,9 @@ Vector3 Mesh::intersect(const Ray& ray) const
 {
   if (octree)
   {
-    std::vector<const Triangle*> t = octree->intersect(ray);
+    std::vector<const BasicTriangle*> t = octree->intersect(ray);
     auto pair = find_closest_intersection_ptr(t, ray);
-    const_cast<std::map<Vector3, const Triangle*>&>(intersect_to_triangle).insert(pair);
+    const_cast<std::map<Vector3, const BasicTriangle*>&>(intersect_to_triangle).insert(pair);
     return pair.first;
   }
   return Vector3();
@@ -57,8 +57,9 @@ Vector3 Mesh::intersect(const Ray& ray) const
 
 std::istream& operator>>(std::istream& is, Mesh& mesh)
 {
-  is >> std::quoted(mesh.name);
+  is >> std::quoted(mesh.name) >> mesh.attr >> mesh.color;
   std::string field;
+
   while (is >> field)
   {
     if (field == "end")
@@ -66,15 +67,10 @@ std::istream& operator>>(std::istream& is, Mesh& mesh)
 
     if (field == "triangle")
     {
-      Triangle triangle;
+      BasicTriangle triangle;
       is >> triangle;
       mesh.triangles.push_back(triangle);
     }
-  }
-  if (mesh.triangles.size() > 0)
-  {
-    mesh.attr = mesh.triangles[0].get_attributes();
-    mesh.color = mesh.triangles[0].get_color();
   }
   mesh.calculate_bounds();
   return is;
@@ -83,14 +79,15 @@ std::istream& operator>>(std::istream& is, Mesh& mesh)
 std::ostream& operator<<(std::ostream& os, const Mesh& mesh)
 {
   return os << "Mesh: " << mesh.name << ": triangle count: "
-            << mesh.triangles.size() << " attr: " << mesh.attr << " color: " << mesh.color;
+            << mesh.triangles.size() << " attr: " << mesh.attr << " color: "
+            << mesh.color;
 }
 
 Vector3 Mesh::normal_vect(const Vector3& intersect) const
 {
   auto triangle = intersect_to_triangle.find(intersect);
   if (triangle != intersect_to_triangle.end())
-    return triangle->second->normal_vect(intersect);
+    return triangle->second->normal_vect();
 
   return pos - intersect;
 }

@@ -15,7 +15,7 @@ public:
   virtual ~Mesh() = default;
   Mesh() = default;
   Mesh(const Vector3& pos, const Attributes& attr, const Color& color,
-       const std::vector<Triangle>& triangles);
+       const std::vector<BasicTriangle>& triangles);
   virtual Vector3 intersect(const Ray& ray) const override;
 
   friend std::istream& operator>>(std::istream& is, Mesh& mesh);
@@ -28,8 +28,8 @@ protected:
 private:
   void calculate_bounds();
 
-  std::vector<Triangle> triangles;
-  std::map<Vector3, const Triangle*> intersect_to_triangle;
+  std::vector<BasicTriangle> triangles;
+  std::map<Vector3, const BasicTriangle*> intersect_to_triangle;
   std::shared_ptr<Octree> octree;
 };
 
