@@ -1,17 +1,36 @@
-group 'MyMaya'
-version '1.0'
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
 
-apply plugin: 'java'
-apply plugin: 'application'
+repositories {
+    mavenCentral()
+}
 
-mainClassName = 'Main'
-sourceSets.main.java.srcDirs = ['src']
+base {
+    group = 'MyMaya'
+    version = '1.0'
+}
 
-jar {
-    manifest {
-        attributes(
-                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-                'Main-Class': mainClassName
-        )
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
     }
+}
+
+application {
+    mainClass = 'Main'
+}
+
+dependencies {
+    implementation 'org.openjfx:javafx-controls:21'
+    implementation 'org.openjfx:javafx-fxml:21'
+    implementation 'org.openjfx:javafx-swing:21'
+}
+
+javafx {
+    version = "21"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
 }
