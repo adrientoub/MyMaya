@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <array>
+#include <limits>
 
 Mesh::Mesh(const Vector3& pos, const Attributes& attr, const Color& color,
           const std::vector<BasicTriangle>& triangles)
@@ -21,9 +22,9 @@ void Mesh::calculate_bounds()
       Vector3(std::numeric_limits<double>::max(),
               std::numeric_limits<double>::max(),
               std::numeric_limits<double>::max()),
-      Vector3(std::numeric_limits<double>::min(),
-              std::numeric_limits<double>::min(),
-              std::numeric_limits<double>::min())
+      Vector3(std::numeric_limits<double>::lowest(),
+              std::numeric_limits<double>::lowest(),
+              std::numeric_limits<double>::lowest())
     }};
     for (const BasicTriangle& triangle: triangles)
     {
