@@ -22,9 +22,9 @@ void Mesh::calculate_bounds()
       Vector3(std::numeric_limits<double>::max(),
               std::numeric_limits<double>::max(),
               std::numeric_limits<double>::max()),
-      Vector3(std::numeric_limits<double>::min(),
-              std::numeric_limits<double>::min(),
-              std::numeric_limits<double>::min())
+      Vector3(std::numeric_limits<double>::lowest(),
+              std::numeric_limits<double>::lowest(),
+              std::numeric_limits<double>::lowest())
     }};
     for (const Triangle& triangle: triangles)
     {

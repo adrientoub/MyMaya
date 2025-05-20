@@ -75,7 +75,17 @@ std::ostream& Triangle::display(std::ostream& os) const
   return os << *this;
 }
 
-bool Triangle::inside(const std::array<Vector3, 2> bounds) const
-{
-  return pos.inside(bounds) || b.inside(bounds) || c.inside(bounds);
+bool Triangle::inside(const std::array<Vector3, 2> bounds) const {
+  // Compute triangle's bounding box
+  double min_x = std::min({pos.getX(), b.getX(), c.getX()});
+  double min_y = std::min({pos.getY(), b.getY(), c.getY()});
+  double min_z = std::min({pos.getZ(), b.getZ(), c.getZ()});
+  double max_x = std::max({pos.getX(), b.getX(), c.getX()});
+  double max_y = std::max({pos.getY(), b.getY(), c.getY()});
+  double max_z = std::max({pos.getZ(), b.getZ(), c.getZ()});
+
+  // Check for AABB overlap
+  return (min_x <= bounds[1].getX() && max_x >= bounds[0].getX() &&
+          min_y <= bounds[1].getY() && max_y >= bounds[0].getY() &&
+          min_z <= bounds[1].getZ() && max_z >= bounds[0].getZ());
 }
